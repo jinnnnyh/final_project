@@ -15,7 +15,7 @@ function tempComponent() {
       .catch(err => {
         alert("통신 실패." + err);
       });
-  }, []);
+  }, [tempData]);
 
   return (
     <div className={'container mt-5'}>
