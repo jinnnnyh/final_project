@@ -31,7 +31,7 @@ public class NotificationEntity {
     private String notiContent;
 
     // 공지 등록일
-    @Column(name = "noti_date", length = 50, nullable = false)
+    @Column(name = "noti_date", nullable = false)
     private LocalDateTime notiDate;
 
     // fk

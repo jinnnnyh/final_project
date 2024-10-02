@@ -35,16 +35,16 @@ public class EventEntity {
     private String eventContent;
 
     // 행사 일자
-    @Column(name = "event_date", length = 50, nullable = false)
+    @Column(name = "event_date", nullable = false)
     private LocalDate eventDate;
 
     // 행사 승인 여부
     @Column(name = "event_accept", length = 1, nullable = false)
-    @ColumnDefault("N")
-    private String eventAccept;
+    @ColumnDefault("'N'")
+    private Character eventAccept;
 
     // 행사 글 등록일
-    @Column(name = "upload_date", length = 50, nullable = false)
+    @Column(name = "upload_date", nullable = false)
     private LocalDateTime uploadDate;
 
     // 행사 포스터

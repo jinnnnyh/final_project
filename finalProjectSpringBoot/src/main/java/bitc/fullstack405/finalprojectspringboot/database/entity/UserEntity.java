@@ -36,6 +36,14 @@ public class UserEntity {
     @Column(name = "user_permission", nullable = false)
     private Role role;
 
+    // user 아이디
+    @Column(name = "user_account", length = 45, nullable = false, unique = true)
+    private String userAccount;
+
+    // user 비밀번호
+    @Column(name = "userPw", length = 45, nullable = false)
+    private String userPw;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<NotificationEntity> notificationList = new ArrayList<>();
