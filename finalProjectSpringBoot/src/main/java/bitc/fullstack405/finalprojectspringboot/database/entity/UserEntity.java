@@ -1,0 +1,50 @@
+package bitc.fullstack405.finalprojectspringboot.database.entity;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "user")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
+public class UserEntity {
+
+    // user idx
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
+    // user 이름
+    @Column(name = "user_name", length = 45, nullable = false)
+    private String userName;
+
+    // user 전화번호
+    @Column(name = "user_phone", length = 45, nullable = false)
+    private String userPhone;
+
+    // user 등급
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_permission", nullable = false)
+    private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<NotificationEntity> notificationList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<EventEntity> eventList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<AttendInfoEntity> attendInfoList = new ArrayList<>();
+}
