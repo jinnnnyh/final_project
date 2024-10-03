@@ -44,4 +44,8 @@ public class NotificationEntity {
     @ToString.Exclude
     private UserEntity user;
 
+    public void updateNotification(String notiTitle, String notiContent) {
+        this.notiTitle = notiTitle;
+        this.notiContent = notiContent;
+    }
 }
