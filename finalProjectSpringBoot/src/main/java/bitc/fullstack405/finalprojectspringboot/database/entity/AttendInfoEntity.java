@@ -6,12 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "attend_info")
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -24,6 +21,11 @@ public class AttendInfoEntity {
     @Column(name = "attend_id", nullable = false)
     private Long attendId;
 
+    // 참석 여부
+    @Column(name = "attend", length = 1, nullable = false)
+    @ColumnDefault("'N'")
+    private Character attend;
+
     // fk
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -35,4 +37,8 @@ public class AttendInfoEntity {
     @JoinColumn(name = "event_id", nullable = false)
     @ToString.Exclude
     private EventEntity event;
+
+    public void updateAttendInfo(Character attend) {
+        this.attend = attend;
+    }
 }

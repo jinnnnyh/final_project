@@ -5,15 +5,18 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "event")
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -44,6 +47,7 @@ public class EventEntity {
     private Character eventAccept;
 
     // 행사 글 등록일
+    @CreatedDate
     @Column(name = "upload_date", nullable = false)
     private LocalDateTime uploadDate;
 

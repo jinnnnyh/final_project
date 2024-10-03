@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "notification")
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -30,7 +33,8 @@ public class NotificationEntity {
     @Column(name = "noti_content", length = 500, nullable = false)
     private String notiContent;
 
-    // 공지 등록일
+    // 공지 글 등록일
+    @CreatedDate
     @Column(name = "noti_date", nullable = false)
     private LocalDateTime notiDate;
 
@@ -39,4 +43,5 @@ public class NotificationEntity {
     @JoinColumn(name = "user_id", nullable = false)
     @ToString.Exclude
     private UserEntity user;
+
 }
