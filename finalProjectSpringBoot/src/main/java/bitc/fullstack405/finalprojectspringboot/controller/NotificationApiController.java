@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class) // 스프링 시큐리티 무시하려고 잠시 추가함, 나중엔 삭제하기
 @RestController
 @RequiredArgsConstructor
 public class NotificationApiController {
@@ -22,7 +21,7 @@ public class NotificationApiController {
 
     // 공지 글 등록
     @PostMapping("/notifications")
-    public ResponseEntity<NotificationEntity> addArticle(@RequestBody AddNotificationRequest request) {
+    public ResponseEntity<NotificationEntity> addNotification(@RequestBody AddNotificationRequest request) {
         NotificationEntity savedNotification = notificationService.save(request);
 
         return ResponseEntity.ok().body(savedNotification);
@@ -41,7 +40,7 @@ public class NotificationApiController {
 
     // 공지 글 상세보기
     @GetMapping("/notifications/{notiId}")
-    public ResponseEntity<NotificationResponse> findArticle(@PathVariable Long notiId) {
+    public ResponseEntity<NotificationResponse> findNotification(@PathVariable Long notiId) {
         NotificationEntity notification = notificationService.findById(notiId);
 
         return ResponseEntity.ok(new NotificationResponse(notification));
@@ -49,7 +48,7 @@ public class NotificationApiController {
 
     // 공지 글 수정
     @PutMapping("/notifications/{notiId}")
-    public ResponseEntity<NotificationEntity> updateArticle(@PathVariable Long notiId, @RequestBody UpdateNotificationRequest request) {
+    public ResponseEntity<NotificationEntity> updateNotification(@PathVariable Long notiId, @RequestBody UpdateNotificationRequest request) {
         NotificationEntity updatedNotification = notificationService.update(notiId, request);
 
         return ResponseEntity.ok(updatedNotification);

@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)  // toBuilder 옵션 추가
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "eventId")
 public class EventEntity {
 
@@ -52,7 +52,7 @@ public class EventEntity {
     private LocalDateTime uploadDate;
 
     // 행사 포스터
-    @Column(name = "event_poster", length = 500, nullable = false)
+    @Column(name = "event_poster", length = 500)
     private String eventPoster;
 
     // fk
@@ -64,4 +64,19 @@ public class EventEntity {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<AttendInfoEntity> attendInfoList = new ArrayList<>();
+
+    public void updateEvent(String eventTitle, String eventContent, LocalDate eventDate, String eventPoster) {
+        this.eventTitle = eventTitle;
+        this.eventContent = eventContent;
+        this.eventDate = eventDate;
+        this.eventPoster = eventPoster;
+    }
+
+    public void acceptEvent() {
+        this.eventAccept = 'Y';
+    }
+
+    public void rejectEvent() {
+        this.eventAccept = 'N';
+    }
 }

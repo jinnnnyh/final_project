@@ -5,10 +5,9 @@ import bitc.fullstack405.finalprojectspringboot.database.dto.notification.Update
 import bitc.fullstack405.finalprojectspringboot.database.entity.NotificationEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.NotificationRepository;
+import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,18 +17,20 @@ import java.util.List;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final UserRepository userRepository;
 
-    // 데이터 저장
+    // 공지 글 등록
     public NotificationEntity save(AddNotificationRequest request) {
 
-        // 현재 인증된 사용자 정보 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity user = (UserEntity) authentication.getPrincipal();  // 인증된 UserEntity 가져오기
+//        // 현재 인증된 사용자 정보 가져오기
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        UserEntity user = (UserEntity) authentication.getPrincipal();  // 인증된 UserEntity 가져오기
 
-        // NotificationEntity 생성 (user 정보 포함)
+        // 스프링 시큐리티 합치면 삭제할 부분(userId가 1인 사람이 무조건 등록)
+        UserEntity user = userRepository.findById((long)1).orElseThrow(() -> new IllegalArgumentException("not found id "));
+
         NotificationEntity notification = request.toEntity(user); // user 정보를 넣음
 
-        // NotificationEntity 저장
         return notificationRepository.save(notification);
     }
 
@@ -38,7 +39,7 @@ public class NotificationService {
         return notificationRepository.findAllByOrderByNotiIdDesc();
     }
 
-    // 지정한 공지글 데이터 가져오기
+    // 지정한 공지글 상세 내용 가져오기
     public NotificationEntity findById(Long id) {
         return notificationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found : " + id));
     }

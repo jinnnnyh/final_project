@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
 public class NotificationResponse {
 
     private final Long notiId;
-    private final String userName;
+    private final String name;
     private final String notiTitle;
     private final String notiContent;
     private final LocalDateTime notiDate;
 
     public NotificationResponse(NotificationEntity notification) {
         this.notiId = notification.getNotiId();
-        this.userName= notification.getUser().getUsername();
+        this.name= notification.getUser().getName();
         this.notiTitle = notification.getNotiTitle();
         this.notiContent = notification.getNotiContent();
         this.notiDate = notification.getNotiDate();

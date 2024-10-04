@@ -10,12 +10,12 @@ function tempComponent() {
     axios.get('http://localhost:8080/temp')
       .then(res => {
         setTempData(res.data);
-        console.log(tempData);
+        // console.log(tempData);
       })
       .catch(err => {
         alert("통신 실패." + err);
       });
-  }, [tempData]);
+  }, []);
 
   return (
     <div className={'container mt-5'}>

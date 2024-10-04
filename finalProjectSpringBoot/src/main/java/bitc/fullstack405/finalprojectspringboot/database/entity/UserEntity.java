@@ -4,10 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
-public class UserEntity implements UserDetails {
+//public class UserEntity implements UserDetails {
+public class UserEntity {
 
     // user idx
     @Id
@@ -28,8 +25,9 @@ public class UserEntity implements UserDetails {
     private Long userId;
 
     // user 이름
+    @Getter
     @Column(name = "user_name", length = 45, nullable = false)
-    private String userName;
+    private String name; // userName -> name 수정
 
     // user 전화번호
     @Column(name = "user_phone", length = 45, nullable = false)
@@ -45,7 +43,7 @@ public class UserEntity implements UserDetails {
     private String userAccount;
 
     // user 비밀번호
-    @Column(name = "user_pw", length = 45, nullable = false)
+    @Column(name = "user_pw", length = 150, nullable = false)
     private String userPw;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -60,38 +58,38 @@ public class UserEntity implements UserDetails {
     @ToString.Exclude
     private List<AttendInfoEntity> attendInfoList = new ArrayList<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
-    }
-
-    @Override
-    public String getUsername() {
-        return userAccount;
-    }
-
-    @Override
-    public String getPassword() {
-        return userPw;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return List.of(new SimpleGrantedAuthority("user"));
+//    }
+//
+//    @Override
+//    public String getUsername() {
+//        return userAccount;
+//    }
+//
+//    @Override
+//    public String getPassword() {
+//        return userPw;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return true;
+//    }
 }
