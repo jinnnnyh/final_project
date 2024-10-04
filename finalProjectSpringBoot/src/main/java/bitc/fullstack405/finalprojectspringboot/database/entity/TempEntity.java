@@ -21,11 +21,11 @@ public class TempEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @CreatedDate
-  @Column
-  private LocalDateTime createdDate;
-
-  @LastModifiedDate
-  @Column
-  private LocalDateTime updatedDate;
+//  @CreatedDate
+//  @Column
+//  private LocalDateTime createdDate;
+//
+//  @LastModifiedDate
+//  @Column
+//  private LocalDateTime updatedDate;
 }

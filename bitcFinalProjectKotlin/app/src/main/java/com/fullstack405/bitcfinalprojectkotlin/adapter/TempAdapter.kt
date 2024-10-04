@@ -2,11 +2,10 @@ package com.fullstack405.bitcfinalprojectkotlin.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.fullstack405.bitcfinalprojectkotlin.MainActivity
-import com.fullstack405.bitcfinalprojectkotlin.data.TempData
+import com.fullstack405.bitcfinalprojectkotlin.data.UserData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.TempitemsBinding
 
-class TempAdapter(val tempDatas :List<TempData>): RecyclerView.Adapter<TempAdapter.Holder>() {
+class TempAdapter(val tempDatas :List<UserData>): RecyclerView.Adapter<TempAdapter.Holder>() {
 
   inner class Holder(val binding: TempitemsBinding): RecyclerView.ViewHolder(binding.root)
 
