@@ -1,21 +1,20 @@
-package com.fullstack405.bitcfinalprojectkotlin.templete.event.admin
+package com.fullstack405.bitcfinalprojectkotlin.templete.event
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.fullstack405.bitcfinalprojectkotlin.R
-import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.AttendData
-import com.fullstack405.bitcfinalprojectkotlin.data.EventData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBinding
-import retrofit2.Call
-import retrofit2.Response
+import com.fullstack405.bitcfinalprojectkotlin.templete.QR.QrScannerActivity
 
 class EventDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,11 +34,25 @@ class EventDetailActivity : AppCompatActivity() {
         var content = intent.getStringExtra("eventContent")
         var date = intent.getStringExtra("eventDate")
         var uploadDate = intent.getStringExtra("uploadDate")
+
         var userId = intent.getLongExtra("userId",0)
+        // 회원인지 아닌지만 판단
+        var userPermission = intent.getStringExtra("userPermission")
 
+        binding.btnQRscanner.isVisible = false
 
+        if(!userPermission.equals("정회원")){
+            binding.btnQRscanner.isVisible = true
+            // 스캐너 버튼
+            binding.btnQRscanner.setOnClickListener {
+                // 카메라 화면 ?
+//                Toast.makeText(this,"스캐너 버튼 클릭 이벤트",Toast.LENGTH_SHORT).show()
 
+                var intentQrScanner = Intent(this,QrScannerActivity::class.java)
+                startActivity(intentQrScanner)
+            }
 
+        }
 
 //        lateinit var event: EventData
 //        이벤트id로 해당 이벤트 정보만 불러오기
@@ -106,6 +119,7 @@ class EventDetailActivity : AppCompatActivity() {
                 show()
             }
         }
+
 
 
 

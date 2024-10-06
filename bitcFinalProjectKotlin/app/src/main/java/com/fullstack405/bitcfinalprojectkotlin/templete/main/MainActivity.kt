@@ -1,30 +1,22 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.main
 
 import android.content.Intent
-import android.media.metrics.Event
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fullstack405.bitcfinalprojectkotlin.R
-import com.fullstack405.bitcfinalprojectkotlin.adapter.EventListAdapter
 import com.fullstack405.bitcfinalprojectkotlin.adapter.MainEventListAdapter
 import com.fullstack405.bitcfinalprojectkotlin.adapter.MainNoticeListAdapter
-import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.EventData
 import com.fullstack405.bitcfinalprojectkotlin.data.NoticeData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityMainBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
-import com.fullstack405.bitcfinalprojectkotlin.templete.event.admin.EventListActivity
+import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
+import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.notice.NoticeListActivity
-import retrofit2.Call
-import retrofit2.Response
-import java.lang.Integer.parseInt
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,20 +34,35 @@ class MainActivity : AppCompatActivity() {
 
     var userId = intent.getLongExtra("userId",0)
     var userName = intent.getStringExtra("userName")
+    var userPermission = intent.getStringExtra("userPermission")
 
     binding.userName.text = "회원 ${userName}님"
-    var intent_event = Intent(this,EventListActivity::class.java)
+    var intent_event = Intent(this, EventListActivity::class.java)
     intent_event.putExtra("userId",userId)
+    intent_event.putExtra("userPermission",userPermission)
 
     var intent_attend = Intent(this,AttendListActivity::class.java)
     intent_attend.putExtra("userId",userId)
 
     var intent_notice = Intent(this,NoticeListActivity::class.java)
 
+    var intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
+
+
+    var intentAttendList = Intent(this,AttendListActivity::class.java)
+    intentAttendList.putExtra("userId",userId)
+
+    // 신청 현황
+    // 신청 내역 버튼 연결
+    binding.attendList.setOnClickListener {
+      startActivity(intentAttendList)
+    }
+
+
 
     // 행사 안내 어댑터
     var eventList = mutableListOf<EventData>()
-    eventList.add(EventData(0,0,"제 4회 ai 컨퍼런스 안내","2024.10.20","20241004",
+    eventList.add(EventData(0,0,"제 4회 ai 컨퍼런스 안내","20241020","20241004",
       "메인화면\n" +
               "- 관리자 = 예정된 행사/행사관리 \n" +
               "- 회원 = 신청현황/신청내역\n" +
@@ -76,19 +83,19 @@ class MainActivity : AppCompatActivity() {
               "(공통)공지사항\n" +
               "-게시일 기준으로 내림차순",'Y','Y',""))
     eventList.add(EventData(0,0,"제 3회 ai 컨퍼런스 안내","20241020","20241005","",'Y','Y',""))
-    eventList.add(EventData(0,0,"제 2회 ai 컨퍼런스 안내","20241020","20241011","",'Y','N',""))
-    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241020","20240905","",'Y','N',""))
-    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241020","20240905","",'Y','N',""))
-    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241020","20240905","",'Y','N',""))
-    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241020","20240905","",'Y','N',""))
-    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241020","20240905","",'Y','N',""))
+    eventList.add(EventData(0,0,"제 2회 ai 컨퍼런스 안내","20241030","20241011","",'Y','N',""))
+    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241009","20240905","",'Y','N',""))
+    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241121","20240905","",'Y','N',""))
+    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20240920","20240905","",'Y','N',""))
+    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241111","20240905","",'Y','N',""))
+    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241231","20240905","",'Y','N',""))
 
     var testList = mutableListOf<EventData>()
     for(i in 0..3){
       testList.add(eventList[i])
     }
 
-    var mainEventListAdapter = MainEventListAdapter(testList,userId)
+    var mainEventListAdapter = MainEventListAdapter(testList,userId,userPermission!!)
     binding.eventRecyclerView.adapter = mainEventListAdapter
     binding.eventRecyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -104,7 +111,7 @@ class MainActivity : AppCompatActivity() {
 //        for(i in 0..3){
 //          eventList.add(resList[i])
 //        }
-//        eventListAdapter.notifyDataSetChanged()
+//        mainEventListAdapter.notifyDataSetChanged()
 //      }
 //
 //      override fun onFailure(call: Call<List<EventData>>, t: Throwable) {
@@ -112,7 +119,7 @@ class MainActivity : AppCompatActivity() {
 //      }
 //    })
 
-    // 공지사항 어댑터
+    //////////// 공지사항 어댑터
     var noticeList = mutableListOf<NoticeData>()
     noticeList.add(NoticeData(0,"운영위원 모집 공고",
       "메인화면\n" +
@@ -161,9 +168,39 @@ class MainActivity : AppCompatActivity() {
     binding.noticeRecyclerView.adapter = mainNoticeListAdapter
     binding.noticeRecyclerView.layoutManager = LinearLayoutManager(this)
 
-    binding.noticeList.setOnClickListener {
-      startActivity(intent_notice)
+    // db 연결버전
+//    Client.notice_retrofit.findNoticeList().enqueue(object:retrofit2.Callback<List<NoticeData>>{
+//      override fun onResponse(call: Call<List<NoticeData>>, response: Response<List<NoticeData>>) {
+//        var resList = response.body() as MutableList<NoticeData>
+//        for(i in 0..3){
+//          noticeList.add(resList[i])
+//        }
+//        mainNoticeListAdapter.notifyDataSetChanged()
+//      }
+//
+//      override fun onFailure(call: Call<List<NoticeData>>, t: Throwable) {
+//        Log.d("main noticeList error","main noticeList error")
+//      }
+//    })
+//
+//
+//    binding.noticeList.setOnClickListener {
+//      startActivity(intent_notice)
+//    }
+
+
+    // 회원정보수정 클릭 이벤트
+    binding.userInfoEdit.setOnClickListener {
+      intent.putExtra("userId",userId)
+      startActivity(intent_userInfoEdit)
     }
+
+    // 로그아웃
+    binding.logout.setOnClickListener {
+      var intentLogin = Intent(this,LoginActivity::class.java)
+      startActivity(intentLogin)
+    }
+
 
   }// oncreate
 }// main

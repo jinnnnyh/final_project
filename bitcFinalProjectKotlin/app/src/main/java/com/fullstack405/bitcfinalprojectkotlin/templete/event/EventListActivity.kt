@@ -1,7 +1,6 @@
-package com.fullstack405.bitcfinalprojectkotlin.templete.event.admin
+package com.fullstack405.bitcfinalprojectkotlin.templete.event
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,11 +8,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.adapter.EventListAdapter
-import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.EventData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventListBinding
-import retrofit2.Call
-import retrofit2.Response
 
 class EventListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +25,7 @@ class EventListActivity : AppCompatActivity() {
         }
         // 데이터 생성
         var eventList = mutableListOf<EventData>()
-        eventList.add(EventData(0,0,"제 4회 ai 컨퍼런스 안내","2024.10.20","20241004",
+        eventList.add(EventData(0,0,"제 4회 ai 컨퍼런스 안내","20241020","20241004",
             "메인화면\n" +
                     "- 관리자 = 예정된 행사/행사관리 \n" +
                     "- 회원 = 신청현황/신청내역\n" +
@@ -50,8 +46,8 @@ class EventListActivity : AppCompatActivity() {
                     "(공통)공지사항\n" +
                     "-게시일 기준으로 내림차순",'Y','Y',""))
         eventList.add(EventData(0,0,"제 3회 ai 컨퍼런스 안내","20241020","20241005","",'Y','Y',""))
-        eventList.add(EventData(0,0,"제 2회 ai 컨퍼런스 안내","20241020","20241011","",'Y','N',""))
-        eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241020","20240905","",'Y','N',""))
+        eventList.add(EventData(0,0,"제 2회 ai 컨퍼런스 안내","20241011","20241011","",'Y','N',""))
+        eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241101","20240905","",'Y','N',""))
 
         var userId = intent.getLongExtra("userId",0)
 

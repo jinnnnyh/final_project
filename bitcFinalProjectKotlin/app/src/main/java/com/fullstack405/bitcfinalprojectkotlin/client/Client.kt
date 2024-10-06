@@ -41,6 +41,13 @@ object Client {
     .build()
     .create(Interface::class.java)
 
+  val notice_retrofit: Interface = Retrofit.Builder()
+    .baseUrl("http://10.100.105.205:8080/notice")
+    .addConverterFactory(GsonConverterFactory.create())
+    .build()
+    .create(Interface::class.java)
+
+
 
 
 }

@@ -48,8 +48,10 @@ class LoginActivity : AppCompatActivity() {
 
 
         val memberList = mutableListOf<UserData>()
-        memberList.add(UserData(0,"김운학","010-1111-1111","test","test","회원"))
-        memberList.add(UserData(0,"한태산","010-1111-1111","admin","admin","총무"))
+        memberList.add(UserData(0,"박성호","010-1111-1111","test1","test","정회원"))
+        memberList.add(UserData(0,"명재현","010-1111-1111","test2","test","준회원"))
+        memberList.add(UserData(0,"김운학","010-1111-1111","test3","test","협회장"))
+        memberList.add(UserData(0,"한태산","010-1111-1111","admin","admin","관리자"))
 
 //        var userList = mutableListOf<UserData>()
 //        // 로그인 화면 켜지면 유저 리스트 불러와서 저장
@@ -83,18 +85,30 @@ class LoginActivity : AppCompatActivity() {
             for(item in memberList){ // db 연결하면 여기 userList로 바꾸기
                 if(item.userAccount.equals(id)){
                     if(item.userPw.equals(pw)){
-                        if(item.userPermission == "회원"){
+                        if(item.userPermission == "정회원"){
                             user = item
                             toastId=""
                             toastPw=""
                             break
                         }
-                        else{
+                        else if(item.userPermission == "관리자"){
                             admin=item
                             toastId=""
                             toastPw=""
                             break
                         }
+                        else if(item.userPermission == "협회장"){
+                            admin=item
+                            toastId=""
+                            toastPw=""
+                            break
+                        }
+                        else if(item.userPermission == "준회원"){
+                            toastId="wait"
+                            toastPw="wait"
+                            break
+                        }
+
                     }else{
                         toastId= ""
                         toastPw = "pw error"
@@ -106,6 +120,7 @@ class LoginActivity : AppCompatActivity() {
 
                 }
             } // for
+
 
             if(toastId.equals("") && toastPw.equals("pw error")){
                 Toast.makeText(this,"비밀번호가 틀렸습니다.",Toast.LENGTH_SHORT).show()
@@ -121,17 +136,26 @@ class LoginActivity : AppCompatActivity() {
                 toastId=""
                 toastPw=""
             }
+            else if(toastId.equals("wait") && toastPw.equals("wait")){
+                Toast.makeText(this,"승인 대기",Toast.LENGTH_SHORT).show()
+                binding.inputId.setText("")
+                binding.inputPw.setText("")
+                toastId=""
+                toastPw=""
+            }
 
 
             if(user != null && admin == null){
                 intent.putExtra("userId", user!!.userId)
                 intent.putExtra("userName",user!!.userName)
+                intent.putExtra("userPermission",user!!.userPermission)
                 startActivity(intent)
                 user = null
             }
             else if(user == null && admin != null){
                 intentAdmin.putExtra("userId", admin!!.userId)
                 intentAdmin.putExtra("userName",admin!!.userName)
+                intentAdmin.putExtra("userPermission",admin!!.userPermission)
                 startActivity(intentAdmin)
                 admin = null
             }

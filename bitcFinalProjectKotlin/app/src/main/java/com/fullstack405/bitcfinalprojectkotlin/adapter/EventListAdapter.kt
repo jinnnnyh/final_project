@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fullstack405.bitcfinalprojectkotlin.data.EventData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ItemEvnetBinding
-import com.fullstack405.bitcfinalprojectkotlin.templete.event.admin.EventDetailActivity
+import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventDetailActivity
+import java.lang.Integer.parseInt
 
 class EventListAdapter(val eventList:MutableList<EventData>,val userId:Long):RecyclerView.Adapter<EventListAdapter.Holder>() {
     class Holder(val binding: ItemEvnetBinding):RecyclerView.ViewHolder(binding.root) {
@@ -31,10 +32,12 @@ class EventListAdapter(val eventList:MutableList<EventData>,val userId:Long):Rec
         }
 
         holder.binding.title.text = event.eventTitle
-        holder.binding.date.text = event.eventDate
+
+        var endDate = parseInt(event.eventDate) - 7
+        holder.binding.date.text = endDate.toString()
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(holder.binding.root.context,EventDetailActivity::class.java)
+            val intent = Intent(holder.binding.root.context, EventDetailActivity::class.java)
             intent.putExtra("eventId",event.evnetId)
             intent.putExtra("eventTitle",event.eventTitle)
             intent.putExtra("eventContent",event.eventContent)

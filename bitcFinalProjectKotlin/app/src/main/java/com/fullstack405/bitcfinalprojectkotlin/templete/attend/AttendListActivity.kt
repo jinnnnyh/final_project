@@ -28,6 +28,8 @@ class AttendListActivity : AppCompatActivity() {
             insets
         }
 
+        val userId = intent.getLongExtra("userId",0)
+
         // 프레그먼트 어댑터 생성
         attendTabFragmentAdapter = AttendTabFragmentAdapter(this)
         binding.viewPager2.adapter = attendTabFragmentAdapter
@@ -48,5 +50,9 @@ class AttendListActivity : AppCompatActivity() {
         }
 
 
+        // 뒤로가기
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
     } // onCreate
 }

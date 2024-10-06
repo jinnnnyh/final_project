@@ -14,7 +14,8 @@ import com.fullstack405.bitcfinalprojectkotlin.data.EventData
 import com.fullstack405.bitcfinalprojectkotlin.data.NoticeData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityAdminMainBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
-import com.fullstack405.bitcfinalprojectkotlin.templete.event.admin.EventListActivity
+import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
+import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.notice.NoticeListActivity
 
 class AdminMainActivity : AppCompatActivity() {
@@ -29,25 +30,26 @@ class AdminMainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        var userId = intent.getLongExtra("userId",0)
-        var userName = intent.getStringExtra("userName")
+        val userId = intent.getLongExtra("userId",0)
+        val userName = intent.getStringExtra("userName")
+        var userPermission = intent.getStringExtra("userPermission")
 
         binding.userName.text ="관리자 ${userName}님"
 
-
-        var intent_event = Intent(this, EventListActivity::class.java)
+        val intent_event = Intent(this, EventListActivity::class.java)
         intent_event.putExtra("userId",userId)
+        intent_event.putExtra("userPermission",userPermission)
 
-        var intent_admin_attend = Intent(this, AttendListActivity::class.java)
-        intent_admin_attend.putExtra("adminId",userId)
+        val intent_attend = Intent(this, AttendListActivity::class.java)
+        intent_attend.putExtra("userId",userId)
 
-        var intent_notice = Intent(this, NoticeListActivity::class.java)
-
+        val intent_notice = Intent(this, NoticeListActivity::class.java)
+        val intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
 
         // 행사 안내 어댑터
-        var eventList = mutableListOf<EventData>()
+        val eventList = mutableListOf<EventData>()
         eventList.add(
-            EventData(0,0,"제 4회 ai 컨퍼런스 안내","2024.10.20","20241004",
+            EventData(0,0,"제 4회 ai 컨퍼런스 안내","20241020","20241004",
             "메인화면\n" +
                     "- 관리자 = 예정된 행사/행사관리 \n" +
                     "- 회원 = 신청현황/신청내역\n" +
@@ -81,7 +83,7 @@ class AdminMainActivity : AppCompatActivity() {
             testList.add(eventList[i])
         }
 
-        var mainEventListAdapter = MainEventListAdapter(testList,userId)
+        var mainEventListAdapter = MainEventListAdapter(testList,userId, userPermission!!)
         binding.eventRecyclerView.adapter = mainEventListAdapter
         binding.eventRecyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -162,5 +164,18 @@ class AdminMainActivity : AppCompatActivity() {
             startActivity(intent_notice)
         }
 
-    }
+        // 회원정보수정 클릭 이벤트
+        binding.userInfoEdit.setOnClickListener {
+            intent.putExtra("userId",userId)
+            startActivity(intent_userInfoEdit)
+        }
+
+        // 로그아웃
+        binding.logout.setOnClickListener {
+            var intentLogin = Intent(this, LoginActivity::class.java)
+            startActivity(intentLogin)
+        }
+
+
+    }//onCreate
 }
