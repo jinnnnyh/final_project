@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)  // toBuilder 옵션 추가
+@Builder(toBuilder = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "eventId")
 public class EventEntity {
 
@@ -55,15 +56,42 @@ public class EventEntity {
     @Column(name = "event_poster", length = 500)
     private String eventPoster;
 
-    // fk
+    // 행사 승인일자
+    @Column(name = "accepted_date")
+    private LocalDate acceptedDate;
+
+    // 행사 시작 시간
+    @Column(name = "start_time", nullable = false)
+    private LocalTime startTime;
+
+    // 행사 종료 시간
+    @Column(name = "end_time", nullable = false)
+    private LocalTime endTime;
+
+    // 행사 참여 마감 인원 (최대 인원)
+    @Column(name = "max_people", nullable = false)
+    private int maxPeople;
+
+    // 회원에게 행사글이 보일 날짜 (행사 시작일로부터 2주 전)
+    @Column(name = "visible_date", nullable = false)
+    private LocalDate visibleDate;
+
+    // 행사 글 등록자 (fk)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @ToString.Exclude
-    private UserEntity user;
+    private UserEntity posterUser;
+
+    // 행사 승인자 (fk)
+    @ManyToOne
+    @JoinColumn(name = "accepted_user")
+    @ToString.Exclude
+    private UserEntity approver;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<AttendInfoEntity> attendInfoList = new ArrayList<>();
+
 
     public void updateEvent(String eventTitle, String eventContent, LocalDate eventDate, String eventPoster) {
         this.eventTitle = eventTitle;
@@ -72,11 +100,14 @@ public class EventEntity {
         this.eventPoster = eventPoster;
     }
 
-    public void acceptEvent() {
+    public void acceptEvent(UserEntity approver) {
         this.eventAccept = 'Y';
+        this.approver = approver;
     }
 
     public void rejectEvent() {
         this.eventAccept = 'N';
+        this.approver = null;
+        this.acceptedDate = null;
     }
 }

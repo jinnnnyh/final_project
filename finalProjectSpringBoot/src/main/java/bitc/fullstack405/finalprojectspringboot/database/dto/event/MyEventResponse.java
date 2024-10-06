@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 public class MyEventResponse {
 
     private final Long eventId;
-    private final String name;
+    private final String posterUserName;
     private final String eventTitle;
     private final String eventContent;
     private final String eventDate;
@@ -19,7 +19,7 @@ public class MyEventResponse {
 
     public MyEventResponse(EventEntity event) {
         this.eventId = event.getEventId();
-        this.name= event.getUser().getName();
+        this.posterUserName = event.getPosterUser().getName();
         this.eventTitle = event.getEventTitle();
         this.eventContent = event.getEventContent();
         this.eventDate = event.getEventDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));

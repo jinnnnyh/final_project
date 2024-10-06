@@ -38,11 +38,12 @@ public class NotificationEntity {
     @Column(name = "noti_date", nullable = false)
     private LocalDateTime notiDate;
 
-    // fk
+    // 공지 글 등록자 (fk)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @ToString.Exclude
     private UserEntity user;
+
 
     public void updateNotification(String notiTitle, String notiContent) {
         this.notiTitle = notiTitle;

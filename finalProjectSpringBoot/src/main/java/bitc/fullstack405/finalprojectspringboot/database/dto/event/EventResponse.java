@@ -10,22 +10,30 @@ import java.time.format.DateTimeFormatter;
 public class EventResponse {
 
     private final Long eventId;
-    private final String name;
+    private final String posterUserName;
+    private final String approverName;
     private final String eventTitle;
     private final String eventContent;
     private final String eventDate;
-    private final Character eventAccept;
     private final String uploadDate;
     private final String eventPoster;
+    private final String acceptedDate;
+    private final String startTime;
+    private final String endTime;
+    private final int maxPeople;
 
     public EventResponse(EventEntity event) {
         this.eventId = event.getEventId();
-        this.name= event.getUser().getName();
+        this.posterUserName = event.getPosterUser().getName();
+        this.approverName = event.getApprover() != null ? event.getApprover().getName() : null;
         this.eventTitle = event.getEventTitle();
         this.eventContent = event.getEventContent();
         this.eventDate = event.getEventDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        this.eventAccept = event.getEventAccept();
         this.uploadDate = event.getUploadDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         this.eventPoster = event.getEventPoster();
+        this.acceptedDate = event.getAcceptedDate() != null ? event.getAcceptedDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")) : null;
+        this.startTime = event.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+        this.endTime = event.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+        this.maxPeople = event.getMaxPeople();
     }
 }

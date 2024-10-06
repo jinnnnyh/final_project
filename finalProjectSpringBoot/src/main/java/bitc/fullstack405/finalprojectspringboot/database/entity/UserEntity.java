@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -33,6 +32,14 @@ public class UserEntity {
     @Column(name = "user_phone", length = 45, nullable = false)
     private String userPhone;
 
+    // user 이메일
+    @Column(name = "user_email", length = 45, nullable = false)
+    private String userEmail;
+
+    // user 소속 기관
+    @Column(name = "user_organization", length = 45, nullable = false)
+    private String userOrganization ;
+
     // user 등급
     @Enumerated(EnumType.STRING)
     @Column(name = "user_permission", nullable = false)
@@ -43,16 +50,20 @@ public class UserEntity {
     private String userAccount;
 
     // user 비밀번호
-    @Column(name = "user_pw", length = 150, nullable = false)
+    @Column(name = "user_pw", length = 200, nullable = false)
     private String userPw;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<NotificationEntity> notificationList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "posterUser", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<EventEntity> eventList = new ArrayList<>();
+    private List<EventEntity> postedEventList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "approver", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<EventEntity> approvedEventList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
