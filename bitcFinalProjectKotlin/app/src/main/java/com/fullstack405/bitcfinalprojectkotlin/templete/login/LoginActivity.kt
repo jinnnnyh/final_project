@@ -31,22 +31,6 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-//        var data = mutableListOf<TempData>(TempData(0))
-//        Client.retrofit.tempDatas().enqueue(object:retrofit2.Callback<List<TempData>>{
-//            override fun onResponse(
-//                call: Call<List<TempData>>,response: Response<List<TempData>>
-//            ) {
-//                data = response.body() as MutableList<TempData>
-//                Log.d("temp data :","Temp data response")
-//            }
-//
-//            override fun onFailure(call: Call<List<TempData>>, t: Throwable) {
-//                Log.d("temp data :", "error : "+t.message)
-//            }
-//
-//        })
-
-
         val memberList = mutableListOf<UserData>()
         memberList.add(UserData(0,"박성호","010-1111-1111","test1","test","정회원"))
         memberList.add(UserData(0,"명재현","010-1111-1111","test2","test","준회원"))
@@ -160,5 +144,10 @@ class LoginActivity : AppCompatActivity() {
                 admin = null
             }
         } // setOnClickListener
+
+        binding.btnSignup.setOnClickListener {
+            var intentSignup = Intent(this,SignupActivity::class.java)
+            startActivity(intentSignup)
+        }
     }
 }

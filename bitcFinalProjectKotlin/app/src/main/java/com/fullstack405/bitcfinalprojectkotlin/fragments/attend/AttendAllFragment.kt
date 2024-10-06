@@ -57,8 +57,8 @@ class AttendAllFragment : Fragment() {
         allList.add(UserAttendData(0,0,"제2회 국제 컨퍼런스","20241011",'Y'))
 
         attendAllAdapter = AttendAllAdapter(allList)
-        binding.recyclerView.adapter = attendAllAdapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewAll.adapter = attendAllAdapter
+        binding.recyclerViewAll.layoutManager = LinearLayoutManager(requireContext())
 
         // userId 별 attend_info 리스트를 불러오고 승인된 이벤트 리스트 전부 불러와서
         // attendinfo 에 있는 행사 id랑 비교해가면서 제목 끌어와서 userattenddata에 세팅 하나 ??

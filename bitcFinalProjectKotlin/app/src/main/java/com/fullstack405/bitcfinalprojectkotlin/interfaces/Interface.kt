@@ -50,7 +50,7 @@ interface Interface {
   // 서버에서 제목이랑 날짜 같이 넘겨주는걸 이걸로 받아지나
   fun findAttendList(id:Long):Call<List<UserAttendData>>
 
-  // 행사id, 참석여부 'Y' 인 목록 조회
+  // 유저id, 참석여부 'Y' 인 목록 조회
   fun findFinalAttendList(id:Long, attend:Char):Call<List<AttendData>>
 
 

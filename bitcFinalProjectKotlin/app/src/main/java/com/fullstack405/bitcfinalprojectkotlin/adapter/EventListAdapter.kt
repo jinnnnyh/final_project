@@ -10,7 +10,7 @@ import com.fullstack405.bitcfinalprojectkotlin.databinding.ItemEvnetBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventDetailActivity
 import java.lang.Integer.parseInt
 
-class EventListAdapter(val eventList:MutableList<EventData>,val userId:Long):RecyclerView.Adapter<EventListAdapter.Holder>() {
+class EventListAdapter(val eventList:MutableList<EventData>,val userId:Long, val userPermission:String):RecyclerView.Adapter<EventListAdapter.Holder>() {
     class Holder(val binding: ItemEvnetBinding):RecyclerView.ViewHolder(binding.root) {
 
     }
@@ -45,6 +45,7 @@ class EventListAdapter(val eventList:MutableList<EventData>,val userId:Long):Rec
             intent.putExtra("uploadDate",event.uploadDate)
             // 유저id
             intent.putExtra("userId",userId)
+            intent.putExtra("userPermission",userPermission)
 
             (holder.binding.root.context as Activity).startActivity(intent)
         }

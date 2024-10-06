@@ -40,8 +40,6 @@ class AdminMainActivity : AppCompatActivity() {
         intent_event.putExtra("userId",userId)
         intent_event.putExtra("userPermission",userPermission)
 
-        val intent_attend = Intent(this, AttendListActivity::class.java)
-        intent_attend.putExtra("userId",userId)
 
         val intent_notice = Intent(this, NoticeListActivity::class.java)
         val intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)

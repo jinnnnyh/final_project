@@ -50,9 +50,10 @@ class EventListActivity : AppCompatActivity() {
         eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","20241101","20240905","",'Y','N',""))
 
         var userId = intent.getLongExtra("userId",0)
+        var userPermission = intent.getStringExtra("userPermission")
 
         // 어댑터 생성
-        var eventListAdapter = EventListAdapter(eventList,userId)
+        var eventListAdapter = EventListAdapter(eventList,userId,userPermission)
         binding.recyclerView.adapter = eventListAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 

@@ -41,13 +41,9 @@ class MainActivity : AppCompatActivity() {
     intent_event.putExtra("userId",userId)
     intent_event.putExtra("userPermission",userPermission)
 
-    var intent_attend = Intent(this,AttendListActivity::class.java)
-    intent_attend.putExtra("userId",userId)
-
     var intent_notice = Intent(this,NoticeListActivity::class.java)
 
     var intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
-
 
     var intentAttendList = Intent(this,AttendListActivity::class.java)
     intentAttendList.putExtra("userId",userId)
@@ -118,6 +114,10 @@ class MainActivity : AppCompatActivity() {
 //        Log.d("main eventlsit error", "main eventList load error")
 //      }
 //    })
+
+    binding.noticeList.setOnClickListener {
+      startActivity(intent_notice)
+    }
 
     //////////// 공지사항 어댑터
     var noticeList = mutableListOf<NoticeData>()
