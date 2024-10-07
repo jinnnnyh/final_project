@@ -24,8 +24,15 @@ public class AttendInfoService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
 
-    // 행사 참석
-    public AttendInfoEntity save(Long eventId, Long userId) {
+
+    // 참석 신청 정보 저장
+    public AttendInfoEntity save(AttendInfoEntity attendInfoEntity) {
+
+        return attendInfoRepository.save(attendInfoEntity);
+    }
+
+    // 행사 QR 스캔 시간 저장(입장, 퇴장)
+    public AttendInfoEntity AddQRScanTime(Long eventId, Long userId) {
 
 //        // 현재 인증된 사용자 정보 가져오기
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

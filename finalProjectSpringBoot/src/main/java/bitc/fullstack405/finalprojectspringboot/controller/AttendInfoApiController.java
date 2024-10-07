@@ -20,9 +20,21 @@ public class AttendInfoApiController {
 
     // 행사 참석 신청
     @PostMapping(value = "/attend/{eventId}/{userId}")
+    public ResponseEntity<AttendInfoEntity> insertAttendIfo(AttendInfoEntity attendInfoEntity) {
+
+        // 참석 정보 저장
+        AttendInfoEntity savedAttend = attendInfoService.save(attendInfoEntity);
+
+        // 회원이 가져온 큐알에 있는 행사 id랑 관리자가 qr 찍을 때 가진 행사 id랑 같은지 다른지 확인
+
+        return ResponseEntity.ok().body(savedAttend);
+    }
+
+    // 행사 참석 신청
+    @PostMapping(value = "/attend/{eventId}/{userId}")
     public ResponseEntity<AttendInfoEntity> addAttend(
-            @PathVariable Long eventId,
-            @PathVariable Long userId) {
+        @PathVariable Long eventId,
+        @PathVariable Long userId) {
 
         // 참석 정보 저장
         AttendInfoEntity savedAttend = attendInfoService.save(eventId, userId);
@@ -32,6 +44,7 @@ public class AttendInfoApiController {
         return ResponseEntity.ok().body(savedAttend);
     }
 
+
     // QR 화면에 나올
 
     // 행사 참석자 수
@@ -39,7 +52,6 @@ public class AttendInfoApiController {
     // 수료증 반환
 
     // QR 데이터 생성
-
 
     // QR 데이터 반환
 }
