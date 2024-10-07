@@ -53,7 +53,7 @@ class EventListActivity : AppCompatActivity() {
         var userPermission = intent.getStringExtra("userPermission")
 
         // 어댑터 생성
-        var eventListAdapter = EventListAdapter(eventList,userId,userPermission)
+        var eventListAdapter = EventListAdapter(eventList,userId,userPermission!!)
         binding.recyclerView.adapter = eventListAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 

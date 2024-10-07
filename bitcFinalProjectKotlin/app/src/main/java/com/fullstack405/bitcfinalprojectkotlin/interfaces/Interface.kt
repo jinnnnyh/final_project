@@ -53,8 +53,9 @@ interface Interface {
   // 유저id, 참석여부 'Y' 인 목록 조회
   fun findFinalAttendList(id:Long, attend:Char):Call<List<AttendData>>
 
-
+  
   ////////// notice
+  // 공지사항만 연결해서 레트로핏 되는지 확인해보기
   fun findNoticeList():Call<List<NoticeData>>
 
 
