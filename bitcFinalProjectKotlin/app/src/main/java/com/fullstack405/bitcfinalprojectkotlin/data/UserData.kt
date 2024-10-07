@@ -5,4 +5,5 @@ data class UserData(val userId: Long,
                     val userPhone: String,
                     val userAccount: String,
                     val userPw:String,
-                    val userPermission:String)
+                    val userPermission:String,
+                    )
