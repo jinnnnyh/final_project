@@ -18,7 +18,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    System.out.println(System.getProperty("user.dir"));
     // 지정한 외부폴더를 스프링의 내부 폴더로 추가(행사 이미지)
     registry.addResourceHandler("/eventImg/**").addResourceLocations("file:../eventImg/");
   }
