@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "attendId")
 public class AttendInfoEntity {
 
@@ -24,10 +24,10 @@ public class AttendInfoEntity {
     @Column(name = "attend_id", nullable = false)
     private Long attendId;
 
-    // 참석 여부
-    @Column(name = "attend", length = 1, nullable = false)
+    // 수료 여부
+    @Column(name = "completion", length = 1, nullable = false)
     @ColumnDefault("'N'")
-    private Character attend;
+    private Character completion;
 
     // 참석일
     @Column(name = "attend_date")
@@ -41,10 +41,10 @@ public class AttendInfoEntity {
     @Column(name = "check_out_time")
     private LocalTime checkOutTime;
 
-    // 지각 여부 Y/N
-    @Column(name = "late_or_not", length = 1, nullable = false)
-    @ColumnDefault("'N'")
-    private Character lateOrNot;
+//    // 지각 여부 Y/N
+//    @Column(name = "late_or_not", length = 1, nullable = false)
+//    @ColumnDefault("'N'")
+//    private Character lateOrNot;
 
     // 참석자 (fk)
     @ManyToOne
@@ -54,11 +54,7 @@ public class AttendInfoEntity {
 
     // 참석한 행사 (fk)
     @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
+    @JoinColumn(name = "schedule_id", nullable = false)
     @ToString.Exclude
-    private EventEntity event;
-
-    public void updateAttendInfo(Character attend) {
-        this.attend = attend;
-    }
+    private EventsScheduleEntity eventsSchedule;
 }

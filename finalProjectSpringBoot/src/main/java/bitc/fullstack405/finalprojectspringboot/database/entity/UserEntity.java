@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 //public class UserEntity implements UserDetails {
 public class UserEntity {
@@ -26,21 +26,17 @@ public class UserEntity {
     // user 이름
     @Getter
     @Column(name = "user_name", length = 45, nullable = false)
-    private String name; // userName -> name 수정
+    private String name;
 
     // user 전화번호
     @Column(name = "user_phone", length = 45, nullable = false)
     private String userPhone;
 
-    // user 이메일
-    @Column(name = "user_email", length = 45, nullable = false)
-    private String userEmail;
-
     // user 소속 기관
-    @Column(name = "user_organization", length = 45, nullable = false)
-    private String userOrganization ;
+    @Column(name = "user_depart", length = 50, nullable = false)
+    private String userDepart;
 
-    // user 등급
+    // user 등급(권한)
     @Enumerated(EnumType.STRING)
     @Column(name = "user_permission", nullable = false)
     private Role role;
@@ -69,6 +65,7 @@ public class UserEntity {
     @ToString.Exclude
     private List<AttendInfoEntity> attendInfoList = new ArrayList<>();
 
+    // 스프링 시큐리티 관련
 //    @Override
 //    public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return List.of(new SimpleGrantedAuthority("user"));

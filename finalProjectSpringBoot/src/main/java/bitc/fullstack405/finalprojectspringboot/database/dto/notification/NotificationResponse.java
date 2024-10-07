@@ -21,6 +21,8 @@ public class NotificationResponse {
         this.name= notification.getUser().getName();
         this.notiTitle = notification.getNotiTitle();
         this.notiContent = notification.getNotiContent();
-        this.notiDate = notification.getNotiDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.notiDate = notification.getNotiDate().format(formatter);
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class EventEntity {
     @Column(name = "event_date", nullable = false)
     private LocalDate eventDate;
 
-    // 행사 승인 여부
+    // 행사 승인 여부(Y/N)
     @Column(name = "event_accept", length = 1, nullable = false)
     @ColumnDefault("'N'")
     private Character eventAccept;
@@ -52,7 +51,7 @@ public class EventEntity {
     @Column(name = "upload_date", nullable = false)
     private LocalDateTime uploadDate;
 
-    // 행사 포스터
+    // 행사 포스터(이름 + 타입)
     @Column(name = "event_poster", length = 500)
     private String eventPoster;
 
@@ -60,21 +59,17 @@ public class EventEntity {
     @Column(name = "accepted_date")
     private LocalDate acceptedDate;
 
-    // 행사 시작 시간
-    @Column(name = "start_time", nullable = false)
-    private LocalTime startTime;
+    // 게시일 - 회원에게 행사글이 보일 날짜 (행사 시작일로부터 2주 전)
+    @Column(name = "visible_date", nullable = false)
+    private LocalDate visibleDate;
 
-    // 행사 종료 시간
-    @Column(name = "end_time", nullable = false)
-    private LocalTime endTime;
+    // 게시 마감일 - 회원에게 행사글이 보이지 않게 할 날짜 (행사 시작일로부터 1주 전)
+    @Column(name = "invisible_date", nullable = false)
+    private LocalDate invisibleDate;
 
     // 행사 참여 마감 인원 (최대 인원)
     @Column(name = "max_people", nullable = false)
     private int maxPeople;
-
-    // 회원에게 행사글이 보일 날짜 (행사 시작일로부터 2주 전)
-    @Column(name = "visible_date", nullable = false)
-    private LocalDate visibleDate;
 
     // 행사 글 등록자 (fk)
     @ManyToOne
@@ -84,13 +79,13 @@ public class EventEntity {
 
     // 행사 승인자 (fk)
     @ManyToOne
-    @JoinColumn(name = "accepted_user")
+    @JoinColumn(name = "approver")
     @ToString.Exclude
     private UserEntity approver;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<AttendInfoEntity> attendInfoList = new ArrayList<>();
+    private List<EventsScheduleEntity> scheduleList = new ArrayList<>();
 
 
     public void updateEvent(String eventTitle, String eventContent, LocalDate eventDate, String eventPoster) {
