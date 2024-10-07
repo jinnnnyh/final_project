@@ -37,14 +37,10 @@ public class EventEntity {
     @Column(name = "event_content", length = 500, nullable = false)
     private String eventContent;
 
-    // 행사 일자
-    @Column(name = "event_date", nullable = false)
-    private LocalDate eventDate;
-
-    // 행사 승인 여부(Y/N)
-    @Column(name = "event_accept", length = 1, nullable = false)
-    @ColumnDefault("'N'")
-    private Character eventAccept;
+    // 행사 승인 여부 (1: 대기, 2: 승인, 3: 거부)
+    @Column(name = "event_accept", nullable = false)
+    @ColumnDefault("1")
+    private int eventAccept;
 
     // 행사 글 등록일
     @CreatedDate
@@ -71,6 +67,11 @@ public class EventEntity {
     @Column(name = "max_people", nullable = false)
     private int maxPeople;
 
+    // 참여 마감 여부 Y/N
+    @Column(name = "is_registration_open", length = 1, nullable = false)
+    @ColumnDefault("'N'")
+    private Character isRegistrationOpen;
+
     // 행사 글 등록자 (fk)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -88,10 +89,9 @@ public class EventEntity {
     private List<EventsScheduleEntity> scheduleList = new ArrayList<>();
 
 
-    public void updateEvent(String eventTitle, String eventContent, LocalDate eventDate, String eventPoster) {
+    public void updateEvent(String eventTitle, String eventContent, String eventPoster) {
         this.eventTitle = eventTitle;
         this.eventContent = eventContent;
-        this.eventDate = eventDate;
         this.eventPoster = eventPoster;
     }
 
