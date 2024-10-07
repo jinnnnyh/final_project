@@ -1,6 +1,5 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.login
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -33,6 +32,7 @@ class SignupActivity : AppCompatActivity() {
         var pw = ""
         var name = ""
         var phone = ""
+        var dept = ""
 
         // 확인 누르면 아이디 중복확인 하고 전송 유무 정하기
 //        binding.btnSubmit.setOnClickListener {
@@ -40,13 +40,14 @@ class SignupActivity : AppCompatActivity() {
 //            pw = binding.editPw.text.toString()
 //            name = binding.editName.toString()
 //            phone = binding.editPhone.toString()
-//
-//            Client.signup_retrofit.CheckedId(account).enqueue(object:retrofit2.Callback<Boolean>{
+//            dept = binding.editDept.toString()
+
+//            Client.retrofit.CheckedId(account).enqueue(object:retrofit2.Callback<Boolean>{
 //                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
 //                    if(response.body()!!){
 //                        Toast.makeText(this@SignupActivity,"이미 존재하는 아이디입니다. 다시 입력해주세요.",Toast.LENGTH_SHORT).show()
 //                    }else{
-//                        var user = UserData(0,name,phone,account,pw,"회원")
+//                        var user = UserData(0,name,phone,account,pw,dept,"준회원")
 //                        insertUser(user)
 //                    }
 //                }
@@ -66,7 +67,7 @@ class SignupActivity : AppCompatActivity() {
     }//onCreate
 
     fun insertUser(data:UserData){
-        Client.user_retrofit.insetUser(data).enqueue(object:retrofit2.Callback<UserData>{
+        Client.retrofit.insetUser(data).enqueue(object:retrofit2.Callback<UserData>{
             override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
                 Toast.makeText(this@SignupActivity,"회원가입이 완료되었습니다.",Toast.LENGTH_SHORT).show()
                 startActivity(intent)

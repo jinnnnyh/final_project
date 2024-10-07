@@ -44,7 +44,7 @@ class EditUserInfoActivity : AppCompatActivity() {
 
         lateinit var user: UserData
         // db 연결버전
-//        Client.user_retrofit.findUserId(userId).enqueue(object:retrofit2.Callback<UserData>{
+//        Client.retrofit.findUserId(userId).enqueue(object:retrofit2.Callback<UserData>{
 //            override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
 //                user = response.body() as UserData
 //
@@ -63,21 +63,20 @@ class EditUserInfoActivity : AppCompatActivity() {
 
         // 수정 버튼
         binding.btnSubmit.setOnClickListener {
-            var account = binding.editAccount.text.toString()
             var pw = binding.editPw.text.toString()
-            var name = binding.editName.text.toString()
             var phone = binding.editPhone.text.toString()
 
             // db에 보낼 데이터
             var data = UserData(
-                userId,
-                name,
+                user.userId,
+                user.userName,
                 phone,
-                account,
+                user.userAccount,
                 pw,
+                user.userDepart,
                 user.userPermission
             )
-//            Client.user_retrofit.updateUser(userId,data).enqueue(object:retrofit2.Callback<UserData>{
+//            Client.retrofit.updateUser(userId,data).enqueue(object:retrofit2.Callback<UserData>{
 //                override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
 //                    Toast.makeText(this@EditUserInfoActivity,"수정이 완료되었습니다",Toast.LENGTH_SHORT).show()
 //                }

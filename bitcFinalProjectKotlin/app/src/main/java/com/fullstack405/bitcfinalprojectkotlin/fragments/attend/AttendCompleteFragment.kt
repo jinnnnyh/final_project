@@ -57,7 +57,7 @@ class AttendCompleteFragment : Fragment() {
 
         // db 연결버전
         // userid랑 Y,N 보내서 내역 걸러오기
-//        Client.attend_retrofit.findFinalAttendList(userId,'Y').enqueue(object:retrofit2.Callback<List<UserAttendData>>{
+//        Client.retrofit.findFinalAttendList(userId,'Y').enqueue(object:retrofit2.Callback<List<UserAttendData>>{
 //            override fun onResponse(
 //                call: Call<List<UserAttendData>>,response: Response<List<UserAttendData>>) {
 //                compList = response.body() as MutableList<UserAttendData>

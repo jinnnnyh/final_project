@@ -6,15 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.adapter.AttendAllAdapter
-import com.fullstack405.bitcfinalprojectkotlin.client.Client
-import com.fullstack405.bitcfinalprojectkotlin.data.AttendData
-import com.fullstack405.bitcfinalprojectkotlin.data.EventData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserAttendData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.FragmentAttendAllBinding
-import retrofit2.Call
-import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,7 +60,7 @@ class AttendAllFragment : Fragment() {
 
 
         // db 연결버전
-//        Client.attend_retrofit.findAttendList(userId).enqueue(object:retrofit2.Callback<List<UserAttendData>>{
+//        Client.retrofit.findAttendList(userId).enqueue(object:retrofit2.Callback<List<UserAttendData>>{
 //            override fun onResponse(
 //                call: Call<List<UserAttendData>>,response: Response<List<UserAttendData>>) {
 //                allList = response.body() as MutableList<UserAttendData>

@@ -8,6 +8,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityQrViewBinding
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -24,25 +26,17 @@ class QrViewActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-//        var userId = intent.getLongExtra("userId",0)
-//        var eventId = intent.getLongExtra("evnetId",0)
-//        var eventDate = intent.getStringExtra("eventDate")
-//
-//        // 큐알코드 오픈일
-//        var openDate = parseInt(eventDate)-7
-//
-//        // 오늘 날짜 계산
-//        var sysDate = Date(System.currentTimeMillis())
-//        var dateFormat = SimpleDateFormat("yyyyMMdd")
-//        var today = parseInt(dateFormat.format(sysDate))
-//
-//        binding.imgQr.isVisible = false
-//
-//        if(openDate == today){
-//            binding.imgQr.isVisible = true
-//        }
-        // 큐알코드를 요청하면 이미지로 주는건가 ??
+        var userId = intent.getLongExtra("userId",0)
+        var eventId = intent.getLongExtra("evnetId",0)
+        var scheduleId = intent.getLongExtra("scheduleId",0)
 
+
+        // 큐알코드 생성
+        var content = "${eventId}-${scheduleId}-${userId}"
+        val barcodeEncoder = BarcodeEncoder()
+        val bitmap = barcodeEncoder.encodeBitmap(content, BarcodeFormat.QR_CODE, 512, 512)
+
+        binding.imgQr.setImageBitmap(bitmap)
 
         // 뒤로가기
         binding.btnBack.setOnClickListener {

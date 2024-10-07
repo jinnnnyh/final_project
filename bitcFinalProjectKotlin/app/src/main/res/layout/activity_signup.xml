@@ -177,7 +177,7 @@
             app:layout_constraintTop_toTopOf="@id/section4">
 
             <TextView
-                android:id="@+id/txt_company"
+                android:id="@+id/txt_dept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_medium"
@@ -186,7 +186,7 @@
                 tools:layout_editor_absoluteY="326dp" />
 
             <EditText
-                android:id="@+id/edit_company"
+                android:id="@+id/edit_dept"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

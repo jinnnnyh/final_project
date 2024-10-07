@@ -3,7 +3,6 @@ package com.fullstack405.bitcfinalprojectkotlin.templete.event
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -12,9 +11,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.fullstack405.bitcfinalprojectkotlin.R
-import com.fullstack405.bitcfinalprojectkotlin.data.AttendData
+import com.fullstack405.bitcfinalprojectkotlin.client.Client
+import com.fullstack405.bitcfinalprojectkotlin.data.AttendInfoData
+import com.fullstack405.bitcfinalprojectkotlin.data.EventAppData
+import com.fullstack405.bitcfinalprojectkotlin.data.UserData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.QR.QrScannerActivity
+import retrofit2.Call
+import retrofit2.Response
 
 class EventDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,10 +36,10 @@ class EventDetailActivity : AppCompatActivity() {
         var eventId = intent.getLongExtra("eventId",0)
         var title = intent.getStringExtra("eventTitle")
         var content = intent.getStringExtra("eventContent")
-        var date = intent.getStringExtra("eventDate")
-        var uploadDate = intent.getStringExtra("uploadDate")
+        var date = intent.getStringExtra("visibleDate") // 게시일
+        var writer = intent.getLongExtra("writerId",0)// 작성자Id
 
-        var userId = intent.getLongExtra("userId",0)
+        var userId = intent.getLongExtra("userId",0) // 접속자Id
         // 회원인지 아닌지만 판단
         var userPermission = intent.getStringExtra("userPermission")
 
@@ -56,7 +60,7 @@ class EventDetailActivity : AppCompatActivity() {
 
 //        lateinit var event: EventData
 //        이벤트id로 해당 이벤트 정보만 불러오기
-//        Client.event_retrofit.findEventId(eventId).enqueue(object:retrofit2.Callback<EventData>{
+//        Client.retrofit.findEventId(eventId).enqueue(object:retrofit2.Callback<EventData>{
 //            override fun onResponse(call: Call<EventData>, response: Response<EventData>) {
 //                event = response.body()!!
 //            }
@@ -64,14 +68,27 @@ class EventDetailActivity : AppCompatActivity() {
 //            override fun onFailure(call: Call<EventData>, t: Throwable) {
 //                Log.d("eventDetail error","eventDetail load error")
 //            }
-//        }) // event_retrofit
+//        }) // retrofit
 
 //        binding.dTitle.text = event.eventTitle
 //        binding.dContent.text = event.eventContent
-//        binding.dCreateDate.text=event.uploadDate
+//        binding.dCreateDate.text=event.visibleDate
+
+        // 유저id로 회원 정보(작성자) 찾아오기
+//        Client.retrofit.findUserId(event.userId).enqueue(object:retrofit2.Callback<UserData>{
+//            override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
+//                var data = response.body() as UserData
+//                binding.dWriter.text = data.userName
+//            }
+//
+//            override fun onFailure(call: Call<UserData>, t: Throwable) {
+//                TODO("Not yet implemented")
+//            }
+//
+//        })
 
         binding.dTitle.text = title
-        binding.dCreateDate.text = uploadDate
+        binding.dCreateDate.text = date // 게시일
         binding.dContent.text = content
 
 
@@ -87,9 +104,9 @@ class EventDetailActivity : AppCompatActivity() {
         /////// 로그인 화면에서부터 userId 계속 들고있어야함
         // 신청버튼
         binding.btnSubmit.setOnClickListener {
-            // attend data에 회원id, 행사id, 참석여부 'N' 넣어서 추가
-            // attend_info 테이블의 참석여부는 당일 행사 참석해서 QR 스캔 Y/N
-            var data = AttendData(0,eventId,'N')
+
+            // 신청자 테이블에 userId, eventId, 수료여부 N 해서 보내기
+            var data = EventAppData(0,userId,eventId,'N')
 
             // 확인 다이얼로그
             AlertDialog.Builder(this).run{
@@ -102,7 +119,7 @@ class EventDetailActivity : AppCompatActivity() {
                             show()
                         }
                         // db 연결버전
-//                        Client.attend_retrofit.insertAttend(data).enqueue(object:retrofit2.Callback<AttendData>{
+//                        Client.retrofit.insertAttend(data).enqueue(object:retrofit2.Callback<AttendData>{
 //                            override fun onResponse(call: Call<AttendData>, response: Response<AttendData>) {
 //                                AlertDialog.Builder(this@EventDetailActivity).run {
 //                                    setMessage("신청이 완료되었습니다.")
@@ -113,7 +130,7 @@ class EventDetailActivity : AppCompatActivity() {
 //                            override fun onFailure(call: Call<AttendData>, t: Throwable) {
 //                                TODO("Not yet implemented")
 //                            }
-//                        }) // attend_retrofit
+//                        }) // retrofit
                     }// onclick
                 }) // positive
                 setNegativeButton("취소",null)

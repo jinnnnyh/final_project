@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.fullstack405.bitcfinalprojectkotlin.data.AttendData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserAttendData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ItemAttendBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendDetailActivity

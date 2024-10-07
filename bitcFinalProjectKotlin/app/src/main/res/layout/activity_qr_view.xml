@@ -56,7 +56,7 @@
             android:id="@+id/img_qr"
             android:layout_width="400dp"
             android:layout_height="400dp"
-            android:src="@drawable/testqr"
+            android:background="#88DAFF"
             android:layout_gravity="center"
             />
 

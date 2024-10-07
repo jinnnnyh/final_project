@@ -73,6 +73,7 @@ dependencies {
   implementation ("androidx.camera:camera-view:1.0.0-alpha27")
   implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
   implementation ("com.google.zxing:core:3.4.0")
-
+// qr
+  implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 
 }

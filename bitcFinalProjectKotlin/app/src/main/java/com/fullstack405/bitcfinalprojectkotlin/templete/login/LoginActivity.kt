@@ -32,14 +32,14 @@ class LoginActivity : AppCompatActivity() {
         }
 
         val memberList = mutableListOf<UserData>()
-        memberList.add(UserData(0,"박성호","010-1111-1111","test1","test","정회원"))
-        memberList.add(UserData(0,"명재현","010-1111-1111","test2","test","준회원"))
-        memberList.add(UserData(0,"김운학","010-1111-1111","test3","test","협회장"))
-        memberList.add(UserData(0,"한태산","010-1111-1111","admin","admin","관리자"))
+        memberList.add(UserData(0,"박성호","010-1111-1111","정회원","test1","test","A회사"))
+        memberList.add(UserData(0,"명재현","010-1111-1111","준회원","test2","test","B회사"))
+        memberList.add(UserData(0,"김운학","010-1111-1111","협회장","test3","test","C회사"))
+        memberList.add(UserData(0,"한태산","010-1111-1111","총무","admin","admin","D회사"))
 
 //        var userList = mutableListOf<UserData>()
 //        // 로그인 화면 켜지면 유저 리스트 불러와서 저장
-//        Client.user_retrofit.findUserList().enqueue(object:retrofit2.Callback<List<UserData>>{
+//        Client.retrofit.findUserList().enqueue(object:retrofit2.Callback<List<UserData>>{
 //            override fun onResponse(call: Call<List<UserData>>,response: Response<List<UserData>>) {
 //                userList = response.body() as MutableList<UserData>
 //            }

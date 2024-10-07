@@ -32,17 +32,17 @@ class MainEventListAdapter(val eventList:MutableList<EventData>, val userId:Long
         }
 
         holder.binding.title.text = event.eventTitle
-        // 신청 마감일 = 행사일 -7
-        var endDate = parseInt(event.eventDate) - 7
-        holder.binding.date.text = endDate.toString()
+
+        holder.binding.date.text = event.visibleDate // 게시일
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.binding.root.context, EventDetailActivity::class.java)
             intent.putExtra("eventId",event.evnetId)
             intent.putExtra("eventTitle",event.eventTitle)
             intent.putExtra("eventContent",event.eventContent)
-            intent.putExtra("eventDate",event.eventDate)
-            intent.putExtra("uploadDate",event.uploadDate)
+            intent.putExtra("visibleDate",event.visibleDate)
+            intent.putExtra("writerId",event.userId) // 작성자 id
+
             // 유저id
             intent.putExtra("userId",userId)
             intent.putExtra("userPermission",userPermission)
