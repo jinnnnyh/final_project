@@ -35,6 +35,13 @@ class EditUserInfoActivity : AppCompatActivity() {
         // 인텐트로 받은 유저id로 유저 정보 추출해서 화면에 뿌려야함
         var userId = intent.getLongExtra("userId", 0)
 
+
+
+        // 비밀번호, 폰번호만 수정 가능, 나머지는 비활성화
+        binding.editCompany.isEnabled = false
+        binding.editName.isEnabled = false
+        binding.editAccount.isEnabled = false
+
         lateinit var user: UserData
         // db 연결버전
 //        Client.user_retrofit.findUserId(userId).enqueue(object:retrofit2.Callback<UserData>{

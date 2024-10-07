@@ -71,8 +71,9 @@ class EventDetailActivity : AppCompatActivity() {
 //        binding.dCreateDate.text=event.uploadDate
 
         binding.dTitle.text = title
-        binding.dContent.text = content
         binding.dCreateDate.text = uploadDate
+        binding.dContent.text = content
+
 
 //        var url = "http://10.100.105.194:8811/events/"
 //        var posterName = event.eventPoster

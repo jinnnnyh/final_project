@@ -34,7 +34,7 @@ class AdminMainActivity : AppCompatActivity() {
         val userName = intent.getStringExtra("userName")
         var userPermission = intent.getStringExtra("userPermission")
 
-        binding.userName.text ="관리자 ${userName}님"
+        binding.userName.text ="${userPermission} ${userName}님"
 
         val intent_event = Intent(this, EventListActivity::class.java)
         intent_event.putExtra("userId",userId)
