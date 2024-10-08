@@ -14,6 +14,7 @@ public interface EventRepository  extends JpaRepository<EventEntity, Long> {
 
     // 이벤트 신청 인원 < 최대 인원
     // 행사 시작일 2주 전 <= 현재 날짜 <= 행사 시작일 1주 전
+    // 승인 완료(2)
     @Query("SELECT e FROM EventEntity e " +
             "LEFT JOIN e.eventAppList app " +
             "WHERE e.visibleDate <= CURRENT_DATE " +
