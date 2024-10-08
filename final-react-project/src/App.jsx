@@ -7,7 +7,6 @@ import MainPages from "./pages/MainPages.jsx";
 import NoticeBoardList from "./components/notice/NoticeBoardList.jsx";
 import NoticeBoardWrite from "./components/notice/NoticeBoardWrite.jsx";
 import NoticeBoardView from "./components/notice/NoticeBoardView.jsx";
-import TempComponent from "./components/temp/TempComponent.jsx";
 import MemberList from "./components/member/MemberList.jsx";
 import EventList from "./components/events/EventList.jsx";
 import MemberWrite from "./components/member/MemberWrite.jsx";
@@ -47,7 +46,6 @@ function App() {
                 <Route path="/notice/write" element={<NoticeBoardWrite/>}/>
                 <Route path="/notice/view" element={<NoticeBoardView/>}/>
                 <Route path="/errorPage" element={<ErrorPage/>}/>
-                <Route path="/temp" element={<TempComponent/>}/>
               </Routes>
             </MainPages>
           </div>
