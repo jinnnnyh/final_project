@@ -3,7 +3,6 @@ package bitc.fullstack405.finalprojectspringboot.database.repository;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,7 +20,8 @@ public interface EventRepository  extends JpaRepository<EventEntity, Long> {
             "AND e.invisibleDate > CURRENT_DATE " +
             "AND e.eventAccept = 2 " +
             "GROUP BY e.eventId " +
-            "HAVING COUNT(app.appId) < e.maxPeople")
+            "HAVING COUNT(app.appId) < e.maxPeople "+
+            "ORDER BY e.eventId DESC")
     List<EventEntity> findAcceptedEventsWithCapacity();
 
     // eventId 기준 내림차순으로 모든 공지사항을 조회
