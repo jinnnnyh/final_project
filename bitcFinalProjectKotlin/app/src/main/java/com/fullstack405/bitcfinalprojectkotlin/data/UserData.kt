@@ -1,10 +1,10 @@
 package com.fullstack405.bitcfinalprojectkotlin.data
 
 data class UserData(val userId: Long,
-                    val userName: String,
+                    val name: String,
                     val userPhone: String,
-                    val userPermission:String,
+                    val role:String,
                     val userAccount: String,
-                    val userPw:String,
+                    val password:String,
                     val userDepart:String
                     )

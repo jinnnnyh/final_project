@@ -92,10 +92,10 @@ class EventDetailActivity : AppCompatActivity() {
         binding.dContent.text = content
 
 
-//        var url = "http://10.100.105.194:8811/events/"
-//        var posterName = event.eventPoster
+        var url = "http://localhost:8080/eventImg/erdEdit.png"
+        var posterName = ""
 
-        var url = "https://godomall.speedycdn.net/246ac6860cab30de5414f7d17e2bb4bc/editor/board/event/453/730baf1671174fbc6f9caaf1563896f2.jpg"
+//        var url = "https://godomall.speedycdn.net/246ac6860cab30de5414f7d17e2bb4bc/editor/board/event/453/730baf1671174fbc6f9caaf1563896f2.jpg"
         Glide.with(this)
         .load(url)
         .into(binding.dImage)

@@ -31,125 +31,183 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        val memberList = mutableListOf<UserData>()
-        memberList.add(UserData(0,"박성호","010-1111-1111","정회원","test1","test","A회사"))
-        memberList.add(UserData(0,"명재현","010-1111-1111","준회원","test2","test","B회사"))
-        memberList.add(UserData(0,"김운학","010-1111-1111","협회장","test3","test","C회사"))
-        memberList.add(UserData(0,"한태산","010-1111-1111","총무","admin","admin","D회사"))
-
-//        var userList = mutableListOf<UserData>()
-//        // 로그인 화면 켜지면 유저 리스트 불러와서 저장
-//        Client.retrofit.findUserList().enqueue(object:retrofit2.Callback<List<UserData>>{
-//            override fun onResponse(call: Call<List<UserData>>,response: Response<List<UserData>>) {
-//                userList = response.body() as MutableList<UserData>
-//            }
-//
-//            override fun onFailure(call: Call<List<UserData>>, t: Throwable) {
-//                Log.d("login error","userList load error")
-//            }
-//
-//        })
-
-        // 로그인 정보 저장을 세션에 하는 방법 뭐 이런거 써야하는ㄱ ㅓ아닌가 ?? 
-        // 일단은 회원 정보 확인하고 메인으로 넘어가기 완료
-        
-        /////////////// 로그인 정보를 서버에 넘기고 토큰 받아와서 저장하는 형식으로 해야함
-        // 토큰 저장을 sqlite 사용하던지 sharepreference 사용하는 방법이 있음
-        // 여기서 판단할 필요 X, 유저리스트 불러올 필요 X  >> 토큰 저장 어떻게할지만 정하면됨
-        // 레트로핏으로 유저 정보확인 요청하고 성공 > 로그인, 토큰 저장, 실패 > 토스트창
-        
-        var id =""
-        var pw = ""
-        var toastId =""
-        var toastPw =""
-        var user:UserData? =null
-        var admin:UserData? =null
-
         var intent = Intent(this@LoginActivity, MainActivity::class.java)
         var intentAdmin = Intent(this@LoginActivity, AdminMainActivity::class.java)
-
+        var fail = 0
         binding.btnLogin.setOnClickListener {
-            id =binding.inputId.text.toString()
-            pw= binding.inputPw.text.toString()
+            // 유저 account , pw 받아서 디비에 확인 요청
+            var ac = binding.inputId.text.toString()
+            var pw = binding.inputPw.text.toString()
 
-            for(item in memberList){ // db 연결하면 여기 userList로 바꾸기
-                if(item.userAccount.equals(id)){
-                    if(item.userPw.equals(pw)){
-                        if(item.userPermission == "정회원"){
-                            user = item
-                            toastId=""
-                            toastPw=""
-                            break
+            var data = UserData(0,"name","phone","ROLE_REGULAR",ac,pw,"none")
+            Client.retrofit.loginUser(data).enqueue(object:retrofit2.Callback<UserData>{
+                override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
+                    Log.d("user response : ","${response.body()}")
+                    var user = response.body() as UserData
+                    if(user != null){
+                        if(user.role == "ROLE_REGULAR"){ // 정회원
+                            intent.putExtra("userId", user.userId)
+                            intent.putExtra("userName",user.name)
+                            intent.putExtra("userPermission",user.role)
+                            startActivity(intent)
                         }
-                        else if(item.userPermission == "관리자"){
-                            admin=item
-                            toastId=""
-                            toastPw=""
-                            break
+                        else if(user.role == "ROLE_SECRETARY"){ // 총무
+                            intent.putExtra("userId", user.userId)
+                            intent.putExtra("userName",user.name)
+                            intent.putExtra("userPermission",user.role)
+                            startActivity(intentAdmin)
                         }
-                        else if(item.userPermission == "협회장"){
-                            admin=item
-                            toastId=""
-                            toastPw=""
-                            break
+                        else if(user.role == "ROLE_PRESIDENT"){ // 협회장
+                            intent.putExtra("userId", user.userId)
+                            intent.putExtra("userName",user.name)
+                            intent.putExtra("userPermission",user.role)
+                            startActivity(intentAdmin)
                         }
-                        else if(item.userPermission == "준회원"){
-                            toastId="wait"
-                            toastPw="wait"
-                            break
+                        else{
+                            fail = 1
+                            binding.inputId.setText("")
+                            binding.inputPw.setText("")
                         }
-
                     }else{
-                        toastId= ""
-                        toastPw = "pw error"
-                        break
-
+                        fail=1
                     }
-                }else{
-                    toastId = "id error"
 
                 }
-            } // for
+
+                override fun onFailure(call: Call<UserData>, t: Throwable) {
+                    Log.d("login error","${t.message}")
+                    binding.inputId.setText("")
+                    binding.inputPw.setText("")
+                    fail++
+                }
+
+            })
+        }
+        Log.d("fail count:" ,"${fail}")
+        if(fail == 1 ){
+            Toast.makeText(this@LoginActivity, "로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요.",Toast.LENGTH_SHORT).show()
+            fail = 0
+
+        }
 
 
-            if(toastId.equals("") && toastPw.equals("pw error")){
-                Toast.makeText(this,"비밀번호가 틀렸습니다.",Toast.LENGTH_SHORT).show()
-                binding.inputId.setText("")
-                binding.inputPw.setText("")
-                toastId=""
-                toastPw=""
-            }
-            else if(toastId.equals("id error") && toastPw.equals("")){
-                Toast.makeText(this,"아이디가 없습니다.",Toast.LENGTH_SHORT).show()
-                binding.inputId.setText("")
-                binding.inputPw.setText("")
-                toastId=""
-                toastPw=""
-            }
-            else if(toastId.equals("wait") && toastPw.equals("wait")){
-                Toast.makeText(this,"승인 대기",Toast.LENGTH_SHORT).show()
-                binding.inputId.setText("")
-                binding.inputPw.setText("")
-                toastId=""
-                toastPw=""
-            }
 
 
-            if(user != null && admin == null){
-                intent.putExtra("userId", user!!.userId)
-                intent.putExtra("userName",user!!.userName)
-                intent.putExtra("userPermission",user!!.userPermission)
-                startActivity(intent)
-                user = null
-            }
-            else if(user == null && admin != null){
-                intentAdmin.putExtra("userId", admin!!.userId)
-                intentAdmin.putExtra("userName",admin!!.userName)
-                intentAdmin.putExtra("userPermission",admin!!.userPermission)
-                startActivity(intentAdmin)
-                admin = null
-            }
-        } // setOnClickListener
+
+
+//        val memberList = mutableListOf<UserData>()
+//        memberList.add(UserData(0,"박성호","010-1111-1111","정회원","test1","test","A회사"))
+//        memberList.add(UserData(0,"명재현","010-1111-1111","준회원","test2","test","B회사"))
+//        memberList.add(UserData(0,"김운학","010-1111-1111","협회장","test3","test","C회사"))
+//        memberList.add(UserData(0,"한태산","010-1111-1111","총무","admin","admin","D회사"))
+//
+//
+////        var userList = mutableListOf<UserData>()
+////        // 로그인 화면 켜지면 유저 리스트 불러와서 저장
+////        Client.retrofit.findUserList().enqueue(object:retrofit2.Callback<List<UserData>>{
+////            override fun onResponse(call: Call<List<UserData>>,response: Response<List<UserData>>) {
+////                userList = response.body() as MutableList<UserData>
+////            }
+////
+////            override fun onFailure(call: Call<List<UserData>>, t: Throwable) {
+////                Log.d("login error","userList load error")
+////            }
+////
+////        })
+//
+//
+//        var id =""
+//        var pw = ""
+//        var toastId =""
+//        var toastPw =""
+//        var user:UserData? =null
+//        var admin:UserData? =null
+//
+////        var intent = Intent(this@LoginActivity, MainActivity::class.java)
+////        var intentAdmin = Intent(this@LoginActivity, AdminMainActivity::class.java)
+//
+//        binding.btnLogin.setOnClickListener {
+//            id =binding.inputId.text.toString()
+//            pw= binding.inputPw.text.toString()
+//
+//            for(item in memberList){ // db 연결하면 여기 userList로 바꾸기
+//                if(item.userAccount.equals(id)){
+//                    if(item.userPw.equals(pw)){
+//                        if(item.userPermission == "정회원"){
+//                            user = item
+//                            toastId=""
+//                            toastPw=""
+//                            break
+//                        }
+//                        else if(item.userPermission == "관리자"){
+//                            admin=item
+//                            toastId=""
+//                            toastPw=""
+//                            break
+//                        }
+//                        else if(item.userPermission == "협회장"){
+//                            admin=item
+//                            toastId=""
+//                            toastPw=""
+//                            break
+//                        }
+//                        else if(item.userPermission == "준회원"){
+//                            toastId="wait"
+//                            toastPw="wait"
+//                            break
+//                        }
+//
+//                    }else{
+//                        toastId= ""
+//                        toastPw = "pw error"
+//                        break
+//
+//                    }
+//                }else{
+//                    toastId = "id error"
+//
+//                }
+//            } // for
+//
+//
+//            if(toastId.equals("") && toastPw.equals("pw error")){
+//                Toast.makeText(this,"비밀번호가 틀렸습니다.",Toast.LENGTH_SHORT).show()
+//                binding.inputId.setText("")
+//                binding.inputPw.setText("")
+//                toastId=""
+//                toastPw=""
+//            }
+//            else if(toastId.equals("id error") && toastPw.equals("")){
+//                Toast.makeText(this,"아이디가 없습니다.",Toast.LENGTH_SHORT).show()
+//                binding.inputId.setText("")
+//                binding.inputPw.setText("")
+//                toastId=""
+//                toastPw=""
+//            }
+//            else if(toastId.equals("wait") && toastPw.equals("wait")){
+//                Toast.makeText(this,"승인 대기",Toast.LENGTH_SHORT).show()
+//                binding.inputId.setText("")
+//                binding.inputPw.setText("")
+//                toastId=""
+//                toastPw=""
+//            }
+//
+//
+//            if(user != null && admin == null){
+//                intent.putExtra("userId", user!!.userId)
+//                intent.putExtra("userName",user!!.userName)
+//                intent.putExtra("userPermission",user!!.userPermission)
+//                startActivity(intent)
+//                user = null
+//            }
+//            else if(user == null && admin != null){
+//                intentAdmin.putExtra("userId", admin!!.userId)
+//                intentAdmin.putExtra("userName",admin!!.userName)
+//                intentAdmin.putExtra("userPermission",admin!!.userPermission)
+//                startActivity(intentAdmin)
+//                admin = null
+//            }
+//        } // setOnClickListener
 
         binding.btnSignup.setOnClickListener {
             var intentSignup = Intent(this,SignupActivity::class.java)

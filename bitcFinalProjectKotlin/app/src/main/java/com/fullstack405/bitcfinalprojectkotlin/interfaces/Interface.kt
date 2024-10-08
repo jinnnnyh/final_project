@@ -8,7 +8,9 @@ import com.fullstack405.bitcfinalprojectkotlin.data.TempData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserAttendData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserData
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface Interface {
 
@@ -18,6 +20,11 @@ interface Interface {
   ///////////// user
   // 유저 리스트
   fun findUserList():Call<List<UserData>>
+
+  // 로그인 유저 정보 확인
+  // 로그인 아이디, 비번 넣어서 보내기
+  @POST("/login")
+  fun loginUser(@Body data:UserData):Call<UserData>
 
   // 유저 1명 정보
   fun findUserId(id:Long):Call<UserData>

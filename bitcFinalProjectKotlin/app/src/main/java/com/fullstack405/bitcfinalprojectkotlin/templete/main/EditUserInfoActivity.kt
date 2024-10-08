@@ -69,12 +69,12 @@ class EditUserInfoActivity : AppCompatActivity() {
             // db에 보낼 데이터
             var data = UserData(
                 user.userId,
-                user.userName,
+                user.name,
                 phone,
                 user.userAccount,
                 pw,
                 user.userDepart,
-                user.userPermission
+                user.role
             )
 //            Client.retrofit.updateUser(userId,data).enqueue(object:retrofit2.Callback<UserData>{
 //                override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
