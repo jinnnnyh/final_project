@@ -1,6 +1,6 @@
 function Header () {
   return (
-    <header className={'pt-4 px-5 pb-2 mx-3'} >
+    <header className={'pt-4 pb-2'} >
       <ul className={'d-flex justify-content-end '}>
         <li className={'me-2 text-black-50'}><small>총무</small></li>
         <li><span>아이유</span> 님</li>

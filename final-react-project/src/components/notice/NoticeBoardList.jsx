@@ -2,7 +2,6 @@ import {Link} from "react-router-dom";
 import Notice from "../../pages/Notice.jsx";
 
 function NoticeBoardList () {
-
   return (
     <section>
       <Notice/>
@@ -18,27 +17,27 @@ function NoticeBoardList () {
           <th scope={'col'}>번호</th>
           <th scope={'col'}>제목</th>
           <th scope={'col'}>작성자</th>
-          <th scope={'col'}>게시일</th>
+          <th scope={'col'}>작성일</th>
         </tr>
         </thead>
         <tbody>
         <tr>
           <td>1</td>
           <td>공지사항 등록 예정입니다.공지사항 등록 예정입니다.</td>
-          <td>총무</td>
-          <td>24.10.01</td>
+          <td>아이유</td>
+          <td>2024-10-05 오전 11:20</td>
         </tr>
         <tr>
           <td>2</td>
           <td>공지사항 등록 예정입니다.공지사항 등록 예정입니다.</td>
-          <td>총무</td>
-          <td>24.10.01</td>
+          <td>아이유</td>
+          <td>2024-10-05 오전 11:20</td>
         </tr>
         <tr>
           <td>3</td>
           <td>공지사항 등록 예정입니다.공지사항 등록 예정입니다.</td>
-          <td>총무</td>
-          <td>24.10.01</td>
+          <td>아이유</td>
+          <td>2024-10-05 오전 11:20</td>
         </tr>
         </tbody>
       </table>

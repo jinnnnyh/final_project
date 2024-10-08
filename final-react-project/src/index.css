@@ -61,6 +61,10 @@ h1, h2, h3, h4 {
 }
 
 
+.container-fluid   {
+ --bs-gutter-x:5rem;
+}
+
 
 /* 버튼 */
 .btn {
@@ -69,6 +73,7 @@ h1, h2, h3, h4 {
     --bs-btn-border-radius:0 !important;
     border-radius:0 !important;
 }
+
 
 .btn-round {
     width:auto;

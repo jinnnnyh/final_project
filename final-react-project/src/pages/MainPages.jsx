@@ -1,6 +1,6 @@
 function MainPages ({children}) {
   return (
-    <div className={'mx-3 px-5'}>
+    <div>
       {children}
     </div>
   )
