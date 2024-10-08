@@ -1,5 +1,5 @@
 
-import {BrowserRouter, Route, Routes } from "react-router-dom";
+import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
 import Header from "./components/Header.jsx";
 import Navigation from "./components/Navigation.jsx";
 import ErrorPage from "./pages/ErroPage.jsx";
@@ -15,16 +15,25 @@ import EventWrite from "./components/events/EventWrite.jsx";
 import EventView from "./components/events/EventView.jsx";
 import MemberPermission from "./components/member/MemberPermission.jsx";
 import EventAttendList from "./components/events/EventAttendList.jsx";
+import Login from "./pages/Login.jsx";
 
 
 function App() {
+
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
+    <>
+      <Routes >
+        <Route path="/login" element={<Login />}/>
+      </Routes>
       <div className={'d-flex'}>
           {/* 왼쪽 네비게이션 */}
-          <Navigation/>
+          {/*<Navigation/>*/}
+        {location.pathname !== '/login' && <Navigation/>}
           <div className={'container-fluid'} style={{marginLeft:"330px", marginRight:"50px"}}>
-            <Header/>
+            {location.pathname !== '/login' && <Header/>}
+            {/*<Header/>*/}
             <MainPages>
               <Routes>
                 <Route path="/" element={<EventList/>}/>
@@ -43,7 +52,7 @@ function App() {
             </MainPages>
           </div>
       </div>
-    </BrowserRouter>
+    </>
   )
 }
 

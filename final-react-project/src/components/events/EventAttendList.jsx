@@ -1,17 +1,15 @@
 import Member from "../../pages/Member.jsx";
 import Events from "../../pages/Events.jsx";
 import {NavLink} from "react-router-dom";
+import Login from "../../pages/Login.jsx";
+import {useEffect} from "react";
 
 function EventAttendList () {
   const eventAttendData = [
     {id: 1, num:1, userAccount:'iu', name:'아이유', userPhone:'010-1111-1111', userDepart: 'AI협회', role: '일반회원', attendComp:'참석',checkInTime:'오후 2시', checkOutTime:'오후 5시' },
     {id: 2, num:2, userAccount:'js', name:'유재석', userPhone:'010-1111-1111', userDepart: 'AI협회', role: '일반회원', attendComp:'미참석',checkInTime:'오후 2시', checkOutTime:'오후 5시' },
     {id: 3, num:3, userAccount:'iu', name:'아이유', userPhone:'010-1111-1111', userDepart: 'AI협회', role: '일반회원', attendComp:'참석',checkInTime:'오후 2시', checkOutTime:'오후 5시' },
-
-
   ];
-
-
 
   return (
     <section>
