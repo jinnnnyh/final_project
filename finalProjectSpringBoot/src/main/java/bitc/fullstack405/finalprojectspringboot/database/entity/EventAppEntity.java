@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "attend_app")
 @Getter
@@ -25,6 +27,14 @@ public class EventAppEntity {
     @Column(name = "event_comp", length = 1, nullable = false)
     @ColumnDefault("'N'")
     private Character eventComp;
+
+    // 행사 신청일
+    @Column(name = "app_date", nullable = false)
+    private LocalDate appDate;
+
+    // QR 코드 이미지 파일
+    @Column(name = "qr_image", length = 500)
+    private String qrImage;
 
     // 참석자 (fk)
     @ManyToOne
