@@ -1,8 +1,10 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.attend
 
 import android.content.Intent
+import android.icu.util.Calendar
 import android.media.metrics.Event
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -110,29 +112,45 @@ class AttendDetailActivity : AppCompatActivity() {
 //            }
 //        })
 
-        // 오늘 날짜 계산
-        var sysDate = Date(System.currentTimeMillis())
-        var dateFormat = SimpleDateFormat("yyyyMMdd")
-        var today = parseInt(dateFormat.format(sysDate))
+
+        // 캘린더 사용
+        // 각 변수를 저정할 인스턴스
+        val cal_t = Calendar.getInstance() // 오늘
+        val cal_s = Calendar.getInstance() // 시작
+        val cal_e = Calendar.getInstance() // 끝
+
+        val dateFormat =SimpleDateFormat("yyyyMMdd") // 포맷설정
+
+        // 오늘날짜
+        cal_t.time = Date()
+        val td = dateFormat.format(cal_t.time) // 오늘 날짜 string 타입
 
         var scheduleId = 0L
 
         for(item in scheduleList){
             // 오늘 날짜랑 스케쥴상 일자가 같으면 스케줄id 저장하고 멈춤
-            if(item.eventDate == today.toString()){
+            if(item.eventDate == td){ // 스트링 타입으로 날짜 비교
                 scheduleId = item.scheduleId
                 break;
             }
         }
 
+        var sd = scheduleList.get(0).eventDate // 제일 처음 회차의 날짜
+        var ed = scheduleList.get(scheduleList.size-1).eventDate // 마지막 회차의 날짜
 
-        var startDate = scheduleList.get(0).eventDate // 제일 처음 회차의 날짜
-        var endDate = scheduleList.get(scheduleList.size-1).eventDate // 마지막 회차의 날짜
+        val startDate:Date = dateFormat.parse(sd) // 이벤트 날짜 String > Date 변환
+        val endDate:Date = dateFormat.parse(ed)
 
-        binding.btnQR.isEnabled = false // 기본 비활성화
+        cal_s.time = startDate // 날짜 계산을 위해 캘린더 인스턴스에 추가
+        cal_e.time = endDate
 
-        // 행사 1주일 전  ~ 마지막날 까지 활성화 마지막 다음날 비활성화
-        if(parseInt(startDate)-7 <= today  &&  today <= parseInt(endDate)){
+        cal_s.add(Calendar.DATE,-7) // 시작일 일주일 전 날짜
+
+        // QR 버튼,  default = false
+        binding.btnQR.isEnabled = false
+
+        // 시작 일주일 전 날짜 <= 오늘 날짜 <= 끝 날짜이면 btnQR 활성화
+        if(cal_t in cal_s..cal_e){
             binding.btnQR.isEnabled = true
             // QR 확인
             binding.btnQR.setOnClickListener {
@@ -143,7 +161,7 @@ class AttendDetailActivity : AppCompatActivity() {
                 intentQR.putExtra("scheduleId",scheduleId)
                 startActivity(intentQR)
             }
-        }
+        } // if
 
 
 
@@ -151,5 +169,7 @@ class AttendDetailActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             finish()
         }
-    }
+    }//onCreate
+
+
 }
