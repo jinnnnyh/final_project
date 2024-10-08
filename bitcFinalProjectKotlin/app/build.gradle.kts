@@ -42,7 +42,10 @@ dependencies {
   implementation(libs.material)
   implementation(libs.androidx.activity)
   implementation(libs.androidx.constraintlayout)
-  testImplementation(libs.junit)
+    implementation(libs.androidx.annotation)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
 
@@ -61,4 +64,16 @@ dependencies {
 //  fragment, viewpager2
   implementation ("androidx.viewpager2:viewpager2:1.0.0'")
   implementation ("androidx.fragment:fragment:1.5.0")
+
+
+  // 카메라
+  implementation ("androidx.camera:camera-core:1.0.2")
+  implementation ("androidx.camera:camera-camera2:1.0.2")
+  implementation ("androidx.camera:camera-lifecycle:1.0.2")
+  implementation ("androidx.camera:camera-view:1.0.0-alpha27")
+  implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+  implementation ("com.google.zxing:core:3.4.0")
+// qr
+  implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+
 }
