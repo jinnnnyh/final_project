@@ -19,34 +19,34 @@ import java.time.LocalDateTime;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "notiId")
 public class NotificationEntity {
 
-  // notification idx
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "noti_id", nullable = false)
-  private Long notiId;
+    // notification idx
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "noti_id", nullable = false)
+    private Long notiId;
 
-  // 공지 제목
-  @Column(name = "noti_title", length = 100, nullable = false)
-  private String notiTitle;
+    // 공지 제목
+    @Column(name = "noti_title", length = 100, nullable = false)
+    private String notiTitle;
 
-  // 공지 내용
-  @Column(name = "noti_content", length = 500, nullable = false)
-  private String notiContent;
+    // 공지 내용
+    @Column(name = "noti_content", length = 500, nullable = false)
+    private String notiContent;
 
-  // 공지 글 등록일
-  @CreatedDate
-  @Column(name = "noti_date", nullable = false)
-  private LocalDateTime notiDate;
+    // 공지 글 등록일
+    @CreatedDate
+    @Column(name = "noti_date", nullable = false)
+    private LocalDateTime notiDate;
 
-  // 공지 글 등록자 (fk)
-  @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false)
-  @ToString.Exclude
-  private UserEntity user;
+    // 공지 글 등록자 (fk)
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @ToString.Exclude
+    private UserEntity user;
 
 
-  public void updateNotification(String notiTitle, String notiContent) {
-    this.notiTitle = notiTitle;
-    this.notiContent = notiContent;
-  }
+    public void updateNotification(String notiTitle, String notiContent) {
+        this.notiTitle = notiTitle;
+        this.notiContent = notiContent;
+    }
 }
