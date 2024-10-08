@@ -1,9 +1,6 @@
-package bitc.fullstack405.finalprojectspringboot.database.dto.event;
+package bitc.fullstack405.finalprojectspringboot.database.dto.web.event;
 
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import lombok.Getter;
-
-import java.time.format.DateTimeFormatter;
 
 @Getter
 public class MyEventResponse {

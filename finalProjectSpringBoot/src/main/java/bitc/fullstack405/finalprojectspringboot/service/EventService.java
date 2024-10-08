@@ -1,22 +1,15 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.AddEventRequest;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventResponse;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.UpdateEventRequest;
-import bitc.fullstack405.finalprojectspringboot.database.entity.AttendInfoEntity;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.event.AppEventDetailResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.event.AppEventListResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
-import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.AttendInfoRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.EventRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +21,27 @@ public class EventService {
     private final UserRepository userRepository;
     private final AttendInfoRepository attendInfoRepository;;
     private final FileUtils fileUtils;
+
+    ///////////////////////////
+    ////////// <APP> //////////
+    ///////////////////////////
+
+    // 회원에게 보일 행사 목록
+    public List<AppEventListResponse> findAcceptedEvents() {
+        List<EventEntity> events = eventRepository.findAcceptedEventsWithCapacity();
+        return events.stream()
+                .map(AppEventListResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    // 회원에게 보일 행사 상세 화면
+    public AppEventDetailResponse findById(Long eventId) {
+        EventEntity event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("not found : " + eventId));
+        return new AppEventDetailResponse(event);
+    }
+
+
 
 //    // 행사 글 등록
 //    public EventEntity save(AddEventRequest request, MultipartFile uploadFile) throws Exception {

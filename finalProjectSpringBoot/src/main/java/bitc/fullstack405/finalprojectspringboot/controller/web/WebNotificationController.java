@@ -1,13 +1,11 @@
-package bitc.fullstack405.finalprojectspringboot.controller;
+package bitc.fullstack405.finalprojectspringboot.controller.web;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.notification.AddNotificationRequest;
-import bitc.fullstack405.finalprojectspringboot.database.dto.notification.NotificationResponse;
-import bitc.fullstack405.finalprojectspringboot.database.dto.notification.UpdateNotificationRequest;
+import bitc.fullstack405.finalprojectspringboot.database.dto.web.notification.AddNotificationRequest;
+import bitc.fullstack405.finalprojectspringboot.database.dto.web.notification.NotificationResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.web.notification.UpdateNotificationRequest;
 import bitc.fullstack405.finalprojectspringboot.database.entity.NotificationEntity;
 import bitc.fullstack405.finalprojectspringboot.service.NotificationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class NotificationApiController {
+public class WebNotificationController {
 
     private final NotificationService notificationService;
 

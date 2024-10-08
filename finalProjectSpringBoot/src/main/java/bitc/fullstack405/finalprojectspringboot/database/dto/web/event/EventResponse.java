@@ -1,9 +1,6 @@
-package bitc.fullstack405.finalprojectspringboot.database.dto.event;
+package bitc.fullstack405.finalprojectspringboot.database.dto.web.event;
 
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import lombok.Getter;
-
-import java.time.format.DateTimeFormatter;
 
 // 서버에서 클라이언트로 지정한 행사 게시물 정보를 전달하기 위한 DTO 클래스(목록, 상세 내용)
 @Getter
