@@ -1,22 +1,12 @@
-package bitc.fullstack405.finalprojectspringboot.controller;
+package bitc.fullstack405.finalprojectspringboot.controller.web;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.AddEventRequest;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventResponse;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.UpdateEventRequest;
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.service.EventService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class EventApiController {
+public class WebEventController {
 
     private final EventService eventService;
 
@@ -28,7 +18,8 @@ public class EventApiController {
 //        return ResponseEntity.ok().body(savedEvent);
 //    }
 //
-//    // 행사 글 목록 - 모두 출력
+    // 행사 글 목록 - 모두 출력(관리자용)
+    // schedule 부분을 가져와야 할 것 같은데
 //    @GetMapping("/events/all")
 //    public ResponseEntity<List<EventResponse>> findAllEvent() {
 //        List<EventResponse> eventList = eventService.findAllSortedByEventIdDesc()
@@ -39,16 +30,7 @@ public class EventApiController {
 //        return ResponseEntity.ok().body(eventList);
 //    }
 //
-//    // 행사 글 목록 - 행사일 기준 2주 전부터 출력
-//    @GetMapping("/events/from-visible-date")
-//    public ResponseEntity<List<EventResponse>> findEventsFromVisibleDate() {
-//        List<EventResponse> eventList = eventService.findEventsFromVisibleDate()
-//                .stream()
-//                .map(EventResponse::new)
-//                .toList();
-//
-//        return ResponseEntity.ok().body(eventList);
-//    }
+
 //
 //    // 행사 글 상세보기
 //    @GetMapping("/events/{eventId}")

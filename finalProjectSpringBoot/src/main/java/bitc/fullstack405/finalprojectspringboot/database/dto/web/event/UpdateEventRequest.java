@@ -1,4 +1,4 @@
-package bitc.fullstack405.finalprojectspringboot.database.dto.event;
+package bitc.fullstack405.finalprojectspringboot.database.dto.web.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

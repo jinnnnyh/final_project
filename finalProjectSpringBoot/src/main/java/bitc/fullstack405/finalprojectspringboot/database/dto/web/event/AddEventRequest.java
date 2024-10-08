@@ -1,13 +1,10 @@
-package bitc.fullstack405.finalprojectspringboot.database.dto.event;
+package bitc.fullstack405.finalprojectspringboot.database.dto.web.event;
 
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
-import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 // 클라이언트가 서버로 전달하는 데이터용 DTO 클래스

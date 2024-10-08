@@ -1,9 +1,8 @@
-package bitc.fullstack405.finalprojectspringboot.database.dto.notification;
+package bitc.fullstack405.finalprojectspringboot.database.dto.web.notification;
 
 import bitc.fullstack405.finalprojectspringboot.database.entity.NotificationEntity;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 // 서버에서 클라이언트로 지정한 공지사항 게시물 정보를 전달하기 위한 DTO 클래스

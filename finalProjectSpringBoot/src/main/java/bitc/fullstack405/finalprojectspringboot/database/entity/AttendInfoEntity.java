@@ -24,11 +24,6 @@ public class AttendInfoEntity {
     @Column(name = "attend_id", nullable = false)
     private Long attendId;
 
-    // 수료 여부
-    @Column(name = "completion", length = 1, nullable = false)
-    @ColumnDefault("'N'")
-    private Character completion;
-
     // 참석일
     @Column(name = "attend_date")
     private LocalDate attendDate;
@@ -41,10 +36,10 @@ public class AttendInfoEntity {
     @Column(name = "check_out_time")
     private LocalTime checkOutTime;
 
-//    // 지각 여부 Y/N
-//    @Column(name = "late_or_not", length = 1, nullable = false)
-//    @ColumnDefault("'N'")
-//    private Character lateOrNot;
+    // 당일 수료 여부 Y/N
+    @Column(name = "attend_comp", length = 1, nullable = false)
+    @ColumnDefault("'N'")
+    private Character lateOrNot;
 
     // 참석자 (fk)
     @ManyToOne
@@ -52,7 +47,7 @@ public class AttendInfoEntity {
     @ToString.Exclude
     private UserEntity user;
 
-    // 참석한 행사 (fk)
+    // 참석한 행사 회차 (fk)
     @ManyToOne
     @JoinColumn(name = "schedule_id", nullable = false)
     @ToString.Exclude

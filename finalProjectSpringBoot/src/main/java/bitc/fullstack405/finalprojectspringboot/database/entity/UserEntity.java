@@ -5,12 +5,14 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
 @Table(name = "user")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
@@ -47,7 +49,7 @@ public class UserEntity {
 
     // user 비밀번호
     @Column(name = "user_pw", length = 200, nullable = false)
-    private String userPw;
+    private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
@@ -65,12 +67,18 @@ public class UserEntity {
     @ToString.Exclude
     private List<AttendInfoEntity> attendInfoList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<EventAppEntity> attendAppList = new ArrayList<>();
+
     // 스프링 시큐리티 관련
+//    // 사용자 권한 출력
 //    @Override
 //    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return List.of(new SimpleGrantedAuthority("user"));
+//        return Collections.singleton(new SimpleGrantedAuthority(role.name()));
 //    }
 //
+//    // 사용자 ID 출력
 //    @Override
 //    public String getUsername() {
 //        return userAccount;
@@ -78,7 +86,7 @@ public class UserEntity {
 //
 //    @Override
 //    public String getPassword() {
-//        return userPw;
+//        return password;
 //    }
 //
 //    @Override

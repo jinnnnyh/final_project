@@ -1,7 +1,7 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.notification.AddNotificationRequest;
-import bitc.fullstack405.finalprojectspringboot.database.dto.notification.UpdateNotificationRequest;
+import bitc.fullstack405.finalprojectspringboot.database.dto.web.notification.AddNotificationRequest;
+import bitc.fullstack405.finalprojectspringboot.database.dto.web.notification.UpdateNotificationRequest;
 import bitc.fullstack405.finalprojectspringboot.database.entity.NotificationEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.NotificationRepository;

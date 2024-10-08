@@ -1,4 +1,4 @@
-package bitc.fullstack405.finalprojectspringboot.database.dto.notification;
+package bitc.fullstack405.finalprojectspringboot.database.dto.web.notification;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
