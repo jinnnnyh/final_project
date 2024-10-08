@@ -88,6 +88,10 @@ public class EventEntity {
     @ToString.Exclude
     private List<EventsScheduleEntity> scheduleList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<EventAppEntity> eventAppList = new ArrayList<>();
+
 
     public void updateEvent(String eventTitle, String eventContent, String eventPoster) {
         this.eventTitle = eventTitle;

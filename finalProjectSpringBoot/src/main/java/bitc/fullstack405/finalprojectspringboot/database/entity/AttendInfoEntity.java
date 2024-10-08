@@ -24,11 +24,6 @@ public class AttendInfoEntity {
     @Column(name = "attend_id", nullable = false)
     private Long attendId;
 
-    // 행사 수료 여부 Y/N
-    @Column(name = "attend_comp", length = 1, nullable = false)
-    @ColumnDefault("'N'")
-    private Character attendComp;
-
     // 참석일
     @Column(name = "attend_date")
     private LocalDate attendDate;
@@ -52,7 +47,7 @@ public class AttendInfoEntity {
     @ToString.Exclude
     private UserEntity user;
 
-    // 참석한 행사 (fk)
+    // 참석한 행사 회차 (fk)
     @ManyToOne
     @JoinColumn(name = "schedule_id", nullable = false)
     @ToString.Exclude

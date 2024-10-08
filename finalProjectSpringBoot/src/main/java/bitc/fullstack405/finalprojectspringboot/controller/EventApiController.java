@@ -30,15 +30,15 @@ public class EventApiController {
 //
     // 행사 글 목록 - 모두 출력(관리자용)
     // schedule 부분을 가져와야 할 것 같은데
-    @GetMapping("/events/all")
-    public ResponseEntity<List<EventResponse>> findAllEvent() {
-        List<EventResponse> eventList = eventService.findAllSortedByEventIdDesc()
-                .stream()
-                .map(EventResponse::new)
-                .toList();
-
-        return ResponseEntity.ok().body(eventList);
-    }
+//    @GetMapping("/events/all")
+//    public ResponseEntity<List<EventResponse>> findAllEvent() {
+//        List<EventResponse> eventList = eventService.findAllSortedByEventIdDesc()
+//                .stream()
+//                .map(EventResponse::new)
+//                .toList();
+//
+//        return ResponseEntity.ok().body(eventList);
+//    }
 //
 //    // 행사 글 목록 - 행사일 기준 2주 전부터 출력
 //    @GetMapping("/events/from-visible-date")
