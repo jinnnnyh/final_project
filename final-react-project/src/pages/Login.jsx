@@ -1,19 +1,23 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate, useNavigationType} from "react-router-dom";
 
 function Login() {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     // const navigationType = useNavigationType()
-    // if(sessionStorage != null) {
-    //   if (sessionStorage.getItem("userRole") === 'ROLE_PRESIDENT' || sessionStorage.getItem("userRole") === 'ROLE_SECRETARY') {
-    //     navigate('/');
-    //   }
-    //   else {
-    //     navigate('/login');
-    //     sessionStorage.clear();
-    //   }
-    // }
+
+  useEffect(() => {
+    if(sessionStorage != null) {
+      if (sessionStorage.getItem("userRole") === 'ROLE_PRESIDENT' || sessionStorage.getItem("userRole") === 'ROLE_SECRETARY') {
+        alert('이미 로그인 중입니다.');
+        navigate('/');
+      }
+      else {
+        sessionStorage.clear();
+      }
+    }
+  }, []);
+
 
     const [userAccount, setUserAccount] = useState('');
     const [userPw, setUserPw] = useState('');
@@ -22,6 +26,7 @@ function Login() {
 
     const loginHandler = async (e) => {
       e.preventDefault();
+
 
       try {
         const response = await axios.post('http://localhost:8080/user/login', {
