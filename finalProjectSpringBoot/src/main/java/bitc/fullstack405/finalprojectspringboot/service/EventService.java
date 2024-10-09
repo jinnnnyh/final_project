@@ -19,7 +19,7 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
-    private final AttendInfoRepository attendInfoRepository;;
+    private final AttendInfoRepository attendInfoRepository;
     private final FileUtils fileUtils;
 
     ///////////////////////////
@@ -38,7 +38,10 @@ public class EventService {
     public AppEventDetailResponse findById(Long eventId) {
         EventEntity event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + eventId));
-        return new AppEventDetailResponse(event);
+
+        // 회차 개수 추가
+        int scheduleCount = event.getScheduleList().size();
+        return new AppEventDetailResponse(event, scheduleCount); // 수정된 DTO 사용
     }
 
 

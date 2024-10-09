@@ -16,13 +16,15 @@ public class AppEventDetailResponse {
     private final String eventPoster;
     private final String posterUserName;
     private final String visibleDate;
+    private final int scheduleCount;
 
-    public AppEventDetailResponse(EventEntity event) {
+    public AppEventDetailResponse(EventEntity event, int scheduleCount) {
         this.eventId = event.getEventId();
         this.eventTitle = event.getEventTitle();
         this.eventContent = event.getEventContent();
         this.eventPoster = event.getEventPoster();
         this.posterUserName = event.getPosterUser().getName();
+        this.scheduleCount = scheduleCount;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         this.visibleDate = event.getVisibleDate().format(formatter);

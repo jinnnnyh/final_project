@@ -29,11 +29,12 @@ public class AppEventController {
     }
 
     // 회원에게 보일 행사 상세 화면
-    // 게시일, 제목, 내용, 이미지, 작성자(이름만)
+    // 게시일, 제목, 내용, 이미지, 작성자(이름만), schedule 개수 말고 리스트 자체를 오름차순으로 보내줘야 할 듯(앱에서는 리스트 개수만큼 버튼 생성하고 리스트 순서대로 버튼 클릭 시 스케줄 아이디 넘겨주기)
     @GetMapping("/accepted-events/{eventId}")
     public ResponseEntity<AppEventDetailResponse> findAppEventDetail(@PathVariable Long eventId) {
         AppEventDetailResponse eventDetail = eventService.findById(eventId);
         return ResponseEntity.ok().body(eventDetail);
     }
 
+    // 관리자에게 보일 행사 목록
 }
