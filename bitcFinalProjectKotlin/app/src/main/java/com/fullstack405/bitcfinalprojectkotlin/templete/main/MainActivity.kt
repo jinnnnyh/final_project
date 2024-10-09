@@ -2,6 +2,7 @@ package com.fullstack405.bitcfinalprojectkotlin.templete.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -10,13 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.adapter.MainEventListAdapter
 import com.fullstack405.bitcfinalprojectkotlin.adapter.MainNoticeListAdapter
-import com.fullstack405.bitcfinalprojectkotlin.data.EventData
+import com.fullstack405.bitcfinalprojectkotlin.client.Client
+import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
 import com.fullstack405.bitcfinalprojectkotlin.data.NoticeData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityMainBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.notice.NoticeListActivity
+import retrofit2.Call
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     var userName = intent.getStringExtra("userName")
     var userPermission = intent.getStringExtra("userPermission")
 
-    binding.userName.text = "회원 ${userName}님"
+    binding.userName.text = "${userPermission} ${userName}님"
     var intent_event = Intent(this, EventListActivity::class.java)
     intent_event.putExtra("userId",userId)
     intent_event.putExtra("userPermission",userPermission)
@@ -55,25 +59,10 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     // 행사 안내 어댑터
-    var eventList = mutableListOf<EventData>()
-    eventList.add(EventData(0,0,"제 4회 ai 컨퍼런스 안내","이벤트애용","20241004",
-      "",'Y'))
-    eventList.add(EventData(0,0,"제 3회 ai 컨퍼런스 안내","이벤트애용","20241005","",'Y'))
-    eventList.add(EventData(0,0,"제 2회 ai 컨퍼런스 안내","이벤트애용","20241011","",'Y'))
-    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","이벤트애용","20240905","",'Y'))
-    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","이벤트애용","20240905","",'Y'))
-    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","이벤트애용","20240905","",'Y'))
-    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","이벤트애용","20240905","",'Y'))
-    eventList.add(EventData(0,0,"제 1회 ai 컨퍼런스 안내","이벤트애용","20240905","",'Y'))
+    var eventList = mutableListOf<EventListData>()
 
-    var testList = mutableListOf<EventData>()
-    for(i in 0..3){
-      testList.add(eventList[i])
-    }
-
-    var mainEventListAdapter = MainEventListAdapter(testList,userId,userPermission!!)
+    var mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission!!)
     binding.eventRecyclerView.adapter = mainEventListAdapter
     binding.eventRecyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -82,20 +71,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     // db 연결버전
-//    Client.retrofit.findEventList('Y').enqueue(object:retrofit2.Callback<List<EventData>>{
-//      override fun onResponse(call: Call<List<EventData>>, response: Response<List<EventData>>) {
-//        var resList = response.body() as MutableList<EventData>
-//        // 목록은 항상 내림차순으로 받아옴, 상위 4개만 메인에 표출
-//        for(i in 0..3){
-//          eventList.add(resList[i])
-//        }
-//        mainEventListAdapter.notifyDataSetChanged()
-//      }
-//
-//      override fun onFailure(call: Call<List<EventData>>, t: Throwable) {
-//        Log.d("main eventlsit error", "main eventList load error")
-//      }
-//    })
+    Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
+      override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
+        var resList = response.body() as MutableList<EventListData>
+        // 목록은 항상 내림차순으로 받아옴, 상위 4개만 메인에 표출
+        eventList.add(resList.get(0))
+        mainEventListAdapter.notifyDataSetChanged()
+      }
+
+      override fun onFailure(call: Call<List<EventListData>>, t: Throwable) {
+        Log.d("main eventlsit error", "main eventList load error")
+      }
+    })
 
     binding.noticeList.setOnClickListener {
       startActivity(intent_notice)

@@ -2,22 +2,15 @@ package com.fullstack405.bitcfinalprojectkotlin.templete.attend
 
 import android.content.Intent
 import android.icu.util.Calendar
-import android.media.metrics.Event
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.fullstack405.bitcfinalprojectkotlin.R
-import com.fullstack405.bitcfinalprojectkotlin.client.Client
-import com.fullstack405.bitcfinalprojectkotlin.data.EventData
+import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventScheduleData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityAttendDetailBinding
-import retrofit2.Call
-import retrofit2.Response
-import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -38,13 +31,13 @@ class AttendDetailActivity : AppCompatActivity() {
         var eventId = intent.getLongExtra("eventId",0)
         var complete = intent.getCharExtra("complete",'N')
 
-
-        // 데이터 생성
-        var event = EventData(0 ,0,"제 3회 ai 컨퍼런스 안내","이벤트내용부분","20241005","",'N')
-        var scheduleList = mutableListOf<EventScheduleData>()
-        scheduleList.add(EventScheduleData(3,0,"09:00","12:00","20241007"))
-        scheduleList.add(EventScheduleData(1,0,"09:00","12:00","20241008"))
-        scheduleList.add(EventScheduleData(2,0,"09:00","12:00","20241009"))
+//
+//        // 데이터 생성
+//        var event = EventListData(0 ,0,"제 3회 ai 컨퍼런스 안내","이벤트내용부분","20241005","",'N')
+//        var scheduleList = mutableListOf<EventScheduleData>()
+//        scheduleList.add(EventScheduleData(3,0,"09:00","12:00","20241007"))
+//        scheduleList.add(EventScheduleData(1,0,"09:00","12:00","20241008"))
+//        scheduleList.add(EventScheduleData(2,0,"09:00","12:00","20241009"))
 
 
 
@@ -77,9 +70,9 @@ class AttendDetailActivity : AppCompatActivity() {
 //
 //        })
 
-        binding.dTitle.text = event.eventTitle
-        binding.dContent.text = event.eventContent
-        binding.dCreateDate.text = event.visibleDate // 게시일
+//        binding.dTitle.text = event.eventTitle
+//        binding.dContent.text = event.eventContent
+//        binding.dCreateDate.text = event.visibleDate // 게시일
 
         // Y 이면 활성화 N이면 비활성화
         // 참석증 확인
@@ -127,41 +120,41 @@ class AttendDetailActivity : AppCompatActivity() {
 
         var scheduleId = 0L
 
-        for(item in scheduleList){
-            // 오늘 날짜랑 스케쥴상 일자가 같으면 스케줄id 저장하고 멈춤
-            if(item.eventDate == td){ // 스트링 타입으로 날짜 비교
-                scheduleId = item.scheduleId
-                break;
-            }
-        }
-
-        var sd = scheduleList.get(0).eventDate // 제일 처음 회차의 날짜
-        var ed = scheduleList.get(scheduleList.size-1).eventDate // 마지막 회차의 날짜
-
-        val startDate:Date = dateFormat.parse(sd) // 이벤트 날짜 String > Date 변환
-        val endDate:Date = dateFormat.parse(ed)
-
-        cal_s.time = startDate // 날짜 계산을 위해 캘린더 인스턴스에 추가
-        cal_e.time = endDate
-
-        cal_s.add(Calendar.DATE,-7) // 시작일 일주일 전 날짜
-
-        // QR 버튼,  default = false
-        binding.btnQR.isEnabled = false
-
-        // 시작 일주일 전 날짜 <= 오늘 날짜 <= 끝 날짜이면 btnQR 활성화
-        if(cal_t in cal_s..cal_e){
-            binding.btnQR.isEnabled = true
-            // QR 확인
-            binding.btnQR.setOnClickListener {
-                // 큐알 페이지로 이동
-                var intentQR = Intent(this,QrViewActivity::class.java)
-                intentQR.putExtra("userId",userId)
-                intentQR.putExtra("eventId",eventId)
-                intentQR.putExtra("scheduleId",scheduleId)
-                startActivity(intentQR)
-            }
-        } // if
+//        for(item in scheduleList){
+//            // 오늘 날짜랑 스케쥴상 일자가 같으면 스케줄id 저장하고 멈춤
+//            if(item.eventDate == td){ // 스트링 타입으로 날짜 비교
+//                scheduleId = item.scheduleId
+//                break;
+//            }
+//        }
+//
+//        var sd = scheduleList.get(0).eventDate // 제일 처음 회차의 날짜
+//        var ed = scheduleList.get(scheduleList.size-1).eventDate // 마지막 회차의 날짜
+//
+//        val startDate:Date = dateFormat.parse(sd) // 이벤트 날짜 String > Date 변환
+//        val endDate:Date = dateFormat.parse(ed)
+//
+//        cal_s.time = startDate // 날짜 계산을 위해 캘린더 인스턴스에 추가
+//        cal_e.time = endDate
+//
+//        cal_s.add(Calendar.DATE,-7) // 시작일 일주일 전 날짜
+//
+//        // QR 버튼,  default = false
+//        binding.btnQR.isEnabled = false
+//
+//        // 시작 일주일 전 날짜 <= 오늘 날짜 <= 끝 날짜이면 btnQR 활성화
+//        if(cal_t in cal_s..cal_e){
+//            binding.btnQR.isEnabled = true
+//            // QR 확인
+//            binding.btnQR.setOnClickListener {
+//                // 큐알 페이지로 이동
+//                var intentQR = Intent(this,QrViewActivity::class.java)
+//                intentQR.putExtra("userId",userId)
+//                intentQR.putExtra("eventId",eventId)
+//                intentQR.putExtra("scheduleId",scheduleId)
+//                startActivity(intentQR)
+//            }
+//        } // if
 
 
 

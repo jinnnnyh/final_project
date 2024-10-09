@@ -5,10 +5,7 @@ import bitc.fullstack405.finalprojectspringboot.database.dto.app.event.AppEventL
 import bitc.fullstack405.finalprojectspringboot.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,8 +27,8 @@ public class AppEventController {
 
     // 회원에게 보일 행사 상세 화면
     // 게시일, 제목, 내용, 이미지, 작성자(이름만)
-    @GetMapping("/accepted-events/{eventId}")
-    public ResponseEntity<AppEventDetailResponse> findAppEventDetail(@PathVariable Long eventId) {
+    @PostMapping("/accepted-events/{eventId}")
+    public ResponseEntity<AppEventDetailResponse> findAppEventDetail(@PathVariable("eventId") Long eventId) {
         AppEventDetailResponse eventDetail = eventService.findById(eventId);
         return ResponseEntity.ok().body(eventDetail);
     }

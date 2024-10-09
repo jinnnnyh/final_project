@@ -1,7 +1,9 @@
 package com.fullstack405.bitcfinalprojectkotlin.interfaces
 
 import com.fullstack405.bitcfinalprojectkotlin.data.AttendInfoData
-import com.fullstack405.bitcfinalprojectkotlin.data.EventData
+import com.fullstack405.bitcfinalprojectkotlin.data.EventAppData
+import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
+import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventScheduleData
 import com.fullstack405.bitcfinalprojectkotlin.data.NoticeData
 import com.fullstack405.bitcfinalprojectkotlin.data.TempData
@@ -11,6 +13,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface Interface {
 
@@ -41,15 +44,17 @@ interface Interface {
 
   /////////// event
   // 승인된 이벤트 리스트
-  fun findEventList(accept:Char):Call<List<EventData>>
+  @GET("/app/accepted-events")
+  fun findEventList():Call<List<EventListData>>
 
   // 이벤트 항목 1개 불러오기
-  fun findEventId(id:Long):Call<EventData>
-
+  @POST("/app/accepted-events/{eventId}")
+  fun findEventId(@Path("eventId") eventId:Long):Call<EventDetailData>
 
   /////////// attend
-  // 추가
-  fun insertAttend(data:AttendInfoData):Call<AttendInfoData>
+  // 신청
+  @POST("/app/insert")
+  fun insertEventApp(@Body data:EventAppData):Call<EventAppData>
 
   // userid 신청 목록 조회 >> 이거로 제목까지 끌어와지는지 확인
   // 서버에서 제목이랑 날짜 같이 넘겨주는걸 이걸로 받아지나
