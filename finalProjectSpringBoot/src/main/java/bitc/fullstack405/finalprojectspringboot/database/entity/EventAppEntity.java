@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "attend_app")
+@Table(name = "event_app")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "appId")
 public class EventAppEntity {
 
-    // attend_app idx
+    // evnet_app idx
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "app_id", nullable = false)
@@ -29,12 +30,9 @@ public class EventAppEntity {
     private Character eventComp;
 
     // 행사 신청일
+    @CreatedDate
     @Column(name = "app_date", nullable = false)
     private LocalDate appDate;
-
-    // QR 코드 이미지 파일
-    @Column(name = "qr_image", length = 500)
-    private String qrImage;
 
     // 참석자 (fk)
     @ManyToOne
