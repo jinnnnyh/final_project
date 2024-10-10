@@ -29,7 +29,7 @@ public class AppEventController {
     }
 
     // 회원에게 보일 행사 상세 화면
-    // 게시일, 제목, 내용, 이미지, 작성자(이름만), 해당 행사의 schedule 리스트(오름차순)
+    // 게시일, 제목, 내용, 이미지, 작성자(이름만), 해당 행사의 schedule 정보(schedule_id, event_date) 리스트(schedule id 기준 오름차순)
     @GetMapping("/accepted-events/{eventId}")
     public ResponseEntity<AppEventDetailResponse> findAppEventDetail(@PathVariable Long eventId) {
         AppEventDetailResponse eventDetail = eventService.findById(eventId);
