@@ -82,6 +82,7 @@ function Signup() {
               <label htmlFor="user-permission" className={'form-label'}>권한</label>
               <select className={'form-select py-3'} id="user-permission" name="userPermission"
                       value={userPermission} onChange={(e) => setUserPermission(e.target.value)} required>
+                <option>---권한 선택---</option>
                 <option value="협회장">협회장</option>
                 <option value="총무">총무</option>
                 <option value="정회원">정회원</option>

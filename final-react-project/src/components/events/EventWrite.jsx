@@ -45,6 +45,7 @@ function EventWrite () {
         eventAccept: 1,
       }).then(() => {
         alert('등록에 성공했습니다. 협회장 승인을 기다려주세요.');
+        window.location.href = '/';
       })
         .catch(e => {
           alert('등록 실패!\n'+ e.message + '\n관리자에게 문의하세요.');
