@@ -1,5 +1,5 @@
 import Events from "../../pages/Events.jsx";
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
@@ -24,12 +24,14 @@ function EventList () {
   //     });
   // }, [eventData]);
 
+  const moveToEventWrite = () => window.location.href = '/events/write';
+
 
   return (
     <section>
       <Events/>
         <div className={'d-flex justify-content-end mb-5'}>
-          <button type={'submit'} className={'btn btn-point'}>행사 등록</button>
+          <button type={'button'} className={'btn btn-point'} onClick={moveToEventWrite}>행사 등록</button>
         </div>
 
       {eventData?.map(item => (

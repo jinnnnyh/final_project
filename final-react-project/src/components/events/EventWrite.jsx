@@ -18,11 +18,11 @@ function EventWrite () {
             <div className="w-50 d-flex me-5">
               <div className={'w-50 me-3'}>
                 <label htmlFor={'event-startdate'} className={'form-label'}>행사 시작기간</label>
-                <input type={'time'} className={'form-control me-3'} placeholder={'행사 시작기간'} id={'event-startdate'}/>
+                <input type={'datetime-local'} className={'form-control me-3'} placeholder={'행사 시작기간'} id={'event-startdate'}/>
               </div>
               <div className={'w-50'}>
                 <label htmlFor={'end-enddate'} className={'form-label'}>행사 종료기간</label>
-                <input type={'time'} className={'form-control'} placeholder={'행사 종료기간'} id={'event-enddate'}/>
+                <input type={'datetime-local'} className={'form-control'} placeholder={'행사 종료기간'} id={'event-enddate'}/>
               </div>
             </div>
             <div className="w-50 d-flex">
