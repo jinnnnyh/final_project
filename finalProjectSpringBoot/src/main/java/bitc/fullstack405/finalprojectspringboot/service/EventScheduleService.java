@@ -39,25 +39,4 @@ public class EventScheduleService {
                 })
                 .collect(Collectors.toList());
     }
-
-//    public AppQRScanResponse qrScan(Long eventId, Long scheduleId, Long userId) {
-//
-//
-//
-//
-//
-//
-//
-//        // check_in_time 에 현재 시각 넣기
-//        attendInfoRepository.save()
-//
-//
-//
-//        EventEntity event = eventRepository.findById(eventId)
-//                .orElseThrow(() -> new IllegalArgumentException("not found : " + eventId));
-//        UserEntity user = userRepository.findById(userId)
-//                .orElseThrow(() -> new IllegalArgumentException("not found : " + userId));
-//
-//        return new AppQRScanResponse(event, user);
-//    }
 }
