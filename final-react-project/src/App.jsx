@@ -15,6 +15,7 @@ import EventView from "./components/events/EventView.jsx";
 import MemberPermission from "./components/member/MemberPermission.jsx";
 import EventAttendList from "./components/events/EventAttendList.jsx";
 import Login from "./pages/Login.jsx";
+import Signup from "./pages/test/Signup.jsx";
 
 
 function App() {
@@ -25,13 +26,14 @@ function App() {
     <>
       <Routes >
         <Route path="/login" element={<Login />}/>
+        <Route path="/signup" element={<Signup />} />
       </Routes>
       <div className={'d-flex'}>
           {/* 왼쪽 네비게이션 */}
           {/*<Navigation/>*/}
-        {location.pathname !== '/login' && <Navigation/>}
+        {location.pathname !== '/login' && location.pathname !== '/signup' && <Navigation/>}
           <div className={'container-fluid'} style={{marginLeft:"330px", marginRight:"50px"}}>
-            {location.pathname !== '/login' && <Header/>}
+            {location.pathname !== '/login' && location.pathname !== '/signup' && <Header/>}
             {/*<Header/>*/}
             <MainPages>
               <Routes>
