@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "scheduleId")
-public class EventsScheduleEntity {
+public class EventScheduleEntity {
 
     // schedule_id idx
     @Id
@@ -45,7 +45,7 @@ public class EventsScheduleEntity {
     @ToString.Exclude
     private EventEntity event;
 
-    @OneToMany(mappedBy = "eventsSchedule", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "eventSchedule", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<AttendInfoEntity> attendInfoList = new ArrayList<>();
 }

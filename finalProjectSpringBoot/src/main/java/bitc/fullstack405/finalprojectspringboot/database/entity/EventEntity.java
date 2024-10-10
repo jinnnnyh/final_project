@@ -86,7 +86,7 @@ public class EventEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<EventsScheduleEntity> scheduleList = new ArrayList<>();
+    private List<EventScheduleEntity> scheduleList = new ArrayList<>();
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @ToString.Exclude
