@@ -56,4 +56,9 @@ public class AttendInfoEntity {
     @JoinColumn(name = "schedule_id", nullable = false)
     @ToString.Exclude
     private EventScheduleEntity eventSchedule;
+
+
+//    public void CheckIn() {
+//        this.checkInTime = 'N';
+//    }
 }
