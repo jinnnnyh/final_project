@@ -14,6 +14,8 @@ import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
 import java.util.Date
 
+
+///////////// 사용 xxxxxxxxxxxxx
 class QrViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

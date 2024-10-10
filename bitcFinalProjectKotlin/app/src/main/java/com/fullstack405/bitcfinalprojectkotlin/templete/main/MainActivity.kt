@@ -60,11 +60,9 @@ class MainActivity : AppCompatActivity() {
 
 
     // 행사 안내 어댑터
-    var eventList = mutableListOf<EventListData>()
+    lateinit var eventList:MutableList<EventListData>
+    lateinit var mainEventListAdapter:MainEventListAdapter
 
-    var mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission!!)
-    binding.eventRecyclerView.adapter = mainEventListAdapter
-    binding.eventRecyclerView.layoutManager = LinearLayoutManager(this)
 
     binding.eventList.setOnClickListener {
       startActivity(intent_event)
@@ -73,9 +71,16 @@ class MainActivity : AppCompatActivity() {
     // db 연결버전
     Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
       override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
-        var resList = response.body() as MutableList<EventListData>
+        eventList = response.body() as MutableList<EventListData>
+
+        mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission!!)
+
+        binding.eventRecyclerView.adapter = mainEventListAdapter
+        binding.eventRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+
         // 목록은 항상 내림차순으로 받아옴, 상위 4개만 메인에 표출
-        eventList.add(resList.get(0))
+//        eventList.add(resList.get(0))
+
         mainEventListAdapter.notifyDataSetChanged()
       }
 
@@ -83,6 +88,10 @@ class MainActivity : AppCompatActivity() {
         Log.d("main eventlsit error", "main eventList load error")
       }
     })
+
+
+
+
 
     binding.noticeList.setOnClickListener {
       startActivity(intent_notice)

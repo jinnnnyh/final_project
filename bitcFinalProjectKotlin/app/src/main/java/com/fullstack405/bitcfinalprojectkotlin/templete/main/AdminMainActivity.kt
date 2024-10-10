@@ -64,7 +64,7 @@ class AdminMainActivity : AppCompatActivity() {
       override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
         var resList = response.body() as MutableList<EventListData>
         // 목록은 항상 내림차순으로 받아옴, 상위 4개만 메인에 표출
-        for(i in 0..3){
+        for(i in 0..resList.size-1){
           eventList.add(resList[i])
         }
           mainEventListAdapter.notifyDataSetChanged()

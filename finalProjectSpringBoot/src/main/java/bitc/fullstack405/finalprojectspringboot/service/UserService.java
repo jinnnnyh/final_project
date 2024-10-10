@@ -27,24 +27,24 @@ public class UserService {
     return null;
   }
 
-  public EventAppEntity insertApp(EventAppInsertRequest req){
-
-    EventAppEntity savedApp = req.toEntity(eventRepository,userRepository);
-    EventAppEntity app = eventAppRepository.findByUser(savedApp.getUser());
-    // 신청자 테이블에 유저id 없을 때
-    if(app==null) {
-      return eventAppRepository.save(savedApp);
-    }
-    // 유저id 있을 떄
-    else{
-      // 이미 신청한 이벤트일 경우
-      if(app.getEvent().getEventId() == req.getEventId()){
-        return null;
-      }
-      // 아닐 경우
-      return eventAppRepository.save(savedApp);
-    }
-  }
+//  public EventAppEntity insertApp(EventAppInsertRequest req){
+//
+//    EventAppEntity savedApp = req.toEntity(eventRepository,userRepository);
+//    EventAppEntity app = eventAppRepository.findByUser(savedApp.getUser());
+//    // 신청자 테이블에 유저id 없을 때
+//    if(app==null) {
+//      return eventAppRepository.save(savedApp);
+//    }
+//    // 유저id 있을 떄
+//    else{
+//      // 이미 신청한 이벤트일 경우
+//      if(app.getEvent().getEventId() == req.getEventId()){
+//        return null;
+//      }
+//      // 아닐 경우
+//      return eventAppRepository.save(savedApp);
+//    }
+//  }
 
 
 } // class

@@ -35,11 +35,11 @@ public class TempController {
 
   // 행사 신청자 추가
   // 같은 이벤트id 추가 안되게 하기
-  @PostMapping("/app/insert")
-  public ResponseEntity<EventAppEntity> insertAppUser(@RequestBody EventAppInsertRequest req){
-    EventAppEntity insertApp = userService.insertApp(req);
-    return ResponseEntity.ok().body(insertApp);
-  }
+//  @PostMapping("/app/insert")
+//  public ResponseEntity<EventAppEntity> insertAppUser(@RequestBody EventAppInsertRequest req){
+//    EventAppEntity insertApp = userService.insertApp(req);
+//    return ResponseEntity.ok().body(insertApp);
+//  }
 
 
 }

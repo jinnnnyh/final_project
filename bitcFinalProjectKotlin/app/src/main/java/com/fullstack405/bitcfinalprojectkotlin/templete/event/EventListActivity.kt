@@ -37,11 +37,12 @@ class EventListActivity : AppCompatActivity() {
         // 이벤트 리스트 불러오기 성공하면 뷰에 어댑터 붙이는걸로,,,?
         Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
             override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
-                Log.d("event List load","response success")
+                Log.d("event List load","${response.body()}")
                 eventList = response.body() as MutableList<EventListData>
                 var eventListAdapter = EventListAdapter(eventList,userId,userPermission!!)
                 binding.recyclerView.adapter = eventListAdapter
                 binding.recyclerView.layoutManager = LinearLayoutManager(this@EventListActivity)
+
                 eventListAdapter.notifyDataSetChanged()
             }
 
