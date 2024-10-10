@@ -39,17 +39,17 @@ public class EventAppService {
     public void registerEventApplication(Long eventId, Long userId) throws Exception {
         // 행사 정보와 사용자 정보 가져오기
         EventEntity event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new IllegalArgumentException("Event not found: " + eventId));
+            .orElseThrow(() -> new IllegalArgumentException("Event not found: " + eventId));
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
+            .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
 
         // event_app 테이블에 데이터 저장
         EventAppEntity eventApp = EventAppEntity.builder()
-                .event(event)
-                .user(user)
-                .eventComp('N')
-                .appDate(LocalDate.now())
-                .build();
+            .event(event)
+            .user(user)
+            .eventComp('N')
+            .appDate(LocalDate.now())
+            .build();
         eventAppRepository.save(eventApp);
 
         // 행사 스케줄 정보 가져오기
@@ -62,14 +62,14 @@ public class EventAppService {
             String qrCodeImage = generateQrCodeImage(eventId, schedule.getScheduleId(), userId);
 
             AttendInfoEntity attendInfo = AttendInfoEntity.builder()
-                    .eventSchedule(schedule)
-                    .attendDate(null)
-                    .checkInTime(null)
-                    .checkOutTime(null)
-                    .user(user)
-                    .qrImage(qrCodeImage)  // 생성된 QR 코드 이미지 경로 저장
-                    .attendComp('N')  // 출석 여부 기본값 설정
-                    .build();
+                .eventSchedule(schedule)
+                .attendDate(null)
+                .checkInTime(null)
+                .checkOutTime(null)
+                .user(user)
+                .qrImage(qrCodeImage)  // 생성된 QR 코드 이미지 경로 저장
+                .attendComp('N')  // 출석 여부 기본값 설정
+                .build();
 
             attendInfoRepository.save(attendInfo);
         }
@@ -104,27 +104,27 @@ public class EventAppService {
     // 특정 유저의 행사 신청 내역 목록 (전체, 행사 id 기준 내림차순)
     public List<AppEventAppListResponse> findMyEvents(Long userId) {
         return eventAppRepository.findByUser_UserIdOrderByEvent_EventIdDesc(userId)
-                .stream()
-                .map(eventApp -> new AppEventAppListResponse(eventApp.getEvent(), eventApp))
-                .toList();
+            .stream()
+            .map(eventApp -> new AppEventAppListResponse(eventApp.getEvent(), eventApp))
+            .toList();
     }
 
     // 특정 유저의 행사 신청 내역 (수료, 행사 id 기준 내림차순)
     public List<AppEventAppListResponse> findMyCompleteEvents(Long userId) {
         // eventComp가 'Y'인 값만 가져오기
         return eventAppRepository.findByUser_UserIdAndEventCompOrderByEvent_EventIdDesc(userId, 'Y')
-                .stream()
-                .map(eventApp -> new AppEventAppListResponse(eventApp.getEvent(), eventApp))
-                .toList();
+            .stream()
+            .map(eventApp -> new AppEventAppListResponse(eventApp.getEvent(), eventApp))
+            .toList();
     }
 
     // 특정 유저의 행사 신청 내역 (미수료, 행사 id 기준 내림차순)
     public List<AppEventAppListResponse> findMyIncompleteEvents(Long userId) {
         // eventComp가 'N'인 값만 가져오기
         return eventAppRepository.findByUser_UserIdAndEventCompOrderByEvent_EventIdDesc(userId, 'N')
-                .stream()
-                .map(eventApp -> new AppEventAppListResponse(eventApp.getEvent(), eventApp))
-                .toList();
+            .stream()
+            .map(eventApp -> new AppEventAppListResponse(eventApp.getEvent(), eventApp))
+            .toList();
     }
 
 

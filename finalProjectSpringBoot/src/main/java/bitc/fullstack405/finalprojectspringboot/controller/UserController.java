@@ -1,22 +1,15 @@
 package bitc.fullstack405.finalprojectspringboot.controller;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.EventAppInsertRequest;
 import bitc.fullstack405.finalprojectspringboot.database.dto.LoginResponse;
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventAppEntity;
-import bitc.fullstack405.finalprojectspringboot.database.entity.TempEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
-import bitc.fullstack405.finalprojectspringboot.service.TempService;
 import bitc.fullstack405.finalprojectspringboot.service.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
-public class TempController {
+public class UserController {
 
   private final UserService userService;
 

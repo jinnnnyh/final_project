@@ -68,7 +68,6 @@ class EventDetailActivity : AppCompatActivity() {
         Client.retrofit.findEventId(eventId).enqueue(object:retrofit2.Callback<EventDetailData>{
             override fun onResponse(call: Call<EventDetailData>, response: Response<EventDetailData>) {
                 Log.d("findEventId","${response.body()}")
-                // 통신은 성공했는데 null 값 넘어옴 은정이한테 말하기
                 event = response.body() as EventDetailData
                 binding.dTitle.text = event.eventTitle
                 binding.dContent.text = event.eventContent
@@ -114,7 +113,7 @@ class EventDetailActivity : AppCompatActivity() {
                             override fun onResponse(call: Call<Int>, response: Response<Int>) {
                                 Log.d("insert num","${response.body()}")
                                 AlertDialog.Builder(this@EventDetailActivity).run {
-                                    if(response.body() == 1){
+                                    if(response.body() == 2){
                                         setMessage("신청 완료되었습니다.")
                                     }
                                     else{

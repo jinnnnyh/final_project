@@ -35,7 +35,7 @@ public class AppEventAppController {
 
     // 특정 유저의 행사 신청 전체 내역 (행사 id 기준 내림차순)
     // event id, app id, 제목, 신청일, 수료/미수료(Y/N)
-    @GetMapping("/application-list/{userId}")
+    @PostMapping("/application-list/{userId}")
     public ResponseEntity<List<AppEventAppListResponse>> findMyApplication(@PathVariable Long userId) {
         List<AppEventAppListResponse> eventAppList = eventAppService.findMyEvents(userId);
         return ResponseEntity.ok().body(eventAppList);
@@ -43,7 +43,7 @@ public class AppEventAppController {
 
     // 특정 유저의 행사 수료 내역 (행사 id 기준 내림차순)
     // event id, app id, 제목, 신청일, 행사 수료(Y)
-    @GetMapping("/complete-application-list/{userId}")
+    @PostMapping("/complete-application-list/{userId}")
     public ResponseEntity<List<AppEventAppListResponse>> findMyCompleteApplication(@PathVariable Long userId) {
         List<AppEventAppListResponse> eventAppList = eventAppService.findMyCompleteEvents(userId);
         return ResponseEntity.ok().body(eventAppList);
@@ -51,7 +51,7 @@ public class AppEventAppController {
 
     // 특정 유저의 행사 미수료 내역 (행사 id 기준 내림차순)
     // event id, app id, 제목, 신청일, 행사 미수료(N)
-    @GetMapping("/incomplete-application-list/{userId}")
+    @PostMapping("/incomplete-application-list/{userId}")
     public ResponseEntity<List<AppEventAppListResponse>> findMyIncompleteApplication(@PathVariable Long userId) {
         List<AppEventAppListResponse> eventAppList = eventAppService.findMyIncompleteEvents(userId);
         return ResponseEntity.ok().body(eventAppList);

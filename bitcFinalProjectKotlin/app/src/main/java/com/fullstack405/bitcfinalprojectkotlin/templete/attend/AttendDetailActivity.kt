@@ -62,7 +62,7 @@ class AttendDetailActivity : AppCompatActivity() {
                 // 참석증 페이지로 이동
                 var intentComplete =Intent(this,CompleteViewActivity::class.java)
                 intentComplete.putExtra("userId",userId)
-                intentComplete.putExtra("eventId",userId)
+                intentComplete.putExtra("eventId",eventId)
                 startActivity(intentComplete)
             }
         }

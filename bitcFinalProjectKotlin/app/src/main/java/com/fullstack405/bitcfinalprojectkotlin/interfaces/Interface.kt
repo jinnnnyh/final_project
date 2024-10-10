@@ -71,10 +71,9 @@ interface Interface {
   fun findMyIncompleteApplication(@Path("userId") id:Long):Call<List<EventAppData>>
 
   // 이벤트id, 회원id >  스케쥴id, QR 이미지 주소, 행사날짜
+  @POST("/app/qr-image/{eventId}/{userId}")
+  fun findQRImageList(@Path("eventId")eventId:Long, @Path("userId")userId:Long):Call<List<Map<String, Any>>>
 
-  fun findQRImageList(eventId:Long, userId:Long):Call<List<QRdata>>
-
-  
   ////////// notice
   // 공지사항만 연결해서 레트로핏 되는지 확인해보기
   fun findNoticeList():Call<List<NoticeData>>

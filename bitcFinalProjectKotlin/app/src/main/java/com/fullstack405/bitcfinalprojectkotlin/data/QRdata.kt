@@ -1,5 +1,3 @@
 package com.fullstack405.bitcfinalprojectkotlin.data
 
-data class QRdata(val scheduleId:Long,
-                  val eventDate:String,
-                  val imgQrName:String)
+data class QRdata(val QRlist:Map<String,Any>)
