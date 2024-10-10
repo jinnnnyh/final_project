@@ -31,12 +31,12 @@ class EventListAdapter(val eventList:MutableList<EventListData>, val userId:Long
         }
 
         holder.binding.title.text = event.eventTitle
-        holder.binding.date.text = event.uploadDate // 게시일
+        holder.binding.date.text = event.visibleDate // 게시일
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.binding.root.context, EventDetailActivity::class.java)
             intent.putExtra("eventId",event.eventId)
-            intent.putExtra("visibleDate",event.uploadDate) // 게시일
+            intent.putExtra("visibleDate",event.visibleDate) // 게시일
             // 유저id
             intent.putExtra("userId",userId)
             intent.putExtra("userPermission",userPermission)

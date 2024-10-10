@@ -58,8 +58,8 @@ class AdminMainActivity : AppCompatActivity() {
         binding.eventRecyclerView.adapter = mainEventListAdapter
         binding.eventRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        // 행사 안내
-        binding.eventList.setOnClickListener {
+        // 행사 관리
+        binding.adminEventList.setOnClickListener {
             startActivity(intent_event)
         }
 
@@ -68,6 +68,10 @@ class AdminMainActivity : AppCompatActivity() {
             startActivity(intentAttendList)
         }
 
+        // 행사 안내
+        binding.eventList.setOnClickListener {
+            startActivity(intent_event)
+        }
 
         // db 연결버전
     Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{

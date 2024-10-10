@@ -104,30 +104,30 @@ class EventDetailActivity : AppCompatActivity() {
         // 신청버튼
         binding.btnSubmit.setOnClickListener {
 
-            // 신청자 테이블에 userId, eventId, 수료여부 N 해서 보내기, 날짜는 받을 때 로컬 타임으로 넣으면 될듯
-            var data = EventAppData(0,userId,eventId,'N')
-
             // 확인 다이얼로그
             AlertDialog.Builder(this).run{
                 setMessage("해당 행사에 참석하시겠습니까?")
                 setPositiveButton("확인",object:DialogInterface.OnClickListener{
                     override fun onClick(p0: DialogInterface?, p1: Int) {
                         // db 연결버전
-                        Client.retrofit.insertEventApp(data).enqueue(object:retrofit2.Callback<EventAppData>{
-                            override fun onResponse(call: Call<EventAppData>, response: Response<EventAppData>) {
+                        Client.retrofit.insertEventApp(eventId, userId).enqueue(object:retrofit2.Callback<Int>{
+                            override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                                Log.d("insert num","${response.body()}")
                                 AlertDialog.Builder(this@EventDetailActivity).run {
-                                    setMessage("신청이 완료되었습니다.")
+                                    if(response.body() == 1){
+                                        setMessage("신청 완료되었습니다.")
+                                    }
+                                    else{
+                                        setMessage("이미 신청한 행사입니다.")
+                                    }
+
                                     setNegativeButton("닫기",null)
                                     show()
                                 }
                             }
 
-                            override fun onFailure(call: Call<EventAppData>, t: Throwable) {
-                                AlertDialog.Builder(this@EventDetailActivity).run {
-                                    setMessage("이미 신청한 행사입니다.")
-                                    setNegativeButton("닫기",null)
-                                    show()
-                                }
+                            override fun onFailure(call: Call<Int>, t: Throwable) {
+                                Log.d("insert error","${t.message}")
                             }
                         }) // retrofit
                     }// onclick

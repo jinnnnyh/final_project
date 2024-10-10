@@ -6,6 +6,7 @@ import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventScheduleData
 import com.fullstack405.bitcfinalprojectkotlin.data.NoticeData
+import com.fullstack405.bitcfinalprojectkotlin.data.QRdata
 import com.fullstack405.bitcfinalprojectkotlin.data.TempData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserAttendData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserData
@@ -14,6 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface Interface {
 
@@ -53,18 +55,24 @@ interface Interface {
 
   /////////// attend
   // 신청
-  @POST("/app/insert")
-  fun insertEventApp(@Body data:EventAppData):Call<EventAppData>
+  @POST("/app/application/{eventId}/{userId}")
+  fun insertEventApp(@Path("eventId") eventId:Long, @Path("userId") userId:Long):Call<Int>
 
-  // userid 신청 목록 조회 >> 이거로 제목까지 끌어와지는지 확인
-  // 서버에서 제목이랑 날짜 같이 넘겨주는걸 이걸로 받아지나
-  fun findAttendList(id:Long):Call<List<UserAttendData>>
+  // 해당 유저의 신청 목록
+  @POST("/app/application-list/{userId}")
+  fun findAttendList(@Path("userId") userId:Long):Call<List<EventAppData>>
 
-  // 유저id, 참석여부 'Y' 인 목록 조회
-  fun findFinalAttendList(id:Long, attend:Char):Call<List<AttendInfoData>>
+  // 유저id, 수료 목록
+  @POST("/app/complete-application-list/{userId}")
+  fun findMyCompleteApplication(@Path("userId") id:Long):Call<List<EventAppData>>
 
-  // 이벤트id 스케줄 리스트 불러오기
-  fun findScheduleList(id:Long):Call<List<EventScheduleData>>
+  // 유저id, 미수료 목록
+  @POST("/app/incomplete-application-list/{userId}")
+  fun findMyIncompleteApplication(@Path("userId") id:Long):Call<List<EventAppData>>
+
+  // 이벤트id, 회원id >  스케쥴id, QR 이미지 주소, 행사날짜
+
+  fun findQRImageList(eventId:Long, userId:Long):Call<List<QRdata>>
 
   
   ////////// notice
