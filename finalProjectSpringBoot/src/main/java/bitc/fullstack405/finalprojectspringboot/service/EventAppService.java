@@ -127,11 +127,6 @@ public class EventAppService {
                 .toList();
     }
 
-    // eventId와 userId로 attend_info 테이블의 QR 이미지 조회(다시 만들어야 함, 오늘 날짜까지 받아와야 해서)
-    public List<String> findQrImages(Long eventId, Long userId) {
-        return attendInfoRepository.findQrImagesByEventIdAndUserId(eventId, userId);
-    }
-
 
     ///////////////////////////
     ////////// <WEB> //////////

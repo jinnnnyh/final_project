@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "appId")
 public class EventAppEntity {
 
-    // evnet_app idx
+    // event_app idx
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "app_id", nullable = false)

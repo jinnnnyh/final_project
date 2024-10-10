@@ -73,10 +73,10 @@ public class EventService {
 //        return eventRepository.save(event);
 //    }
 //
-    // 행사 글 목록 - 모두 출력
-    public List<EventEntity> findAllSortedByEventIdDesc() {
-        return eventRepository.findAllByOrderByEventIdDesc();
-    }
+//    // 행사 글 목록 - 모두 출력
+//    public List<EventEntity> findAllSortedByEventIdDesc() {
+//        return eventRepository.findAllByOrderByEventIdDesc();
+//    }
 //
 //    // 행사 글 목록 - 행사일 기준 2주 전부터 출력 - 다시 만들어야 함 종료일 이전거만 보여주려면
 //    public List<EventEntity> findEventsFromVisibleDate() {
