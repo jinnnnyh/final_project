@@ -2,6 +2,10 @@ import Notice from "../../pages/Notice.jsx";
 import {Link} from "react-router-dom";
 
 function NoticeBoardView () {
+
+  // 데이터 불러오기
+  // 수정, 삭제, 목록 버튼 기능 구현
+
   return (
     <section>
       <Notice/>
@@ -33,8 +37,6 @@ function NoticeBoardView () {
           </div>
       </div>
     </section>
-
-
   )
 }
 

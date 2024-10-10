@@ -4,99 +4,93 @@ import {Link, useLocation} from "react-router-dom";
 import events from "../pages/Events.jsx";
 import member from "../pages/Member.jsx";
 
-
 function Navigation() {
 
-  const location = useLocation();
-  const [activeMenu, setActiveMenu] = useState(events);
-  const [activeSubMenu, setActiveSubMenu] = useState();
-  const [hoveredMenu, setHoveredMenu] = useState(null);
+  const [activeMenu, setActiveMenu] = useState(null);
+  const [activeSubMenu, setActiveSubMenu] = useState(0);
 
-  // URL 변경 시 activeMenu를 업데이트
-  useEffect(() => {
-    const currentPath = location.pathname;
-    const foundMenu = menuItems.find(item => item.path === currentPath);
-    if (foundMenu) {
-      setActiveMenu(foundMenu.name);
-      setActiveSubMenu(null); // 서브 메뉴 초기화
-    }
-  }, [location.pathname]);
-
-
-  const handleMenuClick = (menu) => {
-    setActiveMenu(menu);
-  };
-
-  const handleSubMenuClick = (subMenu) => {
-    setActiveSubMenu(subMenu);
-  };
-
-  const menuItems = [
-    { name: '행사관리', path: '/', icon: '/src/assets/images/ico_event_w.svg', iconActive: '/src/assets/images/ico_event.svg',
-      iconHover: '/src/assets/images/ico_event.svg' },
+  const menus = [
     {
+      id: 1,
+      name: '행사관리',
+      icon: '/src/assets/images/ico_event_w.svg',
+      activeIcon: '/src/assets/images/ico_event.svg',
+      path: '/',
+      subMenus: [],
+    },
+    {
+      id: 2,
       name: '회원관리',
-      path: '/member',
       icon: '/src/assets/images/ico_member_w.svg',
-      iconActive: '/src/assets/images/ico_member.svg',
-      iconHover: '/src/assets/images/ico_member.svg',
-      subItems: [
-        { name: '전체회원', path: '/member' },
-        { name: '승인대기', path: '/member/permission' },
+      activeIcon: '/src/assets/images/ico_member.svg',
+      path: '/member',
+      subMenus: [
+        { path: '/member', name: '전체회원' },
+        { path: '/member/permission', name: '승인대기' },
       ],
     },
-    { name: '공지사항', path: '/notice', icon: '/src/assets/images/ico_notice_w.svg',
-      iconActive: '/src/assets/images/ico_notice.svg', iconHover: '/src/assets/images/ico_notice.svg' },
+    {
+      id: 3,
+      name: '공지사항',
+      icon: '/src/assets/images/ico_notice_w.svg',
+      activeIcon: '/src/assets/images/ico_notice.svg',
+      path: '/notice',
+      subMenus: [],
+    },
   ];
+
+  const handleMenuClick = (id) => {
+    setActiveMenu(activeMenu === id ? null : id);
+    setActiveSubMenu(0);
+  };
+
+  const handleSubMenuClick = (index) => {
+    setActiveSubMenu(index);
+  };
+
+  const handleLogoClick = () => {
+    setActiveMenu(menus[0].id); // 첫 번째 메뉴를 활성화
+  };
 
   return (
     <div className={'nav flex-column bg-point vh-100 nav-style'}>
       <p className={'text-center pt-4'}>
-        <Link to={'/'} className={'fw-bold text-white fs-4'}>
+        <Link to={'/'} className={'fw-bold text-white fs-4'} onClick={handleLogoClick}>
           출첵관리시스템</Link>
       </p>
-      <nav>
-        {menuItems.map((item) => (
-          <div key={item.name}>
-            <Link
-              to={item.path}
-              className={`nav-item ${activeMenu === item.name ? 'active' : ''}`}
-              onClick={() => handleMenuClick(item.name)}
-              onMouseEnter={() => setHoveredMenu(item.name)}
-              onMouseLeave={() => setHoveredMenu(null)}
-            >
-              <img
-                src={
-                  activeMenu === item.name
-                    ? item.iconActive
-                    : hoveredMenu === item.name
-                      ? item.iconHover
-                      : item.icon
-                }
-                alt={item.name}
-              />
-              <span>{item.name}</span>
-            </Link>
-            {item.subItems && activeMenu === item.name && (
-              <div className="sub-menu">
-                {item.subItems.map((subItem) => (
-                  <Link
-                    key={subItem.name}
-                    to={subItem.path}
-                    className={`sub-item ${activeSubMenu === subItem.name ? 'active' : ''}`}
-                    onClick={() => {
-                      handleSubMenuClick(subItem.name);
-                      setActiveMenu(item.name); // 상위 메뉴 활성화
-                    }}
-                  >
-                    {subItem.name}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+
+      <nav className="navbar">
+        <ul>
+          {menus.map((menu) => (
+            <li key={menu.id}>
+              <Link to={menu.path} className={`menu-item ${activeMenu === menu.id ? 'active' : ''}`}
+                    onClick={() => handleMenuClick(menu.id)} tabIndex={0}>
+                <img
+                  src={activeMenu === menu.id ? `${menu.activeIcon}` : menu.icon}
+                  alt={`${menu.name} 아이콘`}
+                />
+                {menu.name}
+              </Link>
+              {activeMenu === menu.id && (
+                <ul className="submenu">
+                  {menu.subMenus.map((subMenu, index) => (
+                    <li
+                      key={index}
+                      className={activeSubMenu === index ? 'active' : ''}
+                      onClick={() => handleSubMenuClick(index)}
+                    >
+                      <Link to={subMenu.path}>
+                        {subMenu.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
       </nav>
+
       <p className={'ft-txt'}>Copyright © <br/>CheckManager. All rights reserved.</p>
     </div>
   )

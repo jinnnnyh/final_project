@@ -1,7 +1,32 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Notice from "../../pages/Notice.jsx";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 function NoticeBoardList () {
+
+  // 공지사항 리스트 불러오기
+  const [notiBoardList, setNotiBoardList] = useState([]);
+  //
+  // useEffect(() => {
+  //   axios.get('http://localhost:8080/notifications')
+  //     .then(res => {
+  //       setNotiBoardList(res.data);
+  //       // console.log(notiData);
+  //     })
+  //     .catch(err => {
+  //       alert("통신 실패." + err);
+  //     });
+  // }, [notiBoardList]);
+  //
+
+  // 글쓰기 버튼 연결
+  const navigate = useNavigate();
+  const handleWrite= () => {
+    navigate('/notice/write');
+  };
+  
+  
   return (
     <section>
       <Notice/>
@@ -21,31 +46,25 @@ function NoticeBoardList () {
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>1</td>
-          <td>공지사항 등록 예정입니다.공지사항 등록 예정입니다.</td>
-          <td>아이유</td>
-          <td>2024-10-05 오전 11:20</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>공지사항 등록 예정입니다.공지사항 등록 예정입니다.</td>
-          <td>아이유</td>
-          <td>2024-10-05 오전 11:20</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>공지사항 등록 예정입니다.공지사항 등록 예정입니다.</td>
-          <td>아이유</td>
-          <td>2024-10-05 오전 11:20</td>
-        </tr>
+        {
+          notiBoardList.map(item => {
+            return (
+              <tr key={item.notiId}>
+                <td>{item.notiId}</td>
+                <td>{item.notiTitle}</td>
+                <td>{item.user}</td>
+                <td>{item.notiDate}</td>
+              </tr>
+            );
+          })
+        }
         </tbody>
       </table>
 
       {/*<Pagination/>*/}
 
       <div className={'d-flex justify-content-end mt-5'}>
-        <Link to={"/notice/write"} className={'btn btn-point'}> 글쓰기</Link>
+        <button className={'btn btn-point'} onClick={handleWrite}> 글쓰기</button>
       </div>
     </section>
   )

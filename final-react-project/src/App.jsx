@@ -1,5 +1,5 @@
 
-import {BrowserRouter, Route, Routes } from "react-router-dom";
+import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
 import Header from "./components/Header.jsx";
 import Navigation from "./components/Navigation.jsx";
 import ErrorPage from "./pages/ErroPage.jsx";
@@ -7,43 +7,53 @@ import MainPages from "./pages/MainPages.jsx";
 import NoticeBoardList from "./components/notice/NoticeBoardList.jsx";
 import NoticeBoardWrite from "./components/notice/NoticeBoardWrite.jsx";
 import NoticeBoardView from "./components/notice/NoticeBoardView.jsx";
-import TempComponent from "./components/temp/TempComponent.jsx";
 import MemberList from "./components/member/MemberList.jsx";
+import MemberEdit from "./components/member/MemberEdit.jsx";
 import EventList from "./components/events/EventList.jsx";
-import MemberWrite from "./components/member/MemberWrite.jsx";
 import EventWrite from "./components/events/EventWrite.jsx";
 import EventView from "./components/events/EventView.jsx";
 import MemberPermission from "./components/member/MemberPermission.jsx";
 import EventAttendList from "./components/events/EventAttendList.jsx";
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/test/Signup.jsx";
 
 
 function App() {
+
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
+    <>
+      <Routes >
+        <Route path="/login" element={<Login />}/>
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
       <div className={'d-flex'}>
           {/* 왼쪽 네비게이션 */}
-          <Navigation/>
+          {/*<Navigation/>*/}
+        {location.pathname !== '/login' && location.pathname !== '/signup' && <Navigation/>}
           <div className={'container-fluid'} style={{marginLeft:"330px", marginRight:"50px"}}>
-            <Header/>
+            {location.pathname !== '/login' && location.pathname !== '/signup' && <Header/>}
+            {/*<Header/>*/}
             <MainPages>
               <Routes>
                 <Route path="/" element={<EventList/>}/>
                 <Route path="/events/write" element={<EventWrite/>}/>
-                <Route path="/events/view" element={<EventView/>}/>
+                {/*<Route path="/events/view" element={<EventView/>}/>*/}
+                <Route path="/events/:eventId" element={<EventView/>}/>
                 <Route path="/events/attend" element={<EventAttendList/>}/>
                 <Route path="/member" element={<MemberList/>}/>
-                <Route path="/member/write" element={<MemberWrite/>}/>
+                <Route path="/member/edit" element={<MemberEdit/>}/>
                 <Route path="/member/permission" element={<MemberPermission/>}/>
                 <Route path="/notice" element={<NoticeBoardList/>}/>
                 <Route path="/notice/write" element={<NoticeBoardWrite/>}/>
                 <Route path="/notice/view" element={<NoticeBoardView/>}/>
                 <Route path="/errorPage" element={<ErrorPage/>}/>
-                <Route path="/temp" element={<TempComponent/>}/>
               </Routes>
             </MainPages>
           </div>
       </div>
-    </BrowserRouter>
+    </>
   )
 }
 
