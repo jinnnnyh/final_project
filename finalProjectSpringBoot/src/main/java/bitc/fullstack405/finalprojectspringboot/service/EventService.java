@@ -39,13 +39,13 @@ public class EventService {
         EventEntity event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + eventId));
 
-        // 회차 개수 추가
-        int scheduleCount = event.getScheduleList().size();
-        return new AppEventDetailResponse(event, scheduleCount); // 수정된 DTO 사용
+        return new AppEventDetailResponse(event);
     }
 
 
-
+    ///////////////////////////
+    ////////// <WEB> //////////
+    ///////////////////////////
 //    // 행사 글 등록
 //    public EventEntity save(AddEventRequest request, MultipartFile uploadFile) throws Exception {
 //

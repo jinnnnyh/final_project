@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 public class AppEventAppListResponse {
 
-    // 앱 - 신청 내역 전체 목록
+    // 앱 - 신청 내역 목록
     private final Long eventId; // 행사 id
     private final Long appId; // 신청 id
     private final String eventTitle; // 제목
