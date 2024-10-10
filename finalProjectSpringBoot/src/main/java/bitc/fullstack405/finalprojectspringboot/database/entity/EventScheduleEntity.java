@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "event_schedule")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)

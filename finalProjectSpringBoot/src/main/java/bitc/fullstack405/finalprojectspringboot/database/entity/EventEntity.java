@@ -17,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "event")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
@@ -68,7 +69,7 @@ public class EventEntity {
     private int maxPeople;
 
     // 참여 마감 여부 Y/N
-    @Column(name = "is_registration_open", length = 1, nullable = false)
+    @Column(name = "is_registration_open", length = 1, nullable = true)
     @ColumnDefault("'N'")
     private Character isRegistrationOpen;
 
@@ -86,7 +87,7 @@ public class EventEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<EventsScheduleEntity> scheduleList = new ArrayList<>();
+    private List<EventScheduleEntity> scheduleList = new ArrayList<>();
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @ToString.Exclude
@@ -100,12 +101,12 @@ public class EventEntity {
     }
 
     public void acceptEvent(UserEntity approver) {
-        this.eventAccept = 'Y';
+        this.eventAccept = 2;
         this.approver = approver;
     }
 
     public void rejectEvent() {
-        this.eventAccept = 'N';
+        this.eventAccept = 3;
         this.approver = null;
         this.acceptedDate = null;
     }

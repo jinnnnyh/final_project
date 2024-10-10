@@ -51,5 +51,5 @@ public class AttendInfoEntity {
     @ManyToOne
     @JoinColumn(name = "schedule_id", nullable = false)
     @ToString.Exclude
-    private EventsScheduleEntity eventsSchedule;
+    private EventScheduleEntity eventsSchedule;
 }

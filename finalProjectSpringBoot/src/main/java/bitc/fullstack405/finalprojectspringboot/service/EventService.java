@@ -5,9 +5,11 @@ import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventResponse
 import bitc.fullstack405.finalprojectspringboot.database.dto.event.UpdateEventRequest;
 import bitc.fullstack405.finalprojectspringboot.database.entity.AttendInfoEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
+import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.AttendInfoRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.EventRepository;
+import bitc.fullstack405.finalprojectspringboot.database.repository.EventScheduleRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,12 +27,14 @@ import java.util.stream.Collectors;
 @Service
 public class EventService {
 
-    private final EventRepository eventRepository;
-    private final UserRepository userRepository;
-    private final AttendInfoRepository attendInfoRepository;;
-    private final FileUtils fileUtils;
+  private final EventRepository eventRepository;
+  private final UserRepository userRepository;
+  private final AttendInfoRepository attendInfoRepository;
+  ;
+  private final FileUtils fileUtils;
+  private final EventScheduleRepository eventScheduleRepository;
 
-//    // 행사 글 등록
+  //    // 행사 글 등록
 //    public EventEntity save(AddEventRequest request, MultipartFile uploadFile) throws Exception {
 //
 ////        // 현재 인증된 사용자 정보 가져오기
@@ -56,10 +61,10 @@ public class EventService {
 //        return eventRepository.save(event);
 //    }
 //
-    // 행사 글 목록 - 모두 출력
-    public List<EventEntity> findAllSortedByEventIdDesc() {
-        return eventRepository.findAllByOrderByEventIdDesc();
-    }
+  // 행사 글 목록 - 모두 출력
+  public List<EventEntity> findAllSortedByEventIdDesc() {
+    return eventRepository.findAllByOrderByEventIdDesc();
+  }
 //
 //    // 행사 글 목록 - 행사일 기준 2주 전부터 출력 - 다시 만들어야 함 종료일 이전거만 보여주려면
 //    public List<EventEntity> findEventsFromVisibleDate() {
@@ -146,7 +151,53 @@ public class EventService {
 //    }
 
 
-    ////////////////////////////////////////react web///////////////////////////////////////////
+  ////////////////////////////////////////react web///////////////////////////////////////////
 
+//  public void writeEvent(EventEntity eventEntity, int calcDate, LocalTime startTime, LocalTime endTime) {
+//    for (int i = 0; i < calcDate; i++) {
+//      LocalDate eventDate = eventEntity.getVisibleDate().plusDays(i);
+//
+//      EventScheduleEntity eventScheduleEntity = new EventScheduleEntity();
+//      eventScheduleEntity.setEvent(eventEntity);
+//      eventScheduleEntity.setStartTime(startTime);
+//      eventScheduleEntity.setEndTime(endTime);
+//      eventScheduleEntity.setEventDate(eventDate);
+//
+//      eventScheduleRepository.save(eventScheduleEntity);
+//
+//      eventEntity.getScheduleList().add(eventScheduleEntity);
+//    }
+//
+//    eventRepository.save(eventEntity);
+//  }
 
+////  @Transactional
+//  public void writeEvent(EventEntity eventEntity, int calcDate, LocalTime startTime, LocalTime endTime) {
+//
+//    eventRepository.save(eventEntity);
+//
+//    for (int i = 0; i < calcDate; i++) {
+//      LocalDate eventDate = eventEntity.getVisibleDate().plusDays(i);
+//
+//      EventScheduleEntity eventScheduleEntity = new EventScheduleEntity();
+//      eventScheduleEntity.setEvent(eventEntity);
+//      eventScheduleEntity.setStartTime(startTime);
+//      eventScheduleEntity.setEndTime(endTime);
+//      eventScheduleEntity.setEventDate(eventDate);
+//
+//      eventScheduleRepository.save(eventScheduleEntity);
+//
+//      eventEntity.getScheduleList().add(eventScheduleEntity);
+//    }
+//  }
+
+  @Transactional
+  public void writeEvent(EventEntity eventEntity) {
+    EventEntity savedEventEntity = eventRepository.save(eventEntity);
+
+    for (EventScheduleEntity schedule : eventEntity.getScheduleList()) {
+      schedule.setEvent(savedEventEntity);
+      eventScheduleRepository.save(schedule);
+    }
+  }
 }
