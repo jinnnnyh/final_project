@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity() {
       startActivity(intentAttendList)
     }
 
-
     // 행사 안내 어댑터
     lateinit var eventList:MutableList<EventListData>
     lateinit var mainEventListAdapter:MainEventListAdapter
@@ -78,6 +77,9 @@ class MainActivity : AppCompatActivity() {
         binding.eventRecyclerView.adapter = mainEventListAdapter
         binding.eventRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
 
+        /// 신청 현황 신청 목록 중 행사일 제일 가까운 것 ??
+        binding.txtAttend.text = eventList[0].eventTitle
+
         // 목록은 항상 내림차순으로 받아옴, 상위 4개만 메인에 표출
 //        eventList.add(resList.get(0))
 
@@ -93,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    binding.noticeList.setOnClickListener {
+      binding.noticeList.setOnClickListener {
       startActivity(intent_notice)
     }
 

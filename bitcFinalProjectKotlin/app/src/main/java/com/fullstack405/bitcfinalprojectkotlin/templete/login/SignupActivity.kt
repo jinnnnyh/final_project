@@ -60,9 +60,9 @@ class SignupActivity : AppCompatActivity() {
 //
 //        } // btnSubmit
 //
-//        binding.btnCancle.setOnClickListener {
-//            startActivity(intent)
-//        }
+        binding.btnCancle.setOnClickListener {
+            finish()
+        }
 //
     }//onCreate
 

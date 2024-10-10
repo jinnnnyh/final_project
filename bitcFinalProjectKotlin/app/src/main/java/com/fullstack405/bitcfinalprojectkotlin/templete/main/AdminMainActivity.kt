@@ -15,6 +15,7 @@ import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
 import com.fullstack405.bitcfinalprojectkotlin.data.NoticeData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityAdminMainBinding
+import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.notice.NoticeListActivity
@@ -43,6 +44,8 @@ class AdminMainActivity : AppCompatActivity() {
         intent_event.putExtra("userId",userId)
         intent_event.putExtra("userPermission",userPermission)
 
+        val intentAttendList = Intent(this, AttendListActivity::class.java)
+        intentAttendList.putExtra("userId",userId)
 
         val intent_notice = Intent(this, NoticeListActivity::class.java)
         val intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
@@ -55,9 +58,16 @@ class AdminMainActivity : AppCompatActivity() {
         binding.eventRecyclerView.adapter = mainEventListAdapter
         binding.eventRecyclerView.layoutManager = LinearLayoutManager(this)
 
+        // 행사 안내
         binding.eventList.setOnClickListener {
             startActivity(intent_event)
         }
+
+        // 신청 내역
+        binding.attendList.setOnClickListener {
+            startActivity(intentAttendList)
+        }
+
 
         // db 연결버전
     Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
