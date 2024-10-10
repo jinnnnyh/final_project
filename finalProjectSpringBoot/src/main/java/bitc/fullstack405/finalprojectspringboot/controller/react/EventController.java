@@ -50,6 +50,7 @@ public class EventController {
     eventEntity.setPosterUser(userEntity);
     eventEntity.setMaxPeople(maxPeople);
     eventEntity.setIsRegistrationOpen('N');
+    eventEntity.setEventAccept(1);
 //    if (!Objects.equals(eventData.get("maxPeople"), "")) {
 //      eventEntity.setMaxPeople(Integer.parseInt(eventData.get("maxpeople")));
 //    }
