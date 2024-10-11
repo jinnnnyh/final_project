@@ -10,9 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Getter
-@Setter
 @NoArgsConstructor//(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder(toBuilder = true)

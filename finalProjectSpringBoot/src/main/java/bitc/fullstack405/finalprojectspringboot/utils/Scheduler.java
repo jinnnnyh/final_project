@@ -1,7 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.utils;
 
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.EventRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

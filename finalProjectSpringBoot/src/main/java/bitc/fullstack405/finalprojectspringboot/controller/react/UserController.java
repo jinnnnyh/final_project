@@ -37,33 +37,30 @@ public class UserController {
 //  Web 데이터베이스 추가용 회원가입
   @PutMapping("/signup")
   public ResponseEntity<UserEntity> signup(@RequestBody Map<String, String> signupData) {
-    String userAccount = signupData.get("userAccount");
-    String userPw = signupData.get("userPw");
-    String name = signupData.get("name");
-    String userDepart = signupData.get("userDepart");
     String userPermission = signupData.get("userPermission");
-    String userPhone = signupData.get("userPhone");
-
-    UserEntity userEntity = new UserEntity();
+    Role userPerm = null;
 
     if (Objects.equals(userPermission, "협회장")) {
-      userEntity.setRole(Role.ROLE_PRESIDENT);
+      userPerm = Role.ROLE_PRESIDENT;
     }
     else if (Objects.equals(userPermission, "총무")) {
-      userEntity.setRole(Role.ROLE_SECRETARY);
+      userPerm = Role.ROLE_SECRETARY;
     }
     else if (Objects.equals(userPermission, "정회원")) {
-      userEntity.setRole(Role.ROLE_REGULAR);
+      userPerm = Role.ROLE_REGULAR;
     }
     else if (Objects.equals(userPermission, "준회원")) {
-      userEntity.setRole(Role.ROLE_ASSOCIATE);
+      userPerm = Role.ROLE_ASSOCIATE;
     }
+    UserEntity userEntity = UserEntity.builder()
+        .userAccount(signupData.get("userAccount"))
+        .userDepart(signupData.get("userDepart"))
+        .userPhone(signupData.get("userPhone"))
+        .password(signupData.get("userPw"))
+        .name(signupData.get("name"))
+        .role(userPerm)
+        .build();
 
-    userEntity.setUserAccount(userAccount);
-    userEntity.setName(name);
-    userEntity.setUserDepart(userDepart);
-    userEntity.setUserPhone(userPhone);
-    userEntity.setPassword(userPw);
 
     userService.signup(userEntity);
 

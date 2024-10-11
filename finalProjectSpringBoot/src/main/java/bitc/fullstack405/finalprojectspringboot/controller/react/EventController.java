@@ -1,7 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.controller.react;
 
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import bitc.fullstack405.finalprojectspringboot.service.EventService;
@@ -12,10 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
 
 @RequestMapping("/event")
 @RestController
