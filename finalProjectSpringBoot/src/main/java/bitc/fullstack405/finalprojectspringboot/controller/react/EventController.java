@@ -6,12 +6,16 @@ import bitc.fullstack405.finalprojectspringboot.database.repository.UserReposito
 import bitc.fullstack405.finalprojectspringboot.service.EventService;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @RequestMapping("/event")
 @RestController
@@ -57,5 +61,15 @@ public class EventController {
         parsedMaxPeople,
         file
     ));
+  }
+
+//  이벤트 상세보기
+  @GetMapping("/{eventId}")
+  public ResponseEntity<EventEntity> eventView(@PathVariable Long eventId) {
+    Optional<EventEntity> eventEntity = eventService.eventView(eventId);
+
+    EventEntity event = eventEntity.orElse(new EventEntity());
+
+    return ResponseEntity.ok(event);
   }
 }

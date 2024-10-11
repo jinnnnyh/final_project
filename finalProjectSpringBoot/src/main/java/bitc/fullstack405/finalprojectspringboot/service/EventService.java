@@ -1,9 +1,5 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.AddEventRequest;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventResponse;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.UpdateEventRequest;
-import bitc.fullstack405.finalprojectspringboot.database.entity.AttendInfoEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
@@ -12,10 +8,9 @@ import bitc.fullstack405.finalprojectspringboot.database.repository.EventReposit
 import bitc.fullstack405.finalprojectspringboot.database.repository.EventScheduleRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +19,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -210,5 +205,9 @@ public class EventService {
       eventScheduleRepository.saveAll(esEntities);
 
       return eventEntity;
+  }
+
+  public Optional<EventEntity> eventView(Long eventId) {
+    return eventRepository.findById(eventId);
   }
 }
