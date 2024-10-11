@@ -1,16 +1,19 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.qr.AppQRScanResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.AttendInfoRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.EventAppRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.EventScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -20,151 +23,86 @@ public class AttendInfoService {
     private final EventScheduleRepository eventScheduleRepository;
     private final EventAppRepository eventAppRepository;
 
+    // <APP> QR 이미지 조회
+    // eventId와 userId로 scheduleId, eventDate, qrImage 조회
+    public List<Map<String, Object>> findQrImages(Long eventId, Long userId) {
+        List<Object[]> results = eventScheduleRepository.findQrImagesByEventIdAndUserId(eventId, userId);
 
-//    // QR 코드 스캔 처리 로직
-//    public AppQRScanResponse qrScan(Long eventId, Long scheduleId, Long userId) {
-//        // 1. attend_info 테이블에서 해당 유저와 스케줄에 대한 정보 조회
-//        AttendInfoEntity attendInfo = attendInfoRepository.findByScheduleIdAndUserId(scheduleId, userId)
-//                .orElseThrow(() -> new RuntimeException("잘못된 QR 코드입니다."));
-//
-//        // 2. QR 코드 이미 사용되었는지 확인 (check_in_time, check_out_time 둘 다 null 아님)
-//        if (attendInfo.getCheckInTime() != null && attendInfo.getCheckOutTime() != null) {
-//            throw new RuntimeException("이미 사용된 QR 코드입니다.");
-//        }
-//
-//        // 3. 사용자 및 행사 정보 조회
-//        UserEntity user = attendInfo.getUser();
-//        EventScheduleEntity eventSchedule = attendInfo.getEventSchedule();
-//        EventEntity event = eventSchedule.getEvent();
-//
-//        // 4. 입장인지 퇴장인지 확인 후 처리
-//        if (attendInfo.getCheckInTime() == null) {
-//            // 입장 처리
-//            attendInfo = attendInfo.toBuilder()
-//                    .attendDate(LocalDate.now())
-//                    .checkInTime(LocalTime.now())
-//                    .build();
-//            attendInfoRepository.save(attendInfo);
-//        } else {
-//            // 퇴장 처리
-//            attendInfo = attendInfo.toBuilder()
-//                    .checkOutTime(LocalTime.now())
-//                    .attendComp('Y') // 수료 여부 Y로 업데이트
-//                    .build();
-//            attendInfoRepository.save(attendInfo);
-//
-//            // 회차별 수료 조건 확인 (입장 및 퇴장 시간 확인)
-//            if (attendInfo.getCheckInTime().isAfter(eventSchedule.getStartTime()) ||
-//                    attendInfo.getCheckOutTime().isBefore(eventSchedule.getEndTime())) {
-//                throw new RuntimeException("수료 조건을 만족하지 못했습니다.");
-//            }
-//
-//            // 모든 회차 수료 확인 후, event_app의 수료 여부 업데이트
-//            List<AttendInfoEntity> attendList = attendInfoRepository.findAllByEventAndUser(event, user);
-//            if (attendList.stream().allMatch(info -> info.getAttendComp() == 'Y')) {
-//                EventAppEntity eventApp = eventAppRepository.findByEventIdAndUserId(eventId, userId)
-//                        .orElseThrow(() -> new RuntimeException("행사 신청 정보가 없습니다."));
-//                eventApp = eventApp.toBuilder()
-//                        .eventComp('Y')
-//                        .build();
-//                eventAppRepository.save(eventApp);
-//            }
-//        }
-//
-//        // QR 스캔 결과 반환
-//        return AppQRScanResponse.builder()
-//                .eventId(event.getEventId())
-//                .userName(user.getName())
-//                .userPhone(user.getUserPhone())
-//                .build();
-//    }
-//
-//
-//
-//
-//
-//        // 1. AttendInfoEntity에서 scheduleId와 userId로 데이터를 조회
-//        AttendInfoEntity attendInfo = attendInfoRepository.findByEventSchedule_ScheduleIdAndUser_UserId(scheduleId, userId)
-//                .orElseThrow(() -> new IllegalArgumentException("잘못된 QR 코드입니다."));
-//
-//        // 이미 입장한 QR 코드인지 확인
-//        if (attendInfo.getCheckInTime() != null && attendInfo.getCheckOutTime() != null) {
-//            throw new IllegalStateException("이미 사용된 QR 코드입니다.");
-//        }
-//
-//        // 2. 입장/퇴장 여부 확인
-//        if (attendInfo.getCheckInTime() == null) {
-//            // 입장 처리
-//            attendInfo = attendInfo.toBuilder()
-//                    .attendDate(LocalDate.now())
-//                    .checkInTime(LocalTime.now())
-//                    .build();
-//            attendInfoRepository.save(attendInfo);
-//        } else {
-//            // 퇴장 처리
-//            attendInfo = attendInfo.toBuilder()
-//                    .checkOutTime(LocalTime.now())
-//                    .attendComp('Y') // 수료 여부 Y로 업데이트
-//                    .build();
-//            attendInfoRepository.save(attendInfo);
-//
-//            // 회차별 수료 조건 확인 (입장 및 퇴장 시간 확인)
-//            if (attendInfo.getCheckInTime().isAfter(eventSchedule.getStartTime()) ||
-//                    attendInfo.getCheckOutTime().isBefore(eventSchedule.getEndTime())) {
-//                throw new RuntimeException("수료 조건을 만족하지 못했습니다.");
-//            }
-//
-//            // 모든 회차 수료 확인 후, event_app의 수료 여부 업데이트
-//            List<AttendInfoEntity> attendList = attendInfoRepository.findAllByEventAndUser(event, user);
-//            if (attendList.stream().allMatch(info -> info.getAttendComp() == 'Y')) {
-//                EventAppEntity eventApp = eventAppRepository.findByEventIdAndUserId(eventId, userId)
-//                        .orElseThrow(() -> new RuntimeException("행사 신청 정보가 없습니다."));
-//                eventApp = eventApp.toBuilder()
-//                        .eventComp('Y')
-//                        .build();
-//                eventAppRepository.save(eventApp);
-//            }
-//        }
-//
-//        // 3. 마지막 회차인 경우 행사 수료 상태 업데이트
-//        checkEventCompletion(eventId, userId);
-//
-//        // 4. 행사 제목, 회원 이름, 전화번호 반환
-//        // QR 스캔 결과 반환
-//        return AppQRScanResponse.builder()
-//                .eventId(event.getEventId())
-//                .userName(user.getName())
-//                .userPhone(user.getUserPhone())
-//                .build();
-//    }
-//
-//    private void validateAttendanceCompletion(AttendInfoEntity attendInfo, EventScheduleEntity schedule) {
-//        // 입장했는지 확인
-//        if (attendInfo.getCheckInTime() == null) {
-//            throw new IllegalStateException("입장 기록이 없습니다.");
-//        }
-//
-//        // 지각 여부 확인 (입장 시간이 시작 시간보다 빠른지)
-//        if (attendInfo.getCheckInTime().isAfter(schedule.getStartTime())) {
-//            throw new IllegalStateException("지각했습니다.");
-//        }
-//
-//        // 퇴장 시간이 행사 종료 시간 이후인지 확인
-//        if (attendInfo.getCheckOutTime().isBefore(schedule.getEndTime())) {
-//            throw new IllegalStateException("행사 끝까지 참석하지 않았습니다.");
-//        }
-//
-//        // 당일 수료 여부 업데이트
-//        attendInfo.setAttendComp('Y');
-//    }
-//
-//    private void checkEventCompletion(Long eventId, Long userId) {
-//        // 모든 회차가 수료됐는지 확인하고, 모두 수료되었으면 eventApp의 eventComp 업데이트
-//        boolean allCompleted = attendInfoRepository.allSessionsCompleted(userId, eventId);
-//        if (allCompleted) {
-//            EventAppEntity eventApp = eventAppRepository.findByEvent_EventIdAndUser_UserId(eventId, userId)
-//                    .orElseThrow(() -> new IllegalArgumentException("행사 신청 정보를 찾을 수 없습니다."));
-//            eventApp.setEventComp('Y');
-//        }
-//    }
+        return results.stream()
+                .map(result -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("scheduleId", Long.valueOf(result[0].toString())); // scheduleId는 Long 타입으로 변환
+                    map.put("eventDate", result[1].toString()); // eventDate는 LocalDate이므로 toString()으로 변환
+                    map.put("qrImage", result[2].toString());
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
+
+    // <APP> QR 스캔 - 올바른 행사 정보인지 확인
+    public boolean validEvent(Long scheduleId, Long userId) {
+        return attendInfoRepository.isEventValid(scheduleId, userId);
+    }
+
+    // <APP> QR 스캔 - 이미 입장/퇴장 체크를 다 한 QR 코드인지 확인
+    public boolean usedQR(Long scheduleId, Long userId) {
+        return attendInfoRepository.existsByEventSchedule_ScheduleIdAndUser_UserIdAndCheckInTimeIsNotNullAndCheckOutTimeIsNotNull(scheduleId, userId);
+    }
+
+    // <APP> QR 스캔 - 입장/퇴장 데이터 업데이트, 회차별 수료/미수료 업데이트, 행사 수료/미수료 업데이트
+    @Transactional
+    public void qrScan(Long eventId, Long scheduleId, Long userId) {
+
+        // attendInfoEntity 가져오기
+        AttendInfoEntity attendInfo = attendInfoRepository.findByEventSchedule_ScheduleIdAndUser_UserId(scheduleId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("not found attendInfo"));
+
+        // eventScheduleEntity 가져오기
+        EventScheduleEntity eventSchedule = eventScheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new IllegalArgumentException("not found eventSchedule"));
+
+        // 입장/퇴장 처리
+        if(attendInfoRepository.existsByEventSchedule_ScheduleIdAndUser_UserIdAndCheckInTimeIsNull(scheduleId, userId)) { // 입장
+            attendInfo.updateCheckIn(LocalDate.now(), LocalTime.now());
+        }
+        else { // 퇴장
+            if (attendInfo.getCheckInTime().isAfter(eventSchedule.getStartTime()) ||
+                    LocalTime.now().isBefore(eventSchedule.getEndTime())) {
+                // 지각 or 일찍 퇴장 시 해당 회차 미수료 => 퇴장 시간만 업데이트
+                attendInfo.updateCheckOut(LocalTime.now());
+            } else {
+                // 해당 회차 수료 => 퇴장 시간 & 해당 회차 수료 N->Y 업데이트
+                attendInfo.updateCheckOutComp(LocalTime.now());
+            }
+
+            // 회차의 마지막 퇴장 시 행사 수료 여부 업데이트
+            // 행사에 속한 모든 회차(스케줄) 중 마지막 회차인지 확인
+            if (isLastSchedule(eventId, scheduleId)) {
+                // 최종 행사 수료 여부 업데이트
+                updateEventCompletionStatus(eventId, userId);
+            }
+        }
+    }
+
+    // <APP> 해당 회차가 해당 행사(eventId)의 마지막 회차인지 확인
+    private boolean isLastSchedule(Long eventId, Long scheduleId) {
+        // eventId로 해당 행사에 속한 모든 schedule 가져오기(scheduleId 기준 내림차순)
+        List<EventScheduleEntity> eventSchedules = eventScheduleRepository.findByEvent_EventIdOrderByScheduleIdDesc(eventId);
+
+        // schedule 리스트 중에서 마지막 회차의 scheduleId가 현재 처리 중인 scheduleId와 동일한지 확인
+        return !eventSchedules.isEmpty() && eventSchedules.get(0).getScheduleId().equals(scheduleId);
+    }
+
+    // <APP> 해당 행사(eventId)의 수료 여부 업데이트
+    private void updateEventCompletionStatus(Long eventId, Long userId) {
+        // 모든 회차의 수료 여부 확인 => 행사 수료 여부 업데이트
+        // 예를 들어, 모든 회차가 수료되었을 때만 행사 수료 상태를 Y로 업데이트
+        boolean isAllCompleted =  attendInfoRepository.isAllCompleted(eventId, userId);
+
+        // 회차별 수료가 모두 Y => 행사 수료 N->Y 업데이트
+        if (isAllCompleted) {
+            EventAppEntity eventApp = eventAppRepository.findByEvent_EventIdAndUser_UserId(eventId, userId);
+            eventApp.updateEventComp();
+        }
+    }
 }

@@ -26,7 +26,7 @@ public class EventService {
     ////////// <APP> //////////
     ///////////////////////////
 
-    // 회원에게 보일 행사 목록
+    // <APP> 회원에게 보일 행사 목록
     public List<AppEventListResponse> findAcceptedEvents() {
         List<EventEntity> events = eventRepository.findAcceptedEventsWithCapacity();
         return events.stream()
@@ -34,7 +34,7 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    // 회원에게 보일 행사 상세 화면
+    // <APP> 회원에게 보일 행사 상세 화면
     public AppEventDetailResponse findById(Long eventId) {
         EventEntity event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + eventId));

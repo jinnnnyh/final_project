@@ -58,7 +58,17 @@ public class AttendInfoEntity {
     private EventScheduleEntity eventSchedule;
 
 
-//    public void CheckIn() {
-//        this.checkInTime = 'N';
-//    }
+    public void updateCheckIn(LocalDate checkInDate, LocalTime checkInTime) {
+        this.attendDate = checkInDate;
+        this.checkInTime = checkInTime;
+    }
+
+    public void updateCheckOut(LocalTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
+    public void updateCheckOutComp(LocalTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+        this.attendComp = 'Y';
+    }
 }

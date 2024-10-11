@@ -56,27 +56,4 @@ public class AppEventAppController {
         List<AppEventAppListResponse> eventAppList = eventAppService.findMyIncompleteEvents(userId);
         return ResponseEntity.ok().body(eventAppList);
     }
-
-
-
-    ////////////////
-    // 특정 회차의 QR 코드 이미지 조회
-//    @GetMapping("/qr-image/{scheduleId}/{userId}")
-//    public ResponseEntity<String> getQRCodeImage(@PathVariable Long scheduleId, @PathVariable Long userId) {
-//        String qrImage = eventService.findQRCodeByScheduleIdAndUserId(scheduleId, userId);
-//        return ResponseEntity.ok(qrImage);
-//    }
-//
-//    // 서비스 부분임
-//    // 특정 회차의 QR 코드 이미지 조회
-//    public String findQRCodeByScheduleIdAndUserId(Long scheduleId, Long userId) {
-//        AttendInfoEntity attendInfo = attendInfoRepository.findByScheduleIdAndUserId(scheduleId, userId);
-//        return attendInfo != null ? attendInfo.getQrImage() : null;
-//    }
-    //////////////////
-
-
-    // 참석증 볼 수 있는지 없는지 여부는 신청 내역 목록에서 수료 여부 상태(event_comp)를 인텐트로 들고 계속 들어가면 됨
-    // 백엔드에서는 수료증에 들어갈 데이터만 보내주기
-    // 행사 기간, 행사 마지막 날짜, 협회장 이름 => event 컨트롤러 부분임
 }

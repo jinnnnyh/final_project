@@ -29,12 +29,12 @@ public class EventAppService {
     ////////// <APP> //////////
     ///////////////////////////
 
-    // 신청하기 - 중복 신청 확인
+    // <APP> 신청하기 - 중복 신청 확인
     public boolean isApplicationExists(Long eventId, Long userId) {
         return eventAppRepository.existsByEvent_EventIdAndUser_UserId(eventId, userId);
     }
 
-    // 신청하기 - event_app 테이블 데이터 저장
+    // <APP> 신청하기 - event_app 테이블 데이터 저장
     @Transactional
     public void registerEventApplication(Long eventId, Long userId) throws Exception {
         // 행사 정보와 사용자 정보 가져오기
@@ -75,7 +75,7 @@ public class EventAppService {
         }
     }
 
-    // QR 코드 생성 후 저장
+    // <APP> QR 코드 생성 후 저장
     private String generateQrCodeImage(Long eventId, Long scheduleId, Long userId) throws Exception {
 
         // QR 코드 이미지 경로 설정 (상대 경로로 저장)
@@ -101,7 +101,7 @@ public class EventAppService {
         return qrFileName;
     }
 
-    // 특정 유저의 행사 신청 내역 목록 (전체, 행사 id 기준 내림차순)
+    // <APP> 특정 유저의 행사 신청 내역 목록 (전체, 행사 id 기준 내림차순)
     public List<AppEventAppListResponse> findMyEvents(Long userId) {
         return eventAppRepository.findByUser_UserIdOrderByEvent_EventIdDesc(userId)
                 .stream()
@@ -109,7 +109,7 @@ public class EventAppService {
                 .toList();
     }
 
-    // 특정 유저의 행사 신청 내역 (수료, 행사 id 기준 내림차순)
+    // <APP> 특정 유저의 행사 신청 내역 (수료, 행사 id 기준 내림차순)
     public List<AppEventAppListResponse> findMyCompleteEvents(Long userId) {
         // eventComp가 'Y'인 값만 가져오기
         return eventAppRepository.findByUser_UserIdAndEventCompOrderByEvent_EventIdDesc(userId, 'Y')
@@ -118,7 +118,7 @@ public class EventAppService {
                 .toList();
     }
 
-    // 특정 유저의 행사 신청 내역 (미수료, 행사 id 기준 내림차순)
+    // <APP> 특정 유저의 행사 신청 내역 (미수료, 행사 id 기준 내림차순)
     public List<AppEventAppListResponse> findMyIncompleteEvents(Long userId) {
         // eventComp가 'N'인 값만 가져오기
         return eventAppRepository.findByUser_UserIdAndEventCompOrderByEvent_EventIdDesc(userId, 'N')
