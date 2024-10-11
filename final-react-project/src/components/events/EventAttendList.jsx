@@ -1,28 +1,49 @@
 import Member from "../../pages/Member.jsx";
 import Events from "../../pages/Events.jsx";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import Login from "../../pages/Login.jsx";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 function EventAttendList () {
-  const eventAttendData = [
+
+  const [eventAttendData, setEventAttendData] = useState([
     {id: 1, num:1, userAccount:'iu', name:'아이유', userPhone:'010-1111-1111', userDepart: 'AI협회', role: '일반회원', attendComp:'참석',checkInTime:'오후 2시', checkOutTime:'오후 5시' },
     {id: 2, num:2, userAccount:'js', name:'유재석', userPhone:'010-1111-1111', userDepart: 'AI협회', role: '일반회원', attendComp:'미참석',checkInTime:'오후 2시', checkOutTime:'오후 5시' },
     {id: 3, num:3, userAccount:'iu', name:'아이유', userPhone:'010-1111-1111', userDepart: 'AI협회', role: '일반회원', attendComp:'참석',checkInTime:'오후 2시', checkOutTime:'오후 5시' },
-  ];
+  ]);
+  // 리스트 데이터 불러옴
+  // const [eventAttendData, setEventAttendData] = useState();
+  //
+  // useEffect(() => {
+  //   axios.get('http://localhost:8080/events')
+  //     .then(res => {
+  //       setEventAttendData(res.data);
+  //       //console.log(eventAttendData);
+  //     })
+  //     .catch(err => {
+  //       alert("통신 실패." + err);
+  //     });
+  // }, [eventData]);
+
+  // 목록보기 버튼
+  const navigate = useNavigate();
+  const handleList = () => {
+    navigate('/'); // 목록 경로
+  };
+  
 
   return (
     <section>
       <Events/>
       <h4 className={'mb-5'}>참석자 현황 리스트</h4>
       <h4>행사제목입니다.</h4>
-      <div className={'d-flex py-3 border-bottom justify-content-between'}>
+      <div className={'d-flex py-3 justify-content-between'}>
         <div className={'w-50'}>행사기간 :<span className={'ms-3 fw-bold'}>2024.10.05.</span></div>
         <div className={'w-50'}>행사시간 :<span className={'ms-3 fw-bold'}>오후 2시 ~ 오후 5시</span></div>
       </div>
 
       <div>
-        <table className={'table table-custom'}>
+        <table className={'table table-custom mb-5'}>
           <colgroup>
             <col width={"7%"}/>
             <col width={"10%"}/>
@@ -64,8 +85,8 @@ function EventAttendList () {
           </tbody>
         </table>
         
-        <div className={'d-flex justify-content-end mb-5'}>
-          <NavLink to={'/'} className={'btn btn-point'}>목록보기</NavLink>
+        <div className={'d-flex justify-content-end'}>
+          <button type={"button"} className={'btn btn-point'} onClick={handleList}>목록보기</button>
         </div>
       </div>
 

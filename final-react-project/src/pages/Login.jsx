@@ -81,7 +81,7 @@ function Login() {
         <h1 className={'text-point'}>Check Manager</h1>
       </div>
       <div className={'row mt-5'}>
-        <div className={'col-lg-4 col-md-8 col-xs-12 mx-auto shadow bg-white'}>
+        <div className={'col-lg-4 p-5 col-md-8 col-xs-12 mx-auto shadow bg-white'}>
           <form onSubmit={loginHandler}>
             <div>
               <label htmlFor="user-id" className={'form-label'}>아이디</label>

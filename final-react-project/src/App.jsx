@@ -8,8 +8,8 @@ import NoticeBoardList from "./components/notice/NoticeBoardList.jsx";
 import NoticeBoardWrite from "./components/notice/NoticeBoardWrite.jsx";
 import NoticeBoardView from "./components/notice/NoticeBoardView.jsx";
 import MemberList from "./components/member/MemberList.jsx";
+import MemberEdit from "./components/member/MemberEdit.jsx";
 import EventList from "./components/events/EventList.jsx";
-import MemberWrite from "./components/member/MemberWrite.jsx";
 import EventWrite from "./components/events/EventWrite.jsx";
 import EventView from "./components/events/EventView.jsx";
 import MemberPermission from "./components/member/MemberPermission.jsx";
@@ -39,10 +39,11 @@ function App() {
               <Routes>
                 <Route path="/" element={<EventList/>}/>
                 <Route path="/events/write" element={<EventWrite/>}/>
-                <Route path="/events/view" element={<EventView/>}/>
+                {/*<Route path="/events/view" element={<EventView/>}/>*/}
+                <Route path="/events/:eventId" element={<EventView/>}/>
                 <Route path="/events/attend" element={<EventAttendList/>}/>
                 <Route path="/member" element={<MemberList/>}/>
-                <Route path="/member/write" element={<MemberWrite/>}/>
+                <Route path="/member/edit" element={<MemberEdit/>}/>
                 <Route path="/member/permission" element={<MemberPermission/>}/>
                 <Route path="/notice" element={<NoticeBoardList/>}/>
                 <Route path="/notice/write" element={<NoticeBoardWrite/>}/>
