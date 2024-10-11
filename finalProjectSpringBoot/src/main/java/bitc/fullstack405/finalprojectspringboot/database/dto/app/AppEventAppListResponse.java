@@ -1,4 +1,4 @@
-package bitc.fullstack405.finalprojectspringboot.database.dto.app.application;
+package bitc.fullstack405.finalprojectspringboot.database.dto.app;
 
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventAppEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;

@@ -1,7 +1,7 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.event.AppEventDetailResponse;
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.event.AppEventListResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppEventDetailResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppEventListResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.AttendInfoRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.EventRepository;

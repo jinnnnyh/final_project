@@ -1,9 +1,11 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppCertificateResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.AttendInfoRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.EventAppRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.EventScheduleRepository;
+import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
@@ -22,6 +24,7 @@ public class AttendInfoService {
     private final AttendInfoRepository attendInfoRepository;
     private final EventScheduleRepository eventScheduleRepository;
     private final EventAppRepository eventAppRepository;
+    private final UserRepository userRepository;
 
     // <APP> QR 이미지 조회
     // eventId와 userId로 scheduleId, eventDate, qrImage 조회
@@ -105,4 +108,10 @@ public class AttendInfoService {
             eventApp.updateEventComp();
         }
     }
+
+    // <APP> 교육 참석증
+//    private AppCertificateResponse certificate (Long eventId, Long userId) {
+//        // 협회장 이름 조회
+//        String presidentName = userRepository.findByRold
+//    }
 }

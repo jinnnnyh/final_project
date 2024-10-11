@@ -61,7 +61,7 @@ public class AppAttendInfoController {
         }
 
         // QR 스캔 성공
-        // 입장/퇴장 처리 업데이트, 회차별 수료/미수료 업데이트, 행사 수료/미수료 업데이트
+        // 입장/퇴장 업데이트, 회차별 수료/미수료 업데이트, 행사 수료/미수료 업데이트
         attendInfoService.qrScan(eventId, scheduleId, userId);
         return ResponseEntity.ok(2);
     }
@@ -71,5 +71,10 @@ public class AppAttendInfoController {
     // 백엔드에서는 수료증에 들어갈 데이터만 보내주기
     // 앱에서 event id, user id 넘겨줌
     // 백에서는 QR 이미지 저장(행사 신청)처럼 schedule id, 이벤트 날짜, 행사 제목, 유저 이름, 협회장 이름 보내주면 됨
+//    @GetMapping("/certificate/{eventId}/{userId}")
+//    public ResponseEntity<List<Map<String, Object>>> certificate(@PathVariable Long eventId, @PathVariable Long userId) {
+//
+//
+//    }
 }
 
