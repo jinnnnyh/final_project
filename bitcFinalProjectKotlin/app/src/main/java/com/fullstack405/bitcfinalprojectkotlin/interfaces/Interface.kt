@@ -72,6 +72,10 @@ interface Interface {
   @POST("/app/qr-image/{eventId}/{userId}")
   fun findQRImageList(@Path("eventId")eventId:Long, @Path("userId")userId:Long):Call<List<Map<String, Any>>>
 
+  // 유저id > 신청한 행사 미수료 내역 중 오늘 기준 행사 첫 번째 날이 가장 빠른 것
+
+  //
+
   // QR 스캔 후 정보 전달 성공:2, 실패:1
   fun insertQRCheck(eventId:Long, scheduleId:Long, userId:Long):Call<Int>
 

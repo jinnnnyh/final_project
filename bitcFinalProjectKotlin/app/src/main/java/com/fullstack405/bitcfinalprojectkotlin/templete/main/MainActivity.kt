@@ -40,6 +40,16 @@ class MainActivity : AppCompatActivity() {
     var userName = intent.getStringExtra("userName")
     var userPermission = intent.getStringExtra("userPermission")
 
+    if(userPermission.equals("ROLE_SECRETARY")){
+      userPermission = "총무"
+    }
+    else if(userPermission.equals("ROLE_REGULAR")){
+      userPermission ="정회원"
+    }
+    else{
+      userPermission="협회장"
+    }
+
     binding.userName.text = "${userPermission} ${userName}님"
     var intent_event = Intent(this, EventListActivity::class.java)
     intent_event.putExtra("userId",userId)

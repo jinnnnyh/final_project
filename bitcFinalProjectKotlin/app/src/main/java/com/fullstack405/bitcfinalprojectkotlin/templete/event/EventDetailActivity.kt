@@ -2,6 +2,7 @@ package com.fullstack405.bitcfinalprojectkotlin.templete.event
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -20,6 +21,8 @@ import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBi
 import com.fullstack405.bitcfinalprojectkotlin.templete.QR.QrScannerActivity
 import retrofit2.Call
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class EventDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEventDetailBinding
@@ -37,8 +40,7 @@ class EventDetailActivity : AppCompatActivity() {
         }
 
         var eventId = intent.getLongExtra("eventId",0)
-        var visibleDate = intent.getStringExtra("visibleDate") // 게시일
-        var isRegistrationOpen = intent.getCharExtra("isRegistrationOpen",'N') // Y : 진행중 , N:마감
+        var isRegistrationOpen = intent.getCharExtra("isRegistrationOpen",'N') // 행사신청 마감 Y : 진행중 , N:마감
         var userId = intent.getLongExtra("userId",0) // 접속자Id
 
         // 회원인지 아닌지만 판단
@@ -46,19 +48,14 @@ class EventDetailActivity : AppCompatActivity() {
 
         binding.btnQRscanner.isVisible = false
 
-        if (!userPermission.equals("ROLE_REGULAR")) { // 정회원
+        if (!userPermission.equals("정회원")) { // 정회원이 아니면
             binding.btnQRscanner.isVisible = true
-
-            if (isRegistrationOpen == 'N') { //마감된 행사는 비활성화
-                binding.btnQRscanner.isEnabled = false
-            }
-            else{ // 진행중은 버튼 클릭 이벤트
-                binding.btnQRscanner.setOnClickListener {
-                    startBarcodeScanner()
-                }
-            }
         } // if permission
 
+        val cal = Calendar.getInstance()
+        cal.time = Date() // 오늘 날짜
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
         var url = "http://10.100.105.205:8080/eventImg/"
@@ -72,57 +69,65 @@ class EventDetailActivity : AppCompatActivity() {
                 binding.dTitle.text = event.eventTitle
                 binding.dContent.text = event.eventContent
                 binding.dWriter.text = event.posterUserName
-                binding.dCreateDate.text = visibleDate
+                binding.dCreateDate.text = event.visibleDate
 
                 // 이미지
                 Glide.with(this@EventDetailActivity)
                     .load(url+event.eventPoster)
                     .into(binding.dImage)
 
-            }
+                var endDate = event.schedules[event.schedules.size-1].get("eventDate").toString()
+                // 관리자로 접속해서 qr 스캐너가 보인다면 마지막날 다음날 scanner 버튼 비활성화
+                if(binding.btnQRscanner.isVisible && !userPermission.equals("정회원")){
+                    if(endDate < today){
+                        binding.btnQRscanner.isEnabled = false
+                    }
 
+                }
+
+            } // onResponse
             override fun onFailure(call: Call<EventDetailData>, t: Throwable) {
                 Log.d("eventDetail error","eventDetail load error")
             }
         }) // retrofit
 
-
-
-        /////// 로그인 화면에서부터 userId 계속 들고있어야함
-        // 계속 인텐트로 받기 싫으면 shared 사용해야함 방법 찾아보기
+        binding.btnSubmit.isEnabled = false
         // 신청버튼
-        binding.btnSubmit.setOnClickListener {
+        // 행사 신청 마감여부에 따라 활성화 비활성화
+        if(isRegistrationOpen == 'Y'){
+            binding.btnSubmit.isEnabled = true
+            binding.btnSubmit.setOnClickListener {
+                // 확인 다이얼로그
+                AlertDialog.Builder(this).run{
+                    setMessage("해당 행사에 참석하시겠습니까?")
+                    setPositiveButton("확인",object:DialogInterface.OnClickListener{
+                        override fun onClick(p0: DialogInterface?, p1: Int) {
+                            // db 연결버전
+                            Client.retrofit.insertEventApp(eventId, userId).enqueue(object:retrofit2.Callback<Int>{
+                                override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                                    Log.d("insert num","${response.body()}")
+                                    AlertDialog.Builder(this@EventDetailActivity).run {
+                                        if(response.body() == 2){
+                                            setMessage("신청 완료되었습니다.")
+                                        }
+                                        else{
+                                            setMessage("이미 신청한 행사입니다.")
+                                        }
 
-            // 확인 다이얼로그
-            AlertDialog.Builder(this).run{
-                setMessage("해당 행사에 참석하시겠습니까?")
-                setPositiveButton("확인",object:DialogInterface.OnClickListener{
-                    override fun onClick(p0: DialogInterface?, p1: Int) {
-                        // db 연결버전
-                        Client.retrofit.insertEventApp(eventId, userId).enqueue(object:retrofit2.Callback<Int>{
-                            override fun onResponse(call: Call<Int>, response: Response<Int>) {
-                                Log.d("insert num","${response.body()}")
-                                AlertDialog.Builder(this@EventDetailActivity).run {
-                                    if(response.body() == 2){
-                                        setMessage("신청 완료되었습니다.")
+                                        setNegativeButton("닫기",null)
+                                        show()
                                     }
-                                    else{
-                                        setMessage("이미 신청한 행사입니다.")
-                                    }
-
-                                    setNegativeButton("닫기",null)
-                                    show()
                                 }
-                            }
 
-                            override fun onFailure(call: Call<Int>, t: Throwable) {
-                                Log.d("insert error","${t.message}")
-                            }
-                        }) // retrofit
-                    }// onclick
-                }) // positive
-                setNegativeButton("취소",null)
-                show()
+                                override fun onFailure(call: Call<Int>, t: Throwable) {
+                                    Log.d("insert error","${t.message}")
+                                }
+                            }) // retrofit
+                        }// onclick
+                    }) // positive
+                    setNegativeButton("취소",null)
+                    show()
+                }
             }
         }
 

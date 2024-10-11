@@ -1,4 +1,4 @@
-package bitc.fullstack405.finalprojectspringboot.controller;
+package bitc.fullstack405.finalprojectspringboot.controller.app;
 
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.InsertUserRequest;
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.LoginResponse;
@@ -8,8 +8,6 @@ import bitc.fullstack405.finalprojectspringboot.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequiredArgsConstructor

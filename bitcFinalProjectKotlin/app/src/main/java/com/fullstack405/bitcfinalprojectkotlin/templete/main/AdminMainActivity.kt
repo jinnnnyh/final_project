@@ -36,8 +36,17 @@ class AdminMainActivity : AppCompatActivity() {
         }
         val userId = intent.getLongExtra("userId",0)
         val userName = intent.getStringExtra("userName")
-        val userPermission = intent.getStringExtra("userPermission")
+        var userPermission = intent.getStringExtra("userPermission")
 
+        if(userPermission.equals("ROLE_SECRETARY")){
+            userPermission = "총무"
+        }
+        else if(userPermission.equals("ROLE_REGULAR")){
+            userPermission ="정회원"
+        }
+        else{
+            userPermission="협회장"
+        }
         binding.userName.text ="${userPermission} ${userName}님"
 
         val intent_event = Intent(this, EventListActivity::class.java)
@@ -49,6 +58,7 @@ class AdminMainActivity : AppCompatActivity() {
 
         val intent_notice = Intent(this, NoticeListActivity::class.java)
         val intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
+        intent_userInfoEdit.putExtra("userId",userId)
 
         // 행사 안내 어댑터
         val eventList = mutableListOf<EventListData>()

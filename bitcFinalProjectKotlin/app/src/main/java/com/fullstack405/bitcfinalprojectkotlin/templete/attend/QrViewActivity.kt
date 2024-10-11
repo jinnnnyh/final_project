@@ -109,7 +109,7 @@ class QrViewActivity : AppCompatActivity() {
 
         }) // retrofit
 
-        
+
 
         // 뒤로가기
         binding.btnBack.setOnClickListener {

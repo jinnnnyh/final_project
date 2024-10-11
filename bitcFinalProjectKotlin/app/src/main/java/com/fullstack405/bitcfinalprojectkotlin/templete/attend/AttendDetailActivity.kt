@@ -33,7 +33,7 @@ class AttendDetailActivity : AppCompatActivity() {
 
         var userId = intent.getLongExtra("userId",0)
         var eventId = intent.getLongExtra("eventId",0)
-        var complete = intent.getCharExtra("complete",'N')
+        var complete = intent.getCharExtra("complete",'N') // 수료여부
         var userName = intent.getStringExtra("userName")
 
         var intentComplete =Intent(this,CompleteViewActivity::class.java)
@@ -48,6 +48,9 @@ class AttendDetailActivity : AppCompatActivity() {
                 binding.dCreateDate.text=event.visibleDate
                 binding.dWriter.text = event.posterUserName
                 var eventDate = event.schedules
+
+
+                // 참석증 데이터 보내면
 
                 intentComplete.putExtra("eventName",event.eventTitle)
                 intentComplete.putExtra("eventDate",eventDate.get(eventDate.size-1).get("eventDate").toString())
