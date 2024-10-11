@@ -96,15 +96,9 @@ function EventWrite () {
     }
   }
 
-  const getTodayDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
-    const day = today.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
 
-  const todayDate = getTodayDate();
+
+
 
   return (
     <section>
