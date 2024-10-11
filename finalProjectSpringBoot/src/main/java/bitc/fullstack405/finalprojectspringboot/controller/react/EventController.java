@@ -64,7 +64,7 @@ public class EventController {
     eventEntity.setInvisibleDate(invisibleDate);
     eventEntity.setPosterUser(userEntity);
     eventEntity.setMaxPeople(parsedMaxPeople);
-    eventEntity.setIsRegistrationOpen('N');
+    eventEntity.setIsRegistrationOpen('Y');
     eventEntity.setEventAccept(1);
     eventEntity.setEventPoster(savedFileName);
 
