@@ -13,40 +13,83 @@ function EventWrite () {
   const [endTime, setEndTime] = useState('');
   let [maxPeople, setMaxPeople] = useState('');
   const [eventContent, setEventContent] = useState('');
-  // const selectFileHandler = (e) => {
+
+  // const writingHandler = (e) => {
   //   e.preventDefault();
-  //   e.persist();
-  //   const selectedFile = e.target.file;
-  // }; // 파일핸들러(추가중)
+  //
+  //   if (eventEndDate < eventStartDate) {
+  //     alert('종료일이 시작일보다 빠를 수 없습니다.');
+  //   }
+  //   if (endTime < startTime) {
+  //     alert('종료시간이 시작시간보다 빠를 수 없습니다.');
+  //   }
+  //
+  //   if (maxPeople == '') {
+  //     maxPeople = 0;
+  //   }
+  //   if (eventEndDate >= eventStartDate && endTime >= startTime) {
+  //     axios.post('http://localhost:8080/event/write', {
+  //       eventTitle: eventTitle,
+  //       eventContent: eventContent,
+  //       eventStartDate: eventStartDate,
+  //       eventEndDate: eventEndDate,
+  //       startTime: startTime,
+  //       endTime: endTime,
+  //       maxPeople: maxPeople,
+  //       userId: sessionStorage.getItem("userId"),
+  //       eventAccept: 1,
+  //     }).then(() => {
+  //       alert('등록에 성공했습니다. 협회장 승인을 기다려주세요.');
+  //       window.location.href = '/';
+  //     })
+  //       .catch(e => {
+  //         alert('등록 실패!\n'+ e.message + '\n관리자에게 문의하세요.');
+  //       });
+  //   }
+  // }
 
   const writingHandler = (e) => {
     e.preventDefault();
 
     if (eventEndDate < eventStartDate) {
       alert('종료일이 시작일보다 빠를 수 없습니다.');
+      return;
     }
     if (endTime < startTime) {
       alert('종료시간이 시작시간보다 빠를 수 없습니다.');
+      return;
     }
 
     if (maxPeople == '') {
       maxPeople = 0;
     }
+
     if (eventEndDate >= eventStartDate && endTime >= startTime) {
-      axios.post('http://localhost:8080/event/write', {
-        eventTitle: eventTitle,
-        eventContent: eventContent,
-        eventStartDate: eventStartDate,
-        eventEndDate: eventEndDate,
-        startTime: startTime,
-        endTime: endTime,
-        maxPeople: maxPeople,
-        userId: sessionStorage.getItem("userId"),
-        eventAccept: 1,
-      }).then(() => {
-        alert('등록에 성공했습니다. 협회장 승인을 기다려주세요.');
-        window.location.href = '/';
+      const formData = new FormData();
+      formData.append('eventTitle', eventTitle);
+      formData.append('eventContent', eventContent);
+      formData.append('eventStartDate', eventStartDate);
+      formData.append('eventEndDate', eventEndDate);
+      formData.append('startTime', startTime);
+      formData.append('endTime', endTime);
+      formData.append('maxPeople', maxPeople);
+      formData.append('userId', sessionStorage.getItem("userId"));
+      formData.append('eventAccept', 1);
+
+      const fileInput = document.getElementById('file');
+      if (fileInput.files[0]) {
+        formData.append('file', fileInput.files[0]);
+      }
+
+      axios.post('http://localhost:8080/event/write', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       })
+        .then(() => {
+          alert('등록에 성공했습니다. 협회장 승인을 기다려주세요.');
+          window.location.href = '/';
+        })
         .catch(e => {
           alert('등록 실패!\n'+ e.message + '\n관리자에게 문의하세요.');
         });

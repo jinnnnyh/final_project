@@ -153,43 +153,6 @@ public class EventService {
 
   ////////////////////////////////////////react web///////////////////////////////////////////
 
-//  public void writeEvent(EventEntity eventEntity, int calcDate, LocalTime startTime, LocalTime endTime) {
-//    for (int i = 0; i < calcDate; i++) {
-//      LocalDate eventDate = eventEntity.getVisibleDate().plusDays(i);
-//
-//      EventScheduleEntity eventScheduleEntity = new EventScheduleEntity();
-//      eventScheduleEntity.setEvent(eventEntity);
-//      eventScheduleEntity.setStartTime(startTime);
-//      eventScheduleEntity.setEndTime(endTime);
-//      eventScheduleEntity.setEventDate(eventDate);
-//
-//      eventScheduleRepository.save(eventScheduleEntity);
-//
-//      eventEntity.getScheduleList().add(eventScheduleEntity);
-//    }
-//
-//    eventRepository.save(eventEntity);
-//  }
-
-////  @Transactional
-//  public void writeEvent(EventEntity eventEntity, int calcDate, LocalTime startTime, LocalTime endTime) {
-//
-//    eventRepository.save(eventEntity);
-//
-//    for (int i = 0; i < calcDate; i++) {
-//      LocalDate eventDate = eventEntity.getVisibleDate().plusDays(i);
-//
-//      EventScheduleEntity eventScheduleEntity = new EventScheduleEntity();
-//      eventScheduleEntity.setEvent(eventEntity);
-//      eventScheduleEntity.setStartTime(startTime);
-//      eventScheduleEntity.setEndTime(endTime);
-//      eventScheduleEntity.setEventDate(eventDate);
-//
-//      eventScheduleRepository.save(eventScheduleEntity);
-//
-//      eventEntity.getScheduleList().add(eventScheduleEntity);
-//    }
-//  }
 
   @Transactional
   public void writeEvent(EventEntity eventEntity) {
@@ -200,4 +163,6 @@ public class EventService {
       eventScheduleRepository.save(schedule);
     }
   }
+
+
 }

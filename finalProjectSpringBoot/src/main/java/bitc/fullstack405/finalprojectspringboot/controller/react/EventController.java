@@ -5,13 +5,12 @@ import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEnt
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import bitc.fullstack405.finalprojectspringboot.service.EventService;
+import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -24,56 +23,66 @@ public class EventController {
 
   private final EventService eventService;
   private final UserRepository userRepository;
+  private final FileUtils fileUtils;
 
   @PostMapping("/write")
-  public ResponseEntity<EventEntity> writeEvent(@RequestBody Map<String, String> eventData) throws ParseException {
+  public ResponseEntity<EventEntity> writeEvent(
+      @RequestParam("eventTitle") String eventTitle,
+      @RequestParam("eventContent") String eventContent,
+      @RequestParam("eventStartDate") String eventStartDate,
+      @RequestParam("eventEndDate") String eventEndDate,
+      @RequestParam("startTime") String startTime,
+      @RequestParam("endTime") String endTime,
+      @RequestParam("maxPeople") String maxPeople,
+      @RequestParam("userId") String userId,
+      @RequestParam("file") MultipartFile file
+  ) throws Exception {
 
-    LocalDate eventStartDate = LocalDate.parse(eventData.get("eventStartDate"));
-    LocalDate eventEndDate = LocalDate.parse(eventData.get("eventEndDate"));
-    LocalTime startTime = LocalTime.parse(eventData.get("startTime"));
-    LocalTime endTime = LocalTime.parse(eventData.get("endTime"));
+    LocalDate startEventDate = LocalDate.parse(eventStartDate);
+    LocalDate endEventDate = LocalDate.parse(eventEndDate);
+    LocalTime startLocalTime = LocalTime.parse(startTime);
+    LocalTime endLocalTime = LocalTime.parse(endTime);
 
-    Long userId = Long.parseLong(eventData.get("userId"));
-    UserEntity userEntity = userRepository.findById(userId).orElse(null);
+    Long parsedUserId = Long.parseLong(userId);
+    UserEntity userEntity = userRepository.findById(parsedUserId).orElse(null);
 
-    int calcDate = (int) (ChronoUnit.DAYS.between(eventStartDate, eventEndDate) + 1);
-    LocalDate invisibleDate = eventStartDate.minusWeeks(1);
-    LocalDate visibleDate = eventStartDate.minusWeeks(2);
+    int calcDate = (int) (ChronoUnit.DAYS.between(startEventDate, endEventDate) + 1);
+    LocalDate invisibleDate = startEventDate.minusWeeks(1);
+    LocalDate visibleDate = startEventDate.minusWeeks(2);
 
-    int maxPeople = Integer.parseInt(eventData.get("maxPeople"));
+    int parsedMaxPeople = Integer.parseInt(maxPeople);
+
+    String savedFileName = null;
+    if (file != null && !file.isEmpty()) {
+      savedFileName = fileUtils.parseFileInfo(file);
+    }
 
     EventEntity eventEntity = new EventEntity();
-    eventEntity.setEventContent(eventData.get("eventContent"));
-    eventEntity.setEventTitle(eventData.get("eventTitle"));
+    eventEntity.setEventContent(eventContent);
+    eventEntity.setEventTitle(eventTitle);
     eventEntity.setVisibleDate(visibleDate);
     eventEntity.setInvisibleDate(invisibleDate);
     eventEntity.setPosterUser(userEntity);
-    eventEntity.setMaxPeople(maxPeople);
+    eventEntity.setMaxPeople(parsedMaxPeople);
     eventEntity.setIsRegistrationOpen('N');
     eventEntity.setEventAccept(1);
-//    if (!Objects.equals(eventData.get("maxPeople"), "")) {
-//      eventEntity.setMaxPeople(Integer.parseInt(eventData.get("maxpeople")));
-//    }
+    eventEntity.setEventPoster(savedFileName);
 
     List<EventScheduleEntity> esEntities = new ArrayList<>();
-
     for (int i = 0; i < calcDate; i++) {
-      LocalDate sDate = eventStartDate.plusDays(i);
+      LocalDate sDate = startEventDate.plusDays(i);
 
       EventScheduleEntity esEntity = new EventScheduleEntity();
       esEntity.setEvent(eventEntity);
-      esEntity.setStartTime(startTime);
-      esEntity.setEndTime(endTime);
+      esEntity.setStartTime(startLocalTime);
+      esEntity.setEndTime(endLocalTime);
       esEntity.setEventDate(sDate);
 
       esEntities.add(esEntity);
     }
     eventEntity.setScheduleList(esEntities);
 
-
-
     eventService.writeEvent(eventEntity);
-
 
     return ResponseEntity.ok(eventEntity);
   }
