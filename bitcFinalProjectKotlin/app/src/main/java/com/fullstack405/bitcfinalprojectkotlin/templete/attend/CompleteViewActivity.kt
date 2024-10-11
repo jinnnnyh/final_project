@@ -21,6 +21,18 @@ class CompleteViewActivity : AppCompatActivity() {
             insets
         }
 
+        // 이름, 행사명, 행사날짜(마지막날)
+        var name = intent.getStringExtra("userName")
+        var eventName = intent.getStringExtra("eventName")
+        var eventDate = intent.getStringExtra("eventDate")
+
+        binding.title.text = eventName
+        binding.name.text = name
+        binding.topDate.text = eventDate
+        binding.title2.text = eventName
+        binding.month.text = eventDate!!.substring(5,7)
+        binding.date.text = eventDate.substring(8,10)
+
         // 뒤로가기
         binding.btnBack.setOnClickListener {
             finish()

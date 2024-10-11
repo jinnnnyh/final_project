@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fullstack405.bitcfinalprojectkotlin.adapter.AttendAllAdapter
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.EventAppData
-import com.fullstack405.bitcfinalprojectkotlin.data.UserAttendData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.FragmentAttendAllBinding
 import retrofit2.Call
 import retrofit2.Response
@@ -46,6 +45,7 @@ class AttendAllFragment : Fragment() {
 
         // activity에서 userId 추출
         val userId = activity?.intent!!.getLongExtra("userId",0)
+        val userName = activity?.intent!!.getStringExtra("userName")
 
         // 신청내역 리스트에 보이는 데이터
         lateinit var allList:MutableList<EventAppData>
@@ -55,7 +55,7 @@ class AttendAllFragment : Fragment() {
             override fun onResponse(call: Call<List<EventAppData>>, response: Response<List<EventAppData>>) {
                 allList = response.body() as MutableList<EventAppData>
 
-                attendAllAdapter = AttendAllAdapter(allList,userId)
+                attendAllAdapter = AttendAllAdapter(allList,userId,userName!!)
                 binding.recyclerViewAll.adapter = attendAllAdapter
                 binding.recyclerViewAll.layoutManager = LinearLayoutManager(requireContext())
 

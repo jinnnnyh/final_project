@@ -50,4 +50,9 @@ public class UserEntity {
   // user 비밀번호
   @Column(name = "user_pw", length = 200, nullable = false)
   private String password;
+
+  public void updateAppUser(String password, String userPhone) {
+    this.password = password;
+    this.userPhone = userPhone;
+  }
 }

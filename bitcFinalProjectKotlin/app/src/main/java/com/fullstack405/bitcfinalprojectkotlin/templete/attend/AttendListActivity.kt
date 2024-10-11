@@ -29,6 +29,7 @@ class AttendListActivity : AppCompatActivity() {
         }
 
         val userId = intent.getLongExtra("userId",0)
+        var userName = intent.getStringExtra("userName")
 
         // 프레그먼트 어댑터 생성
         attendTabFragmentAdapter = AttendTabFragmentAdapter(this)

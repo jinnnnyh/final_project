@@ -1,4 +1,4 @@
-package bitc.fullstack405.finalprojectspringboot.database.dto;
+package bitc.fullstack405.finalprojectspringboot.database.dto.app.user;
 
 import bitc.fullstack405.finalprojectspringboot.database.entity.Role;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;

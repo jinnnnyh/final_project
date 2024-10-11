@@ -12,7 +12,6 @@ import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
-import com.fullstack405.bitcfinalprojectkotlin.data.EventScheduleData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityAttendDetailBinding
 import retrofit2.Call
 import retrofit2.Response
@@ -35,8 +34,9 @@ class AttendDetailActivity : AppCompatActivity() {
         var userId = intent.getLongExtra("userId",0)
         var eventId = intent.getLongExtra("eventId",0)
         var complete = intent.getCharExtra("complete",'N')
+        var userName = intent.getStringExtra("userName")
 
-
+        var intentComplete =Intent(this,CompleteViewActivity::class.java)
 
         lateinit var event: EventDetailData
 //        이벤트id로 해당 이벤트 정보만 불러오기
@@ -47,6 +47,10 @@ class AttendDetailActivity : AppCompatActivity() {
                 binding.dContent.text = event.eventContent
                 binding.dCreateDate.text=event.visibleDate
                 binding.dWriter.text = event.posterUserName
+                var eventDate = event.schedules
+
+                intentComplete.putExtra("eventName",event.eventTitle)
+                intentComplete.putExtra("eventDate",eventDate.get(eventDate.size-1).get("eventDate").toString())
             }
 
             override fun onFailure(call: Call<EventDetailData>, t: Throwable) {
@@ -60,9 +64,7 @@ class AttendDetailActivity : AppCompatActivity() {
             binding.btnComplete.isEnabled = true
             binding.btnComplete.setOnClickListener {
                 // 참석증 페이지로 이동
-                var intentComplete =Intent(this,CompleteViewActivity::class.java)
-                intentComplete.putExtra("userId",userId)
-                intentComplete.putExtra("eventId",eventId)
+                intentComplete.putExtra("userName",userName)
                 startActivity(intentComplete)
             }
         }
@@ -77,6 +79,7 @@ class AttendDetailActivity : AppCompatActivity() {
             var intentQR = Intent(this, QrViewActivity::class.java)
             intentQR.putExtra("userId", userId)
             intentQR.putExtra("eventId", eventId)
+            intentQR.putExtra("eventName",event.eventTitle)
             startActivity(intentQR)
         }
 //        } // if

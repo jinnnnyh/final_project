@@ -1,26 +1,20 @@
 package com.fullstack405.bitcfinalprojectkotlin.interfaces
 
-import com.fullstack405.bitcfinalprojectkotlin.data.AttendInfoData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventAppData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
-import com.fullstack405.bitcfinalprojectkotlin.data.EventScheduleData
 import com.fullstack405.bitcfinalprojectkotlin.data.NoticeData
-import com.fullstack405.bitcfinalprojectkotlin.data.QRdata
-import com.fullstack405.bitcfinalprojectkotlin.data.TempData
-import com.fullstack405.bitcfinalprojectkotlin.data.UserAttendData
+import com.fullstack405.bitcfinalprojectkotlin.data.InsertUserData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserData
+import com.fullstack405.bitcfinalprojectkotlin.data.UpdateData
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface Interface {
-
-  @GET("/temp")
-  fun tempDatas(): Call<List<TempData>>
 
   ///////////// user
   // 유저 리스트
@@ -29,19 +23,23 @@ interface Interface {
   // 로그인 유저 정보 확인
   // 로그인 아이디, 비번 넣어서 보내기
   @POST("/login")
-  fun loginUser(@Body data:UserData):Call<UserData>
+  fun loginUser(@Body data: UserData):Call<UserData>
 
   // 유저 1명 정보
-  fun findUserId(id:Long):Call<UserData>
+  @POST("/app/user/{userId}")
+  fun findUserId(@Path("userId") userId:Long):Call<UserData>
 
-  // 추가
-  fun insetUser(data:UserData):Call<UserData>
+  // 회원가입
+  @POST("/signup")
+  fun insertUser(@Body data:InsertUserData):Call<InsertUserData>
 
   // 수정
-  fun updateUser(id: Long, data:UserData):Call<UserData>
+  @PUT("/app/user/{userId}")
+  fun updateUser(@Path("userId")id: Long, @Body data: UpdateData):Call<Void>
 
   // ID중복 여부/ 중복 있으면 T
-  fun CheckedId(id:String):Call<Boolean>
+  @POST("/signup/{userAccount}")
+  fun CheckedId(@Path("userAccount") userAccount:String):Call<Boolean>
 
 
   /////////// event
@@ -73,6 +71,11 @@ interface Interface {
   // 이벤트id, 회원id >  스케쥴id, QR 이미지 주소, 행사날짜
   @POST("/app/qr-image/{eventId}/{userId}")
   fun findQRImageList(@Path("eventId")eventId:Long, @Path("userId")userId:Long):Call<List<Map<String, Any>>>
+
+  // QR 스캔 후 정보 전달 성공:2, 실패:1
+  fun insertQRCheck(eventId:Long, scheduleId:Long, userId:Long):Call<Int>
+
+
 
   ////////// notice
   // 공지사항만 연결해서 레트로핏 되는지 확인해보기

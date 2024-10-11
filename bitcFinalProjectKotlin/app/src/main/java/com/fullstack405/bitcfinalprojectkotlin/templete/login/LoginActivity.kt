@@ -13,7 +13,6 @@ import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.UserData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityLoginBinding
-import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.main.AdminMainActivity
 import retrofit2.Call
 import retrofit2.Response
@@ -46,29 +45,30 @@ class LoginActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
                     Log.d("user response : ","${response.body()}")
                     var user = response.body() as UserData
-                        if(user.role == "ROLE_REGULAR"){ // 정회원
-                            intent.putExtra("userId", user.userId)
-                            intent.putExtra("userName",user.name)
-                            intent.putExtra("userPermission",user.role)
-                            startActivity(intent)
-                        }
-                        else if(user.role == "ROLE_SECRETARY"){ // 총무
-                            intentAdmin.putExtra("userId", user.userId)
-                            intentAdmin.putExtra("userName",user.name)
-                            intentAdmin.putExtra("userPermission",user.role)
-                            startActivity(intentAdmin)
-                        }
-                        else if(user.role == "ROLE_PRESIDENT"){ // 협회장
-                            intentAdmin.putExtra("userId", user.userId)
-                            intentAdmin.putExtra("userName",user.name)
-                            intentAdmin.putExtra("userPermission",user.role)
-                            startActivity(intentAdmin)
-                        }
-                        else{
-                            Toast.makeText(this@LoginActivity, "로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요.",Toast.LENGTH_SHORT).show()
-                            binding.inputId.setText("")
-                            binding.inputPw.setText("")
-                        }
+                    if (user.role == "ROLE_REGULAR") { // 정회원
+                        intent.putExtra("userId", user.userId)
+                        intent.putExtra("userName", user.name)
+                        intent.putExtra("userPermission", user.role)
+                        startActivity(intent)
+                    } else if (user.role == "ROLE_SECRETARY") { // 총무
+                        intentAdmin.putExtra("userId", user.userId)
+                        intentAdmin.putExtra("userName", user.name)
+                        intentAdmin.putExtra("userPermission", user.role)
+                        startActivity(intentAdmin)
+                    } else if (user.role == "ROLE_PRESIDENT") { // 협회장
+                        intentAdmin.putExtra("userId", user.userId)
+                        intentAdmin.putExtra("userName", user.name)
+                        intentAdmin.putExtra("userPermission", user.role)
+                        startActivity(intentAdmin)
+                    } else {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.inputId.setText("")
+                        binding.inputPw.setText("")
+                    }
 
                 }
                 override fun onFailure(call: Call<UserData>, t: Throwable) {

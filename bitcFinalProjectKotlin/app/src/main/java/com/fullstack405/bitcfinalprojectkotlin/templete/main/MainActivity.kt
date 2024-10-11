@@ -48,9 +48,12 @@ class MainActivity : AppCompatActivity() {
     var intent_notice = Intent(this,NoticeListActivity::class.java)
 
     var intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
+    intent_userInfoEdit.putExtra("userId",userId)
+
 
     var intentAttendList = Intent(this,AttendListActivity::class.java)
     intentAttendList.putExtra("userId",userId)
+    intentAttendList.putExtra("userName",userName)
 
     // 신청 현황
     // 신청 내역 버튼 연결

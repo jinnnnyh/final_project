@@ -6,11 +6,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fullstack405.bitcfinalprojectkotlin.data.EventAppData
-import com.fullstack405.bitcfinalprojectkotlin.data.UserAttendData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ItemAttendBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendDetailActivity
 
-class AttendAllAdapter(val attendList:MutableList<EventAppData>,val userId:Long):RecyclerView.Adapter<AttendAllAdapter.Holder>() {
+class AttendAllAdapter(val attendList:MutableList<EventAppData>,val userId:Long, val userName:String):RecyclerView.Adapter<AttendAllAdapter.Holder>() {
     class Holder(val binding: ItemAttendBinding):RecyclerView.ViewHolder(binding.root) {
 
     }
@@ -36,6 +35,7 @@ class AttendAllAdapter(val attendList:MutableList<EventAppData>,val userId:Long)
             intent.putExtra("userId",userId)
             intent.putExtra("eventId",a.eventId)
             intent.putExtra("complete",a.eventComp)
+            intent.putExtra("userName",userName)
             (holder.binding.root.context as Activity).startActivity(intent)
         }
     }

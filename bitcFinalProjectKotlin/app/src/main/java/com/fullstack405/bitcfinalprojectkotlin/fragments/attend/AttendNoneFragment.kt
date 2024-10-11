@@ -10,7 +10,6 @@ import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.adapter.AttendAllAdapter
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.EventAppData
-import com.fullstack405.bitcfinalprojectkotlin.data.UserAttendData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.FragmentAttendCompleteBinding
 import com.fullstack405.bitcfinalprojectkotlin.databinding.FragmentAttendNoneBinding
 import retrofit2.Call
@@ -50,6 +49,7 @@ class AttendNoneFragment : Fragment() {
 
         // activity에서 userId 추출
         val userId = activity?.intent!!.getLongExtra("userId", 0)
+        val userName = activity?.intent!!.getStringExtra("userName")
 
         // 미수료 내역 데이터
         lateinit var noneList:MutableList<EventAppData>
@@ -59,7 +59,7 @@ class AttendNoneFragment : Fragment() {
             override fun onResponse(call: Call<List<EventAppData>>, response: Response<List<EventAppData>>) {
                 noneList = response.body() as MutableList<EventAppData>
 
-                attendAllAdapter = AttendAllAdapter(noneList,userId)
+                attendAllAdapter = AttendAllAdapter(noneList,userId,userName!!)
                 binding.recyclerViewNone.adapter = attendAllAdapter
                 binding.recyclerViewNone.layoutManager = LinearLayoutManager(requireContext())
 

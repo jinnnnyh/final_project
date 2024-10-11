@@ -12,7 +12,6 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
-import com.fullstack405.bitcfinalprojectkotlin.data.QRdata
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityQrViewBinding
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -22,8 +21,6 @@ import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
 import java.util.Date
 
-
-///////////// 사용 xxxxxxxxxxxxx
 class QrViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,17 +35,10 @@ class QrViewActivity : AppCompatActivity() {
         }
         var userId = intent.getLongExtra("userId",0)
         var eventId = intent.getLongExtra("eventId",0)
+        var eventName = intent.getStringExtra("eventName")
 
+        binding.eventName.text =eventName
 
-//        // 큐알코드 생성
-//        var content = "${eventId}-${scheduleId}-${userId}"
-//        val barcodeEncoder = BarcodeEncoder()
-//        val bitmap = barcodeEncoder.encodeBitmap(content, BarcodeFormat.QR_CODE, 512, 512)
-
-        // 스케쥴id(오름차순), QR 이미지 주소, 행사날짜
-        // QR 이미지 디비에서 받아와서 화면에 출력하기 > glide
-        // 행사 일자 중 첫번째 행사 큐알을 1주일 전에 표시 ~ 첫번째 날 까지
-        // 이후로는 하루마다 비교해서 보이고, 마지막날 다음날부터 안보이게 하기
 
         // 캘린더 사용
         // 각 변수를 저정할 인스턴스
@@ -90,6 +80,7 @@ class QrViewActivity : AppCompatActivity() {
                 if (cal_s <= cal_t) {
                     binding.imgQr.isVisible = true
                     if (cal_t <= cal_sdate) {
+                        binding.eventDate.text = QRlist[0].get("eventDate").toString()
                         Glide.with(this@QrViewActivity)
                             .load(url + QRlist[0].get("qrImage"))
                             .into(binding.imgQr)
@@ -98,12 +89,14 @@ class QrViewActivity : AppCompatActivity() {
                     else if (cal_t > cal_sdate) {
                         for (i in 0..QRlist.size - 1) {
                             if (td == QRlist[i].get("eventDate").toString()) {
+                                binding.eventDate.text = "${QRlist[i].get("eventDate").toString()}"
                                 Glide.with(this@QrViewActivity)
                                     .load(url + QRlist[i].get("qrImage"))
                                     .into(binding.imgQr)
                                 break;
                             }
-                            // 오늘 날짜랑 일치하는게 없을 시 invisible
+                            // 오늘 날짜랑 일치하는게 없을 시 invisible, 행사 마지막 날짜
+                            binding.eventDate.text = QRlist[QRlist.size-1].get("eventDate").toString()
                             binding.imgQr.isVisible = false
                         }//for
                     }
@@ -116,9 +109,7 @@ class QrViewActivity : AppCompatActivity() {
 
         }) // retrofit
 
-
-
-
+        
 
         // 뒤로가기
         binding.btnBack.setOnClickListener {

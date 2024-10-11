@@ -4,7 +4,9 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -13,22 +15,20 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
-import com.fullstack405.bitcfinalprojectkotlin.data.AttendInfoData
-import com.fullstack405.bitcfinalprojectkotlin.data.EventAppData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
-import com.fullstack405.bitcfinalprojectkotlin.data.UserData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.QR.QrScannerActivity
-import okhttp3.internal.notify
 import retrofit2.Call
 import retrofit2.Response
 
 class EventDetailActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityEventDetailBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 //        setContentView(R.layout.activity_event_detail)
-        val binding = ActivityEventDetailBinding.inflate(layoutInflater)
+        binding = ActivityEventDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -38,7 +38,7 @@ class EventDetailActivity : AppCompatActivity() {
 
         var eventId = intent.getLongExtra("eventId",0)
         var visibleDate = intent.getStringExtra("visibleDate") // 게시일
-
+        var isRegistrationOpen = intent.getCharExtra("isRegistrationOpen",'N') // Y : 진행중 , N:마감
         var userId = intent.getLongExtra("userId",0) // 접속자Id
 
         // 회원인지 아닌지만 판단
@@ -46,18 +46,18 @@ class EventDetailActivity : AppCompatActivity() {
 
         binding.btnQRscanner.isVisible = false
 
-        if(!userPermission.equals("ROLE_REGULAR")){ // 정회원
+        if (!userPermission.equals("ROLE_REGULAR")) { // 정회원
             binding.btnQRscanner.isVisible = true
-            // 스캐너 버튼
-            binding.btnQRscanner.setOnClickListener {
-                // 카메라 화면 ?
-//                Toast.makeText(this,"스캐너 버튼 클릭 이벤트",Toast.LENGTH_SHORT).show()
 
-                var intentQrScanner = Intent(this,QrScannerActivity::class.java)
-                startActivity(intentQrScanner)
+            if (isRegistrationOpen == 'N') { //마감된 행사는 비활성화
+                binding.btnQRscanner.isEnabled = false
             }
-
-        }
+            else{ // 진행중은 버튼 클릭 이벤트
+                binding.btnQRscanner.setOnClickListener {
+                    startBarcodeScanner()
+                }
+            }
+        } // if permission
 
 
         lateinit var event:EventDetailData
@@ -86,16 +86,6 @@ class EventDetailActivity : AppCompatActivity() {
             }
         }) // retrofit
 
-
-
-
-
-
-//        var url = "https://godomall.speedycdn.net/246ac6860cab30de5414f7d17e2bb4bc/editor/board/event/453/730baf1671174fbc6f9caaf1563896f2.jpg"
-
-//        Glide.with(this)
-//        .load(url+posterName)
-//        .into(binding.dImage)
 
 
         /////// 로그인 화면에서부터 userId 계속 들고있어야함
@@ -148,4 +138,31 @@ class EventDetailActivity : AppCompatActivity() {
 
     }// onCreate
 
+    private fun startBarcodeScanner() {
+        val intent = Intent(this, QrScannerActivity::class.java)
+        barcodeLauncher.launch(intent)
+    }
+
+    private val barcodeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val scanResult = result.data?.getStringExtra("QR_data") // 인텐트로 받아온 값
+            //eventId-scheduleId-userId
+            val eventId = scanResult!!.substring(0,1).toLong()
+            val scheduleId = scanResult.substring(2,3).toLong()
+            val userId = scanResult.substring(4).toLong()
+
+            Toast.makeText(this@EventDetailActivity,"${scanResult}큐알 스캔 성공!",Toast.LENGTH_SHORT).show()
+//            Client.retrofit.insertQRCheck(eventId, scheduleId, userId).enqueue(object:retrofit2.Callback<Int>{
+//                override fun onResponse(call: Call<Int>, response: Response<Int>) {
+//                    Toast.makeText(this@EventDetailActivity,"출석 체크 완료",Toast.LENGTH_SHORT).show()
+//                }
+//
+//                override fun onFailure(call: Call<Int>, t: Throwable) {
+//                    Toast.makeText(this@EventDetailActivity,"QR 인증에 실패하였습니다. 다시 확인해주세요.",Toast.LENGTH_SHORT).show()
+//                }
+//            })
+        }else{
+            Toast.makeText(this@EventDetailActivity,"실패!!!!!!!!!!",Toast.LENGTH_SHORT).show()
+        }
+    }
 }
