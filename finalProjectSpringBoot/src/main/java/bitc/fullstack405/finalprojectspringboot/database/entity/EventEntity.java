@@ -17,7 +17,6 @@ import java.util.List;
 @Entity
 @Table(name = "event")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
@@ -70,7 +69,7 @@ public class EventEntity {
 
     // 참여 마감 여부 Y/N
     @Column(name = "is_registration_open", length = 1, nullable = true)
-    @ColumnDefault("'N'")
+    @ColumnDefault("'Y'")
     private Character isRegistrationOpen;
 
     // 행사 글 등록자 (fk)

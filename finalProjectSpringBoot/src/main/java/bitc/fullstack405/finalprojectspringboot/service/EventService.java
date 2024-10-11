@@ -15,11 +15,14 @@ import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -154,15 +157,58 @@ public class EventService {
   ////////////////////////////////////////react web///////////////////////////////////////////
 
 
+//  행사 등록
   @Transactional
-  public void writeEvent(EventEntity eventEntity) {
-    EventEntity savedEventEntity = eventRepository.save(eventEntity);
+  public EventEntity writeEvent(String eventContent,
+                         String eventTitle,
+                         LocalDate startEventDate,
+                         LocalDate endEventDate,
+                         LocalTime startEventTime,
+                         LocalTime endEventTime,
+                         UserEntity userEntity,
+                         int parsedMaxPeople,
+                         MultipartFile file
+  ) throws Exception {
 
-    for (EventScheduleEntity schedule : eventEntity.getScheduleList()) {
-      schedule.setEvent(savedEventEntity);
-      eventScheduleRepository.save(schedule);
+    String savedFileName = null;
+    if (file != null && !file.isEmpty()) {
+      savedFileName = fileUtils.parseFileInfo(file);
     }
+
+      int calcDate = (int) (ChronoUnit.DAYS.between(startEventDate, endEventDate) + 1);
+      LocalDate invisibleDate = startEventDate.minusWeeks(1);
+      LocalDate visibleDate = startEventDate.minusWeeks(2);
+
+    EventEntity eventEntity = EventEntity.builder()
+        .eventContent(eventContent)
+        .eventTitle(eventTitle)
+        .visibleDate(visibleDate)
+        .invisibleDate(invisibleDate)
+        .posterUser(userEntity)
+        .maxPeople(parsedMaxPeople)
+        .isRegistrationOpen('Y')
+        .eventAccept(1)
+        .eventPoster(savedFileName)
+        .build();
+
+    EventEntity savedEvent = eventRepository.save(eventEntity);
+
+      List<EventScheduleEntity> esEntities = new ArrayList<>();
+      for (int i = 0; i < calcDate; i++) {
+        LocalDate sDate = startEventDate.plusDays(i);
+
+        EventScheduleEntity esEntity = EventScheduleEntity.builder()
+            .event(savedEvent)
+            .startTime(startEventTime)
+            .endTime(endEventTime)
+            .eventDate(sDate)
+            .build();
+
+        esEntities.add(esEntity);
+      }
+
+      eventScheduleRepository.saveAll(esEntities);
+
+      return eventEntity;
   }
-
-
 }
