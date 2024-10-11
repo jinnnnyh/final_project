@@ -96,9 +96,15 @@ function EventWrite () {
     }
   }
 
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
+    const day = today.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
-
-
+  const todayDate = getTodayDate();
 
   return (
     <section>
@@ -114,11 +120,11 @@ function EventWrite () {
             <div className="w-50 d-flex me-5">
               <div className={'w-50 me-3'}>
                 <label htmlFor={'event-startdate'} className={'form-label'}>행사 시작기간</label>
-                <input type={'date'} className={'form-control me-3'} placeholder={'행사 시작기간'} id={'event-startdate'} name={'eventStartDate'} value={eventStartDate} onChange={e => setEventStartDate(e.target.value)} required/>
+                <input type={'date'} className={'form-control me-3'} placeholder={'행사 시작기간'} id={'event-startdate'} name={'eventStartDate'} value={eventStartDate} onChange={e => setEventStartDate(e.target.value)} required min={todayDate}/>
               </div>
               <div className={'w-50'}>
                 <label htmlFor={'end-enddate'} className={'form-label'}>행사 종료기간</label>
-                <input type={'date'} className={'form-control'} placeholder={'행사 종료기간'} id={'event-enddate'} name={'eventEndDate'} value={eventEndDate} onChange={e => setEventEndDate(e.target.value)} required/>
+                <input type={'date'} className={'form-control'} placeholder={'행사 종료기간'} id={'event-enddate'} name={'eventEndDate'} value={eventEndDate} onChange={e => setEventEndDate(e.target.value)} required min={todayDate}/>
               </div>
             </div>
             <div className="w-50 d-flex">
