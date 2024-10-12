@@ -56,4 +56,19 @@ public class AttendInfoEntity {
     @JoinColumn(name = "schedule_id", nullable = false)
     @ToString.Exclude
     private EventScheduleEntity eventSchedule;
+
+
+    public void updateCheckIn(LocalDate checkInDate, LocalTime checkInTime) {
+        this.attendDate = checkInDate;
+        this.checkInTime = checkInTime;
+    }
+
+    public void updateCheckOut(LocalTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
+    public void updateCheckOutComp(LocalTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+        this.attendComp = 'Y';
+    }
 }

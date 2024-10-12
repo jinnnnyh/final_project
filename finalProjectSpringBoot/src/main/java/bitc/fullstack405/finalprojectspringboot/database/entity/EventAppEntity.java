@@ -8,6 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "event_app")
@@ -45,4 +46,9 @@ public class EventAppEntity {
     @JoinColumn(name = "event_id", nullable = false)
     @ToString.Exclude
     private EventEntity event;
+
+
+    public void updateEventComp() {
+        this.eventComp = 'Y';
+    }
 }
