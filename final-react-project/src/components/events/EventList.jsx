@@ -27,7 +27,7 @@ function EventList () {
   //     });
   // }, [eventData]);
 
-  const moveToEventWrite = () => window.location.href = '/events/write';
+  const moveToEventWrite = () => window.location.href = '/event/write';
 
   // 상세페이지에서 승인한 결과 DB 정보에 따라 색상 다르게 출력
   const approvalBtnStyle = (item) => {

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/event")
@@ -71,5 +72,48 @@ public class EventController {
     EventEntity event = eventEntity.orElse(new EventEntity());
 
     return ResponseEntity.ok(event);
+  }
+
+//  이벤트리스트 출력
+  @GetMapping("/list")
+  public String listEvents() {
+
+
+    return "성공";
+  }
+
+//  참석자리스트 출력
+  @GetMapping("/attendList/{eventId}")
+  public String attendList(@PathVariable Long eventId) {
+
+    return "성공";
+  }
+
+//  이벤트정보삭제
+  @DeleteMapping("/deleteEvent/{eventId}")
+  public String deleteEvent(@PathVariable Long eventId) {
+
+    return "성공";
+  }
+
+//  이벤트 수정
+  @PutMapping("/updateEvent/{eventId}")
+  public String updateEvent(@PathVariable Long eventId) {
+
+    return "성공";
+  }
+
+//  이벤트 승인
+  @PutMapping("/acceptEvent/{eventId}")
+  public String acceptEvent(@PathVariable Long eventId) {
+
+    return "성공";
+  }
+
+//  이벤트 거부
+  @PutMapping("/denyEvent")
+  public String denyEvent(@PathVariable Long eventId) {
+
+    return "성공";
   }
 }
