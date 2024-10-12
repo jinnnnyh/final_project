@@ -1,7 +1,9 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.event
 
+import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +12,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -18,7 +22,7 @@ import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBinding
-import com.fullstack405.bitcfinalprojectkotlin.templete.QR.QrScannerActivity
+import com.fullstack405.bitcfinalprojectkotlin.templete.QR.CustomCaptureActivity
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -26,7 +30,7 @@ import java.util.Date
 
 class EventDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEventDetailBinding
-
+    private val CAMERA_REQUEST_CODE = 1001
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -50,6 +54,9 @@ class EventDetailActivity : AppCompatActivity() {
 
         if (!userPermission.equals("정회원")) { // 정회원이 아니면
             binding.btnQRscanner.isVisible = true
+            binding.btnQRscanner.setOnClickListener {
+                checkCameraPermission()
+            }
         } // if permission
 
         val cal = Calendar.getInstance()
@@ -131,32 +138,54 @@ class EventDetailActivity : AppCompatActivity() {
             }
         }
 
-
-
-
         // 뒤로가기
         binding.btnBack.setOnClickListener {
             finish()
         }
 
-
-
     }// onCreate
 
-    private fun startBarcodeScanner() {
-        val intent = Intent(this, QrScannerActivity::class.java)
+
+
+    // 카메라 권한 확인
+    private fun checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
+        } else {
+            startQRCodeScanner() // 권한이 이미 있으면 스캐너 시작
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startQRCodeScanner() // 권한이 허용되면 스캐너 시작
+            } else {
+                Log.d("barcode scanner","none permission")
+            }
+        }
+    }
+
+
+
+    // 스캐너 실행
+    private fun startQRCodeScanner() {
+        Log.d("barcode scanner","startQRCodeScanner")
+        val intent = Intent(this, CustomCaptureActivity::class.java)
         barcodeLauncher.launch(intent)
     }
 
+    // 인텐트 결과값 처리
     private val barcodeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
-            val scanResult = result.data?.getStringExtra("QR_data") // 인텐트로 받아온 값
-            //eventId-scheduleId-userId
-            val eventId = scanResult!!.substring(0,1).toLong()
-            val scheduleId = scanResult.substring(2,3).toLong()
-            val userId = scanResult.substring(4).toLong()
+            val scanResult = result.data?.getStringExtra("SCAN_RESULT")
+            binding.btnSubmit.text = scanResult ?: "스캔 실패"
 
-            Toast.makeText(this@EventDetailActivity,"${scanResult}큐알 스캔 성공!",Toast.LENGTH_SHORT).show()
+//            val eventId = scanResult!!.substring(0,1).toLong()
+//            val scheduleId = scanResult.substring(2,3).toLong()
+//            val userId = scanResult.substring(4).toLong()
+//
 //            Client.retrofit.insertQRCheck(eventId, scheduleId, userId).enqueue(object:retrofit2.Callback<Int>{
 //                override fun onResponse(call: Call<Int>, response: Response<Int>) {
 //                    Toast.makeText(this@EventDetailActivity,"출석 체크 완료",Toast.LENGTH_SHORT).show()
@@ -166,8 +195,6 @@ class EventDetailActivity : AppCompatActivity() {
 //                    Toast.makeText(this@EventDetailActivity,"QR 인증에 실패하였습니다. 다시 확인해주세요.",Toast.LENGTH_SHORT).show()
 //                }
 //            })
-        }else{
-            Toast.makeText(this@EventDetailActivity,"실패!!!!!!!!!!",Toast.LENGTH_SHORT).show()
         }
     }
 }
