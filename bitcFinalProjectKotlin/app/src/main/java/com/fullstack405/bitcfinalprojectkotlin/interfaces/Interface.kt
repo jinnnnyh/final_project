@@ -77,7 +77,8 @@ interface Interface {
   //
 
   // QR 스캔 후 정보 전달 성공:2, 실패:1
-  fun insertQRCheck(eventId:Long, scheduleId:Long, userId:Long):Call<Int>
+  @PUT("/app/qr-scan/{eventId}/{scheduleId}/{userId}")
+  fun insertQRCheck(@Path("eventId")eventId:Long, @Path("scheduleId")scheduleId:Long, @Path("userId")userId:Long):Call<Int>
 
 
 

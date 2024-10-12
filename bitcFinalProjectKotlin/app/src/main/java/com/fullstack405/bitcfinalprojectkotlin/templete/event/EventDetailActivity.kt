@@ -182,19 +182,25 @@ class EventDetailActivity : AppCompatActivity() {
             val scanResult = result.data?.getStringExtra("SCAN_RESULT")
             binding.btnSubmit.text = scanResult ?: "스캔 실패"
 
-//            val eventId = scanResult!!.substring(0,1).toLong()
-//            val scheduleId = scanResult.substring(2,3).toLong()
-//            val userId = scanResult.substring(4).toLong()
-//
-//            Client.retrofit.insertQRCheck(eventId, scheduleId, userId).enqueue(object:retrofit2.Callback<Int>{
-//                override fun onResponse(call: Call<Int>, response: Response<Int>) {
-//                    Toast.makeText(this@EventDetailActivity,"출석 체크 완료",Toast.LENGTH_SHORT).show()
-//                }
-//
-//                override fun onFailure(call: Call<Int>, t: Throwable) {
-//                    Toast.makeText(this@EventDetailActivity,"QR 인증에 실패하였습니다. 다시 확인해주세요.",Toast.LENGTH_SHORT).show()
-//                }
-//            })
+            val eventId = scanResult!!.substring(0,1).toLong()
+            val scheduleId = scanResult.substring(2,3).toLong()
+            val userId = scanResult.substring(4).toLong()
+
+            Client.retrofit.insertQRCheck(eventId, scheduleId, userId).enqueue(object:retrofit2.Callback<Int>{
+                override fun onResponse(call: Call<Int>, response: Response<Int>) {
+
+                    if(response.body() == 1){ // 실패
+                        Toast.makeText(this@EventDetailActivity,"QR 인증에 실패하였습니다. 다시 확인해주세요.",Toast.LENGTH_SHORT).show()
+                    }
+                    else if(response.body() == 2){ // 성공
+                        Toast.makeText(this@EventDetailActivity,"출석체크 완료!!",Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Int>, t: Throwable) {
+                    Toast.makeText(this@EventDetailActivity,"QR scan Error",Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
 }
