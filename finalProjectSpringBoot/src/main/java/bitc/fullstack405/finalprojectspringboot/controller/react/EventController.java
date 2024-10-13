@@ -104,7 +104,7 @@ public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId) {
 //  이벤트 승인
   @PutMapping("/acceptEvent/{eventId}")
   public ResponseEntity<Void> acceptEvent(@PathVariable Long eventId, @RequestParam Long userId) {
-//    eventService.acceptEvent(eventId, userId);
+    eventService.acceptEvent(eventId, userId);
     return ResponseEntity.noContent().build();
   }
 

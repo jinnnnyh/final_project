@@ -291,4 +291,33 @@ public class EventService {
   public void deleteEvent(Long eventId) {
     eventRepository.deleteById(eventId);
   }
+
+//  이벤트 승인
+  @Transactional
+  public void acceptEvent(Long eventId, Long userId) {
+    EventEntity event = eventRepository.findById(eventId).get();
+    UserEntity approver = userRepository.findById(userId).get();
+
+    LocalDate acceptedDate = LocalDate.now();
+
+    EventEntity updatedEvent = EventEntity.builder()
+        .eventId(event.getEventId())
+        .eventTitle(event.getEventTitle())
+        .eventContent(event.getEventContent())
+        .approver(approver)
+        .posterUser(event.getPosterUser())
+        .scheduleList(event.getScheduleList())
+        .eventAppList(event.getEventAppList())
+        .isRegistrationOpen(event.getIsRegistrationOpen())
+        .acceptedDate(acceptedDate)
+        .eventAccept(2)
+        .uploadDate(event.getUploadDate())
+        .eventPoster(event.getEventPoster())
+        .maxPeople(event.getMaxPeople())
+        .visibleDate(event.getVisibleDate())
+        .invisibleDate(event.getInvisibleDate())
+        .build();
+
+    eventRepository.save(updatedEvent);
+  }
 }
