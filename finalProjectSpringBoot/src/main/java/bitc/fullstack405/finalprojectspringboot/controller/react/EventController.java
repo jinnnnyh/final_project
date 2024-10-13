@@ -1,5 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.controller.react;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventList;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
@@ -75,12 +76,11 @@ public class EventController {
   }
 
 //  이벤트리스트 출력
-  @GetMapping("/list")
-  public String listEvents() {
-
-
-    return "성공";
-  }
+@GetMapping("/list")
+public ResponseEntity<List<EventList>> listEvents() {
+  List<EventList> eventList = eventService.getEventList();
+  return ResponseEntity.ok(eventList);
+}
 
 //  참석자리스트 출력
   @GetMapping("/attendList/{eventId}")

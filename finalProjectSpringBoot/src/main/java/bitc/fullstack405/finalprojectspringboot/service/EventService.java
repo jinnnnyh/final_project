@@ -1,12 +1,10 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventList;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
-import bitc.fullstack405.finalprojectspringboot.database.repository.AttendInfoRepository;
-import bitc.fullstack405.finalprojectspringboot.database.repository.EventRepository;
-import bitc.fullstack405.finalprojectspringboot.database.repository.EventScheduleRepository;
-import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
+import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +26,9 @@ public class EventService {
   private final EventRepository eventRepository;
   private final UserRepository userRepository;
   private final AttendInfoRepository attendInfoRepository;
-  ;
+  private final EventAppRepository eventAppRepository;
+  private final EventScheduleRepository scheduleRepository;
+
   private final FileUtils fileUtils;
   private final EventScheduleRepository eventScheduleRepository;
 
@@ -207,7 +207,43 @@ public class EventService {
       return eventEntity;
   }
 
+// 이벤트 상세보기
   public Optional<EventEntity> eventView(Long eventId) {
     return eventRepository.findById(eventId);
+  }
+
+  public List<EventList> getEventList() {
+    List<EventEntity> events = eventRepository.findAll();
+    List<EventList> eventList = new ArrayList<>();
+
+    for (EventEntity event : events) {
+      List<EventScheduleEntity> schedules = eventScheduleRepository.findByEvent(event);
+      LocalDate startDate = schedules.get(0).getEventDate();
+      LocalDate endDate = schedules.get(schedules.size() - 1).getEventDate();
+      LocalTime startTime = schedules.get(0).getStartTime();
+      LocalTime endTime = schedules.get(0).getEndTime();
+
+      int appliedPeople = eventAppRepository.countByEventAndEventComp(event, 'N');
+      int completedPeople = eventAppRepository.countByEventAndEventComp(event, 'Y');
+
+      EventList eventList2 = EventList.builder()
+          .eventPoster(event.getEventPoster())
+          .eventTitle(event.getEventTitle())
+          .uploadDate(LocalDate.from(event.getUploadDate()))
+          .maxPeople(event.getMaxPeople())
+          .eventAccept(event.getEventAccept())
+          .isRegistrationOpen(event.getIsRegistrationOpen())
+          .startDate(startDate)
+          .endDate(endDate)
+          .startTime(startTime)
+          .endTime(endTime)
+          .appliedPeople(appliedPeople)
+          .completedPeople(completedPeople)
+          .build();
+
+      eventList.add(eventList2);
+    }
+
+    return eventList;
   }
 }
