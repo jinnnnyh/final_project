@@ -25,8 +25,8 @@ function Navigation() {
       activeIcon: '/src/assets/images/ico_member.svg',
       path: '/member',
       subMenus: [
-        { path: '/member', name: '전체회원' },
-        { path: '/member/permission', name: '승인대기' },
+        // { path: '/member', name: '전체회원' },
+        // { path: '/member/permission', name: '승인대기' },
       ],
     },
     {

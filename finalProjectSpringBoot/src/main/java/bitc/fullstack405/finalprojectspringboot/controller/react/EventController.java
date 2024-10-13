@@ -1,20 +1,23 @@
 package bitc.fullstack405.finalprojectspringboot.controller.react;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventList;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import bitc.fullstack405.finalprojectspringboot.service.EventService;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/event")
 @RestController
@@ -25,6 +28,7 @@ public class EventController {
   private final UserRepository userRepository;
   private final FileUtils fileUtils;
 
+//  행사 등록
   @PostMapping("/write")
   public ResponseEntity<EventEntity> writeEvent(
       @RequestParam("eventTitle") String eventTitle,
@@ -35,55 +39,81 @@ public class EventController {
       @RequestParam("endTime") String endTime,
       @RequestParam("maxPeople") String maxPeople,
       @RequestParam("userId") String userId,
-      @RequestParam("file") MultipartFile file
+      @RequestParam(value = "file", required = false) MultipartFile file
   ) throws Exception {
 
     LocalDate startEventDate = LocalDate.parse(eventStartDate);
     LocalDate endEventDate = LocalDate.parse(eventEndDate);
-    LocalTime startLocalTime = LocalTime.parse(startTime);
-    LocalTime endLocalTime = LocalTime.parse(endTime);
+    LocalTime startEventTime = LocalTime.parse(startTime);
+    LocalTime endEventTime = LocalTime.parse(endTime);
 
     Long parsedUserId = Long.parseLong(userId);
     UserEntity userEntity = userRepository.findById(parsedUserId).orElse(null);
 
-    int calcDate = (int) (ChronoUnit.DAYS.between(startEventDate, endEventDate) + 1);
-    LocalDate invisibleDate = startEventDate.minusWeeks(1);
-    LocalDate visibleDate = startEventDate.minusWeeks(2);
-
     int parsedMaxPeople = Integer.parseInt(maxPeople);
 
-    String savedFileName = null;
-    if (file != null && !file.isEmpty()) {
-      savedFileName = fileUtils.parseFileInfo(file);
-    }
+    return ResponseEntity.ok(eventService.writeEvent(
+        eventContent,
+        eventTitle,
+        startEventDate,
+        endEventDate,
+        startEventTime,
+        endEventTime,
+        userEntity,
+        parsedMaxPeople,
+        file
+    ));
+  }
 
-    EventEntity eventEntity = new EventEntity();
-    eventEntity.setEventContent(eventContent);
-    eventEntity.setEventTitle(eventTitle);
-    eventEntity.setVisibleDate(visibleDate);
-    eventEntity.setInvisibleDate(invisibleDate);
-    eventEntity.setPosterUser(userEntity);
-    eventEntity.setMaxPeople(parsedMaxPeople);
-    eventEntity.setIsRegistrationOpen('Y');
-    eventEntity.setEventAccept(1);
-    eventEntity.setEventPoster(savedFileName);
+//  이벤트 상세보기
+  @GetMapping("/{eventId}")
+  public ResponseEntity<EventEntity> eventView(@PathVariable Long eventId) {
+    Optional<EventEntity> eventEntity = eventService.eventView(eventId);
 
-    List<EventScheduleEntity> esEntities = new ArrayList<>();
-    for (int i = 0; i < calcDate; i++) {
-      LocalDate sDate = startEventDate.plusDays(i);
+    EventEntity event = eventEntity.orElse(new EventEntity());
 
-      EventScheduleEntity esEntity = new EventScheduleEntity();
-      esEntity.setEvent(eventEntity);
-      esEntity.setStartTime(startLocalTime);
-      esEntity.setEndTime(endLocalTime);
-      esEntity.setEventDate(sDate);
+    return ResponseEntity.ok(event);
+  }
 
-      esEntities.add(esEntity);
-    }
-    eventEntity.setScheduleList(esEntities);
+//  이벤트리스트 출력
+@GetMapping("/list")
+public ResponseEntity<List<EventList>> listEvents() {
+  List<EventList> eventList = eventService.getEventList();
+  return ResponseEntity.ok(eventList);
+}
 
-    eventService.writeEvent(eventEntity);
+//  참석자리스트 출력
+  @GetMapping("/attendList/{eventId}")
+  public String attendList(@PathVariable Long eventId) {
 
-    return ResponseEntity.ok(eventEntity);
+    return "성공";
+  }
+
+//  이벤트정보삭제
+  @DeleteMapping("/deleteEvent/{eventId}")
+  public String deleteEvent(@PathVariable Long eventId) {
+
+    return "성공";
+  }
+
+//  이벤트 수정
+  @PutMapping("/updateEvent/{eventId}")
+  public String updateEvent(@PathVariable Long eventId) {
+
+    return "성공";
+  }
+
+//  이벤트 승인
+  @PutMapping("/acceptEvent/{eventId}")
+  public String acceptEvent(@PathVariable Long eventId) {
+
+    return "성공";
+  }
+
+//  이벤트 거부
+  @PutMapping("/denyEvent")
+  public String denyEvent(@PathVariable Long eventId) {
+
+    return "성공";
   }
 }

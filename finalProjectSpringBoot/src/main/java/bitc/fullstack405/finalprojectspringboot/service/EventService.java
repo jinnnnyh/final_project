@@ -1,27 +1,23 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.AddEventRequest;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventResponse;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.UpdateEventRequest;
-import bitc.fullstack405.finalprojectspringboot.database.entity.AttendInfoEntity;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventList;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
-import bitc.fullstack405.finalprojectspringboot.database.repository.AttendInfoRepository;
-import bitc.fullstack405.finalprojectspringboot.database.repository.EventRepository;
-import bitc.fullstack405.finalprojectspringboot.database.repository.EventScheduleRepository;
-import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
+import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -30,7 +26,9 @@ public class EventService {
   private final EventRepository eventRepository;
   private final UserRepository userRepository;
   private final AttendInfoRepository attendInfoRepository;
-  ;
+  private final EventAppRepository eventAppRepository;
+  private final EventScheduleRepository scheduleRepository;
+
   private final FileUtils fileUtils;
   private final EventScheduleRepository eventScheduleRepository;
 
@@ -154,15 +152,100 @@ public class EventService {
   ////////////////////////////////////////react web///////////////////////////////////////////
 
 
+//  행사 등록
   @Transactional
-  public void writeEvent(EventEntity eventEntity) {
-    EventEntity savedEventEntity = eventRepository.save(eventEntity);
+  public EventEntity writeEvent(String eventContent,
+                         String eventTitle,
+                         LocalDate startEventDate,
+                         LocalDate endEventDate,
+                         LocalTime startEventTime,
+                         LocalTime endEventTime,
+                         UserEntity userEntity,
+                         int parsedMaxPeople,
+                         MultipartFile file
+  ) throws Exception {
 
-    for (EventScheduleEntity schedule : eventEntity.getScheduleList()) {
-      schedule.setEvent(savedEventEntity);
-      eventScheduleRepository.save(schedule);
+    String savedFileName = null;
+    if (file != null && !file.isEmpty()) {
+      savedFileName = fileUtils.parseFileInfo(file);
     }
+
+      int calcDate = (int) (ChronoUnit.DAYS.between(startEventDate, endEventDate) + 1);
+      LocalDate invisibleDate = startEventDate.minusWeeks(1);
+      LocalDate visibleDate = startEventDate.minusWeeks(2);
+
+    EventEntity eventEntity = EventEntity.builder()
+        .eventContent(eventContent)
+        .eventTitle(eventTitle)
+        .visibleDate(visibleDate)
+        .invisibleDate(invisibleDate)
+        .posterUser(userEntity)
+        .maxPeople(parsedMaxPeople)
+        .isRegistrationOpen('Y')
+        .eventAccept(1)
+        .eventPoster(savedFileName)
+        .build();
+
+    EventEntity savedEvent = eventRepository.save(eventEntity);
+
+      List<EventScheduleEntity> esEntities = new ArrayList<>();
+      for (int i = 0; i < calcDate; i++) {
+        LocalDate sDate = startEventDate.plusDays(i);
+
+        EventScheduleEntity esEntity = EventScheduleEntity.builder()
+            .event(savedEvent)
+            .startTime(startEventTime)
+            .endTime(endEventTime)
+            .eventDate(sDate)
+            .build();
+
+        esEntities.add(esEntity);
+      }
+
+      eventScheduleRepository.saveAll(esEntities);
+
+      return eventEntity;
   }
 
+// 이벤트 상세보기
+  public Optional<EventEntity> eventView(Long eventId) {
+    return eventRepository.findById(eventId);
+  }
 
+//  이벤트 리스트 출력
+  public List<EventList> getEventList() {
+    List<EventEntity> events = eventRepository.findAll();
+    List<EventList> eventList = new ArrayList<>();
+
+    for (EventEntity event : events) {
+      List<EventScheduleEntity> schedules = eventScheduleRepository.findByEvent(event);
+      LocalDate startDate = schedules.get(0).getEventDate();
+      LocalDate endDate = schedules.get(schedules.size() - 1).getEventDate();
+      LocalTime startTime = schedules.get(0).getStartTime();
+      LocalTime endTime = schedules.get(0).getEndTime();
+
+      int appliedPeople = eventAppRepository.countByEventAndEventComp(event, 'N');
+      int completedPeople = eventAppRepository.countByEventAndEventComp(event, 'Y');
+
+      EventList eventList2 = EventList.builder()
+          .eventPoster(event.getEventPoster())
+          .eventTitle(event.getEventTitle())
+          .eventId(event.getEventId())
+          .uploadDate(LocalDate.from(event.getUploadDate()))
+          .maxPeople(event.getMaxPeople())
+          .eventAccept(event.getEventAccept())
+          .isRegistrationOpen(event.getIsRegistrationOpen())
+          .startDate(startDate)
+          .endDate(endDate)
+          .startTime(startTime)
+          .endTime(endTime)
+          .appliedPeople(appliedPeople)
+          .completedPeople(completedPeople)
+          .build();
+
+      eventList.add(eventList2);
+    }
+
+    return eventList;
+  }
 }

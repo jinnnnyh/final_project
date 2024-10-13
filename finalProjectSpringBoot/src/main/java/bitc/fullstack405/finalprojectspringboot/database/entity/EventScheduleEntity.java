@@ -1,3 +1,4 @@
+
 package bitc.fullstack405.finalprojectspringboot.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -15,7 +16,6 @@ import java.util.List;
 @Entity
 @Table(name = "event_schedule")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
@@ -46,8 +46,7 @@ public class EventScheduleEntity {
   @ToString.Exclude
   private EventEntity event;
 
-  @OneToMany(mappedBy = "eventsSchedule", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "eventSchedule", cascade = CascadeType.ALL)
   @ToString.Exclude
   private List<AttendInfoEntity> attendInfoList = new ArrayList<>();
-
 }

@@ -4,10 +4,12 @@ import bitc.fullstack405.finalprojectspringboot.database.entity.Role;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,36 +36,67 @@ public class UserController {
     }
   }
 
+//  유저 관리 리스트 출력
+  @GetMapping("/userManage")
+//  public ResponseEntity<List<UserEntity>> userManage() {
+  public String userManage() {
+
+    return "성공";
+  }
+
+//  가입대기 유저 승인
+  @PutMapping("/signAccept/{userId}")
+//  public String signAccept(@RequestBody Map<String, String> loginData) {
+  public String signAccept(@PathVariable Long userId) {
+
+    return "성공";
+  }
+
+//  회원삭제(관리자권한)
+  @DeleteMapping("/signOut/{userId}")
+//  public ResponseEntity<UserEntity> signOut(@RequestBody UserEntity userEntity) {
+  public String signOut(@PathVariable Long userId) {
+
+    return "성공";
+  }
+
+//  회원정보 수정 승인
+  @PutMapping("/updateUser/{userId}")
+//  public ResponseEntity<UserEntity> updateUser(@RequestBody UserEntity userEntity) {
+  public String updateUser(@PathVariable Long userId) {
+
+    return "성공";
+  }
+
+
+
 //  Web 데이터베이스 추가용 회원가입
   @PutMapping("/signup")
   public ResponseEntity<UserEntity> signup(@RequestBody Map<String, String> signupData) {
-    String userAccount = signupData.get("userAccount");
-    String userPw = signupData.get("userPw");
-    String name = signupData.get("name");
-    String userDepart = signupData.get("userDepart");
     String userPermission = signupData.get("userPermission");
-    String userPhone = signupData.get("userPhone");
-
-    UserEntity userEntity = new UserEntity();
+    Role userPerm = null;
 
     if (Objects.equals(userPermission, "협회장")) {
-      userEntity.setRole(Role.ROLE_PRESIDENT);
+      userPerm = Role.ROLE_PRESIDENT;
     }
     else if (Objects.equals(userPermission, "총무")) {
-      userEntity.setRole(Role.ROLE_SECRETARY);
+      userPerm = Role.ROLE_SECRETARY;
     }
     else if (Objects.equals(userPermission, "정회원")) {
-      userEntity.setRole(Role.ROLE_REGULAR);
+      userPerm = Role.ROLE_REGULAR;
     }
     else if (Objects.equals(userPermission, "준회원")) {
-      userEntity.setRole(Role.ROLE_ASSOCIATE);
+      userPerm = Role.ROLE_ASSOCIATE;
     }
+    UserEntity userEntity = UserEntity.builder()
+        .userAccount(signupData.get("userAccount"))
+        .userDepart(signupData.get("userDepart"))
+        .userPhone(signupData.get("userPhone"))
+        .password(signupData.get("userPw"))
+        .name(signupData.get("name"))
+        .role(userPerm)
+        .build();
 
-    userEntity.setUserAccount(userAccount);
-    userEntity.setName(name);
-    userEntity.setUserDepart(userDepart);
-    userEntity.setUserPhone(userPhone);
-    userEntity.setPassword(userPw);
 
     userService.signup(userEntity);
 

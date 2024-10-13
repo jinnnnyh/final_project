@@ -128,26 +128,66 @@
   background-color: #102279;
 }
 
-/* eventList 승인예정 / 승인완료 */
-.approval-btn {
+/* eventList mark style */
+.markStyle {
   border-radius:50px;
   padding: 4px;
-  max-width:70px;
+  width:65px;
   font-size:0.8rem;
   text-align: center;
+  border:1px solid #ccc;
+}
+
+/* 썸네일 이미지 */
+.thumbnail {
+  width: 350px;
+  height: 250px;
+  border:1px solid #ddd;
+}
+
+.thumbnail img {
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  object-position: top;
 }
 
 
+/* 승인여부 mark */
+.approval_y {
+  color: #dc3545;
+  border: 1px solid #dc3545
+}
+
+.approval_n {
+  color: #283eae;
+  border: 1px solid #283eae;
+}
 
 
+/* pagination */
+.pagination {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 
+  > * {
+    cursor: pointer;
+  }
+}
 
+.pagination__link {
+  transition: all 0.25s;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.3rem;
+}
 
-
-
-
-
-
+.pagination__link__active {
+  background-color: #bbb;
+  color: #fefefe;
+}
 
 
 

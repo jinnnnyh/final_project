@@ -32,16 +32,16 @@ function App() {
           {/* 왼쪽 네비게이션 */}
           {/*<Navigation/>*/}
         {location.pathname !== '/login' && location.pathname !== '/signup' && <Navigation/>}
-          <div className={'container-fluid'} style={{marginLeft:"330px", marginRight:"50px"}}>
+          <div className={'container-fluid'} style={{marginLeft:"330px", marginRight:"50px", marginBottom:"100px"}}>
             {location.pathname !== '/login' && location.pathname !== '/signup' && <Header/>}
             {/*<Header/>*/}
             <MainPages>
               <Routes>
                 <Route path="/" element={<EventList/>}/>
-                <Route path="/events/write" element={<EventWrite/>}/>
+                <Route path="/event/write" element={<EventWrite/>}/>
                 {/*<Route path="/events/view" element={<EventView/>}/>*/}
-                <Route path="/events/:eventId" element={<EventView/>}/>
-                <Route path="/events/attend" element={<EventAttendList/>}/>
+                <Route path="/event/:eventId" element={<EventView/>}/>
+                <Route path="/event/attend" element={<EventAttendList/>}/>
                 <Route path="/member" element={<MemberList/>}/>
                 <Route path="/member/edit" element={<MemberEdit/>}/>
                 <Route path="/member/permission" element={<MemberPermission/>}/>

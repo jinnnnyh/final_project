@@ -7,18 +7,19 @@ function NoticeBoardList () {
 
   // 공지사항 리스트 불러오기
   const [notiBoardList, setNotiBoardList] = useState([]);
-  //
-  // useEffect(() => {
-  //   axios.get('http://localhost:8080/notifications')
-  //     .then(res => {
-  //       setNotiBoardList(res.data);
-  //       // console.log(notiData);
-  //     })
-  //     .catch(err => {
-  //       alert("통신 실패." + err);
-  //     });
-  // }, [notiBoardList]);
-  //
+
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/notifications')
+      .then(res => {
+        setNotiBoardList(res.data);
+        // console.log("통신성공");
+      })
+      .catch(err => {
+        alert("통신 실패." + err);
+      });
+  }, []);
+
 
   // 글쓰기 버튼 연결
   const navigate = useNavigate();

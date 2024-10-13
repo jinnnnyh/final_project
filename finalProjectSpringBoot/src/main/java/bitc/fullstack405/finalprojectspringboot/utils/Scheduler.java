@@ -1,7 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.utils;
 
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.EventRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +22,9 @@ public class Scheduler {
 
     List<EventEntity> eventEntities = eventRepository.findByInvisibleDate(today);
 
-    for (EventEntity event : eventEntities) {
-      event.setIsRegistrationOpen('N');
-    }
-
+    eventEntities.replaceAll(eventEntity -> eventEntity.toBuilder()
+        .isRegistrationOpen('Y')
+        .build());
     eventRepository.saveAll(eventEntities);
   }
 }

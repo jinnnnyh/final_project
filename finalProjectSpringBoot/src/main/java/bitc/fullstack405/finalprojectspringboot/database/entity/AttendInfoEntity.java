@@ -39,7 +39,11 @@ public class AttendInfoEntity {
     // 당일 수료 여부 Y/N
     @Column(name = "attend_comp", length = 1, nullable = false)
     @ColumnDefault("'N'")
-    private Character lateOrNot;
+    private Character attendComp;
+
+    // QR 코드 이미지 파일
+    @Column(name = "qr_image", length = 500)
+    private String qrImage;
 
     // 참석자 (fk)
     @ManyToOne
@@ -51,5 +55,10 @@ public class AttendInfoEntity {
     @ManyToOne
     @JoinColumn(name = "schedule_id", nullable = false)
     @ToString.Exclude
-    private EventScheduleEntity eventsSchedule;
+    private EventScheduleEntity eventSchedule;
+
+
+//    public void CheckIn() {
+//        this.checkInTime = 'N';
+//    }
 }

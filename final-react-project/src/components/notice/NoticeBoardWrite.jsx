@@ -1,11 +1,15 @@
 import Notice from "../../pages/Notice.jsx";
 import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import axios from "axios";
 
 function NoticeBoardWrite () {
 
+  // const [notiTitle, setNotiTitle] = useState('');
+  // const [notiContent, setNotiContent] = useState('');
+
   // DB로 데이터 전송
   // 완료버튼
-
 
   // 취소버튼 => 알림창 => 확인 => 목록으로 이동
   const navigate = useNavigate();
@@ -16,7 +20,6 @@ function NoticeBoardWrite () {
     }
   };
 
-
   return (
     <section>
       <Notice/>
@@ -24,8 +27,10 @@ function NoticeBoardWrite () {
         <form>
           <div className={'mt-4'}>
             <label htmlFor={'noti-title'} className={'form-label'}>제목</label>
-            <input type={'text'} className={'form-control py-2'} id={'noti-title'} placeholder={'제목을 입력해주세요'} />
+            <input type={'text'} className={'form-control py-2'} id={'noti-title'} placeholder={'제목을 입력해주세요'}/>
+
           </div>
+
 
           {/*<div className={'d-flex mt-4 justify-content-between'}>*/}
           {/*  <div className={'w-50 me-4'}>*/}
@@ -39,7 +44,7 @@ function NoticeBoardWrite () {
           {/*</div>*/}
           <div className={'mt-4'}>
             <label htmlFor={'noti-content'} className={'form-label'}>내용</label>
-            <textarea  className={'form-control py-3'} id={'noti-content'} rows="5" placeholder={'내용을 입력해주세요'}/>
+            <textarea className={'form-control py-3'} id={'noti-content'} rows="5" placeholder={'내용을 입력해주세요'}/>
           </div>
 
           <div className={'d-flex justify-content-end mt-5'}>
