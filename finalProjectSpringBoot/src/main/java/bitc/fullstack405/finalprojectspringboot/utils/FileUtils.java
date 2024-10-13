@@ -41,4 +41,22 @@ public class FileUtils {
         // 새 파일 이름 반환
         return newFileName;
     }
+
+//    파일 삭제하는 유틸임
+    public boolean deleteFile(String fileName) throws Exception {
+        if (ObjectUtils.isEmpty(fileName)) {
+            return false;
+        }
+
+        String path = "../eventImg/";
+
+        File file = new File(path + fileName);
+
+        if (file.exists()) {
+            return file.delete();
+        }
+        else {
+            return false;
+        }
+    }
 }
