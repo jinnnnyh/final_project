@@ -1,10 +1,10 @@
 package bitc.fullstack405.finalprojectspringboot.controller.react;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.user.UserListForManageDTO;
 import bitc.fullstack405.finalprojectspringboot.database.entity.Role;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,12 +38,23 @@ public class UserController {
   }
 
 //  유저 관리 리스트 출력
-  @GetMapping("/userManage")
-//  public ResponseEntity<List<UserEntity>> userManage() {
-  public String userManage() {
+@GetMapping("/userManage")
+public ResponseEntity<List<UserListForManageDTO>> userManage() {
+  List<UserEntity> userEntities = userService.userListForManage();
 
-    return "성공";
-  }
+  List<UserListForManageDTO> userListForManageDTOs = userEntities.stream()
+      .map(user -> UserListForManageDTO.builder()
+          .userId(user.getUserId())
+          .userAccount(user.getUserAccount())
+          .name(user.getName())
+          .userPhone(user.getUserPhone())
+          .userDepart(user.getUserDepart())
+          .role(user.getRole())
+          .build())
+      .collect(Collectors.toList());
+
+  return ResponseEntity.ok(userListForManageDTOs);
+}
 
 //  가입대기 유저 승인
   @PutMapping("/signAccept/{userId}")

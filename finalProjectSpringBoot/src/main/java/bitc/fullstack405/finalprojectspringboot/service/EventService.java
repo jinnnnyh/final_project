@@ -1,6 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventList;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventListDTO;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
@@ -8,7 +8,6 @@ import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -212,9 +211,9 @@ public class EventService {
     return eventRepository.findById(eventId);
   }
 
-  public List<EventList> getEventList() {
+  public List<EventListDTO> getEventList() {
     List<EventEntity> events = eventRepository.findAll();
-    List<EventList> eventList = new ArrayList<>();
+    List<EventListDTO> eventListDTO = new ArrayList<>();
 
     for (EventEntity event : events) {
       List<EventScheduleEntity> schedules = eventScheduleRepository.findByEvent(event);
@@ -226,7 +225,7 @@ public class EventService {
       int appliedPeople = eventAppRepository.countByEventAndEventComp(event, 'N');
       int completedPeople = eventAppRepository.countByEventAndEventComp(event, 'Y');
 
-      EventList eventList2 = EventList.builder()
+      EventListDTO eventListDTO2 = EventListDTO.builder()
           .eventPoster(event.getEventPoster())
           .eventTitle(event.getEventTitle())
           .uploadDate(LocalDate.from(event.getUploadDate()))
@@ -241,9 +240,9 @@ public class EventService {
           .completedPeople(completedPeople)
           .build();
 
-      eventList.add(eventList2);
+      eventListDTO.add(eventListDTO2);
     }
 
-    return eventList;
+    return eventListDTO;
   }
 }

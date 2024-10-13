@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Builder
-public class EventList {
+public class EventListDTO {
 
   private String eventPoster;
   private String eventTitle;

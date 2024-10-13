@@ -1,21 +1,18 @@
 package bitc.fullstack405.finalprojectspringboot.controller.react;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventList;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventListDTO;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import bitc.fullstack405.finalprojectspringboot.service.EventService;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,9 +74,9 @@ public class EventController {
 
 //  이벤트리스트 출력
 @GetMapping("/list")
-public ResponseEntity<List<EventList>> listEvents() {
-  List<EventList> eventList = eventService.getEventList();
-  return ResponseEntity.ok(eventList);
+public ResponseEntity<List<EventListDTO>> listEvents() {
+  List<EventListDTO> eventListDTO = eventService.getEventList();
+  return ResponseEntity.ok(eventListDTO);
 }
 
 //  참석자리스트 출력

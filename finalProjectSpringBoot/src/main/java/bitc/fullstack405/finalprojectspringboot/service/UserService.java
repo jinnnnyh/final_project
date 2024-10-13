@@ -5,6 +5,8 @@ import bitc.fullstack405.finalprojectspringboot.database.repository.UserReposito
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -17,5 +19,9 @@ public class UserService {
 
   public void signup(UserEntity userEntity) {
     userRepository.save(userEntity);
+  }
+
+  public List<UserEntity> userListForManage() {
+    return userRepository.findAll();
   }
 }
