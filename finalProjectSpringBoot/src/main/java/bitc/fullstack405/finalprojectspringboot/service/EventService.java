@@ -211,6 +211,7 @@ public class EventService {
     return eventRepository.findById(eventId);
   }
 
+//  이벤트 리스트 전체 출력
   public List<EventListDTO> getEventList() {
     List<EventEntity> events = eventRepository.findAll();
     List<EventListDTO> eventListDTO = new ArrayList<>();
@@ -236,7 +237,7 @@ public class EventService {
           .endDate(endDate)
           .startTime(startTime)
           .endTime(endTime)
-          .appliedPeople(appliedPeople)
+          .totalAppliedPeople(appliedPeople + completedPeople)
           .completedPeople(completedPeople)
           .build();
 

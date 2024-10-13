@@ -24,6 +24,6 @@ public class EventListDTO {
   private LocalDate startDate;
   private LocalDate endDate;
 
-  private int appliedPeople; // 신청 인원
+  private int totalAppliedPeople; // 신청 인원
   private int completedPeople; // 수료 인원
 }
