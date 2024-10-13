@@ -74,11 +74,11 @@ public class EventController {
   }
 
 //  이벤트리스트 출력
-@GetMapping("/list")
-public ResponseEntity<List<EventListDTO>> listEvents() {
-  List<EventListDTO> eventListDTO = eventService.getEventList();
-  return ResponseEntity.ok(eventListDTO);
-}
+  @GetMapping("/list")
+  public ResponseEntity<List<EventListDTO>> listEvents() {
+    List<EventListDTO> eventListDTO = eventService.getEventList();
+    return ResponseEntity.ok(eventListDTO);
+  }
 
 //  해당 이벤트의 참석자리스트 출력
   @GetMapping("/attendList/{eventId}")
@@ -88,11 +88,11 @@ public ResponseEntity<List<EventListDTO>> listEvents() {
   }
 
 //  이벤트정보삭제
-  @DeleteMapping("/deleteEvent/{eventId}")
-  public String deleteEvent(@PathVariable Long eventId) {
-
-    return "성공";
-  }
+@DeleteMapping("/deleteEvent/{eventId}")
+public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId) {
+  eventService.deleteEvent(eventId);
+  return ResponseEntity.noContent().build();
+}
 
 //  이벤트 수정
   @PutMapping("/updateEvent/{eventId}")
@@ -103,15 +103,15 @@ public ResponseEntity<List<EventListDTO>> listEvents() {
 
 //  이벤트 승인
   @PutMapping("/acceptEvent/{eventId}")
-  public String acceptEvent(@PathVariable Long eventId) {
-
-    return "성공";
+  public ResponseEntity<Void> acceptEvent(@PathVariable Long eventId, @RequestParam Long userId) {
+//    eventService.acceptEvent(eventId, userId);
+    return ResponseEntity.noContent().build();
   }
 
 //  이벤트 거부
-  @PutMapping("/denyEvent")
-  public String denyEvent(@PathVariable Long eventId) {
-
-    return "성공";
+  @PutMapping("/denyEvent/{eventId}")
+  public ResponseEntity<Void> denyEvent(@PathVariable Long eventId) {
+//    eventService.denyEvent(eventId);
+    return ResponseEntity.noContent().build();
   }
 }

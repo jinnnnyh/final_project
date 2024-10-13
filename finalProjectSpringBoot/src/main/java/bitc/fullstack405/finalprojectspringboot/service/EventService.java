@@ -10,6 +10,7 @@ import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -285,5 +286,9 @@ public class EventService {
         .endTime(endTime)
         .attendUserList(attendInfoDTOList)
         .build();
+  }
+
+  public void deleteEvent(Long eventId) {
+    eventRepository.deleteById(eventId);
   }
 }
