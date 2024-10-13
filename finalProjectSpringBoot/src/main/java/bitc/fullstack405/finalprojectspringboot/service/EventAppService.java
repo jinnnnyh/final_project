@@ -1,7 +1,7 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppAdminUpcomingEventResponse;
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppEventAppListResponse;
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppUpcomingEventResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import bitc.fullstack405.finalprojectspringboot.utils.QRCodeGenerator;
@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -125,11 +127,6 @@ public class EventAppService {
                 .map(eventApp -> new AppEventAppListResponse(eventApp.getEvent(), eventApp))
                 .toList();
     }
-
-//    // <APP> 신청 내역 중 곧 시작하는 행사 1개
-//    public AppUpcomingEventResponse findMyUpcomingEvent(Long userId) {
-//        AppUpcomingEventResponse upcomingEvent = eventAppRepository.findUpcomingEvent(userId);
-//    }
 
 
     ///////////////////////////
