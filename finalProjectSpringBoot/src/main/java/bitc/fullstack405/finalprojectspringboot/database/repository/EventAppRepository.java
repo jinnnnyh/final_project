@@ -5,7 +5,11 @@ import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EventAppRepository extends JpaRepository<EventAppEntity, Long> {
   int countByEventAndEventComp(EventEntity eventEntity, char eventComp);
+
+  List<EventAppEntity> findByEvent(EventEntity event);
 }

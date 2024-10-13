@@ -1,5 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.controller.react;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.AttendListDTO;
 import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventListDTO;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
@@ -79,11 +80,11 @@ public ResponseEntity<List<EventListDTO>> listEvents() {
   return ResponseEntity.ok(eventListDTO);
 }
 
-//  참석자리스트 출력
+//  해당 이벤트의 참석자리스트 출력
   @GetMapping("/attendList/{eventId}")
-  public String attendList(@PathVariable Long eventId) {
-
-    return "성공";
+  public ResponseEntity<AttendListDTO> attendList(@PathVariable Long eventId) {
+    AttendListDTO attendListDTO = eventService.getAttendeeList(eventId);
+    return ResponseEntity.ok(attendListDTO);
   }
 
 //  이벤트정보삭제

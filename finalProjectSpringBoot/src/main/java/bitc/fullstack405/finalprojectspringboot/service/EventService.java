@@ -1,11 +1,13 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.AttendInfoDTO;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.AttendListDTO;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.AttendUserDTO;
 import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventListDTO;
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
-import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
+import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -206,7 +209,7 @@ public class EventService {
       return eventEntity;
   }
 
-// 이벤트 상세보기
+//  이벤트 상세보기
   public Optional<EventEntity> eventView(Long eventId) {
     return eventRepository.findById(eventId);
   }
@@ -245,5 +248,42 @@ public class EventService {
     }
 
     return eventListDTO;
+  }
+
+//  이벤트 참석자 정보 조회
+  public AttendListDTO getAttendeeList(Long eventId) {
+
+    EventEntity event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Event not found"));
+
+    List<EventScheduleEntity> schedules = eventScheduleRepository.findByEvent(event);
+
+    List<EventAppEntity> eventAppList = eventAppRepository.findByEvent(event);
+
+    List<AttendInfoDTO> attendInfoDTOList = eventAppList.stream()
+        .map(eventApp -> {
+          UserEntity user = userRepository.findById(eventApp.getUser().getUserId()).orElse(null);
+          return AttendInfoDTO.builder()
+              .userId(user.getUserId())
+              .userAccount(user.getUserAccount())
+              .name(user.getName())
+              .userPhone(user.getUserPhone())
+              .userDepart(user.getUserDepart())
+              .role(user.getRole())
+              .build();
+        })
+        .collect(Collectors.toList());
+    LocalDate startDate = schedules.get(0).getEventDate();
+    LocalDate endDate = schedules.get(schedules.size() - 1).getEventDate();
+    LocalTime startTime = schedules.get(0).getStartTime();
+    LocalTime endTime = schedules.get(0).getEndTime();
+
+    return AttendListDTO.builder()
+        .eventTitle(event.getEventTitle())
+        .startDate(startDate)
+        .endDate(endDate)
+        .startTime(startTime)
+        .endTime(endTime)
+        .attendUserList(attendInfoDTOList)
+        .build();
   }
 }
