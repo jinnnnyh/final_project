@@ -42,6 +42,12 @@ interface Interface {
   @POST("/signup/{userAccount}")
   fun CheckedId(@Path("userAccount") userAccount:String):Call<Boolean>
 
+  // 회원 탈퇴
+  @PUT("/app/user/delete/{userId}")
+  fun deleteUser(@Path("userId")userId:Long):Call<Void>
+
+
+
 
   /////////// 관리자
   //// 예정된 행사 1개
