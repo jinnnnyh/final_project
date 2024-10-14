@@ -31,7 +31,7 @@ public class AppEventDetailResponse {
         this.eventPoster = event.getEventPoster();
         this.posterUserName = event.getPosterUser().getName();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 10/14 날짜포맷변경
         this.visibleDate = event.getVisibleDate().format(formatter);
 
         // 스케줄 리스트를 scheduleId 기준으로 오름차순 정렬하고, scheduleId와 eventDate를 맵핑하여 리스트로 변환

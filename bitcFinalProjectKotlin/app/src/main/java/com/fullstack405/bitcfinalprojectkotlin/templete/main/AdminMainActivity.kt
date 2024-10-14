@@ -15,6 +15,7 @@ import com.fullstack405.bitcfinalprojectkotlin.data.AdminUpcomingEventData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityAdminMainBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
+import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.notice_XXX.NoticeListActivity
@@ -55,7 +56,6 @@ class AdminMainActivity : AppCompatActivity() {
         val intentAttendList = Intent(this, AttendListActivity::class.java)
         intentAttendList.putExtra("userId",userId)
 
-        val intent_notice = Intent(this, NoticeListActivity::class.java)
         val intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
         intent_userInfoEdit.putExtra("userId",userId)
 
@@ -71,10 +71,19 @@ class AdminMainActivity : AppCompatActivity() {
         }
 
         // 행사 내역 중 제일 빠른 일자 1개
-        // 행사 당일 끝나는 시간 지나면 안보임
+        // 행사 당일 끝나는 시간 지나면 데이터 없음 > 화면에서 사라짐
         Client.retrofit.findAdminUpcomingEvent().enqueue(object:retrofit2.Callback<AdminUpcomingEventData>{
             override fun onResponse(call: Call<AdminUpcomingEventData>,response: Response<AdminUpcomingEventData>) {
-                var data = response.body() as AdminUpcomingEventData
+                val data = response.body() as AdminUpcomingEventData
+                val intent_eventDetail = Intent(this@AdminMainActivity,EventDetailActivity::class.java)
+                binding.txtAttend.setOnClickListener {
+                    intent_eventDetail.putExtra("eventId",data.eventId)
+                    intent_eventDetail.putExtra("userId",userId)
+                    intent_eventDetail.putExtra("userPermission",userPermission)
+                    intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
+
+                    startActivity(intent_eventDetail)
+                }
                 binding.txtAttend.text = data.eventTitle
                 binding.attendDate.text = "행사일자 : ${data.eventDate} | ${data.startTime}"
             }

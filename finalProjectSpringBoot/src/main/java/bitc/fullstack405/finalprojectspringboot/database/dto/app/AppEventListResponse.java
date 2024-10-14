@@ -19,7 +19,7 @@ public class AppEventListResponse {
         this.eventTitle = event.getEventTitle();
         this.isRegistrationOpen = event.getIsRegistrationOpen();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 10/14 날짜 포맷 수정
         this.visibleDate = event.getVisibleDate().format(formatter);
     }
 }

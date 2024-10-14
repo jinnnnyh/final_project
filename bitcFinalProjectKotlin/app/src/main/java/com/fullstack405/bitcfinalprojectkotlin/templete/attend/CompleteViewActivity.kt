@@ -53,6 +53,8 @@ class CompleteViewActivity : AppCompatActivity() {
                 // 수료증 날짜 = 마지막 날의 날짜
                 binding.month.text =data.schedules[data.schedules.size-1].get("eventDate").toString().substring(5, 7)
                 binding.date.text=data.schedules[data.schedules.size-1].get("eventDate").toString().substring(8, 10)
+
+                binding.president.text = data.presidentName
             }
 
             override fun onFailure(call: Call<CertificateData>, t: Throwable) {

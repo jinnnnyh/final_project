@@ -22,7 +22,7 @@ public class AppEventAppListResponse {
         this.eventTitle = event.getEventTitle();
         this.eventComp = app.getEventComp();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");// 10/14 날짜포맷변경
         this.appDate = app.getAppDate().format(formatter);
     }
 }
