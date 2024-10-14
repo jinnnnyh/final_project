@@ -58,19 +58,19 @@ public class UserController {
 
 //  가입대기 유저 승인
   @PutMapping("/signAccept/{userId}")
-//  public String signAccept(@RequestBody Map<String, String> loginData) {
-  public String signAccept(@PathVariable Long userId) {
+  public ResponseEntity<Void> signAccept(@PathVariable Long userId) {
 
-    return "성공";
+    userService.signAccept(userId);
+
+    return ResponseEntity.ok().build();
   }
 
-//  회원삭제(관리자권한)
+//  관리자가 직접 회원탈퇴(관리자권한, 탈퇴처리)
   @DeleteMapping("/signOut/{userId}")
-//  public ResponseEntity<UserEntity> signOut(@RequestBody UserEntity userEntity) {
-  public String signOut(@PathVariable Long userId) {
+  public ResponseEntity<Void> signOut(@PathVariable Long userId) {
 
 
-    return "성공";
+    return ResponseEntity.ok().build();
   }
 
 //  Web 데이터베이스 추가용 회원가입
