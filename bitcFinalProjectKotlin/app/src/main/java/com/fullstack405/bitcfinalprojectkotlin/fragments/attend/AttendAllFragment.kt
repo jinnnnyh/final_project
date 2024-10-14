@@ -63,7 +63,9 @@ class AttendAllFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<List<EventAppData>>, t: Throwable) {
-                TODO("Not yet implemented")
+                attendAllAdapter = AttendAllAdapter(allList,userId,userName!!)
+                binding.recyclerViewAll.adapter = attendAllAdapter
+                binding.recyclerViewAll.layoutManager = LinearLayoutManager(requireContext())
             }
 
         })

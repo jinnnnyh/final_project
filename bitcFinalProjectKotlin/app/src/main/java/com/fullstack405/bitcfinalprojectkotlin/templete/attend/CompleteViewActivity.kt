@@ -6,7 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.fullstack405.bitcfinalprojectkotlin.R
+import com.fullstack405.bitcfinalprojectkotlin.client.Client
+import com.fullstack405.bitcfinalprojectkotlin.data.CertificateData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityCompleteViewBinding
+import android.util.Log
+import retrofit2.Call
+import retrofit2.Response
 
 class CompleteViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,17 +26,44 @@ class CompleteViewActivity : AppCompatActivity() {
             insets
         }
 
-        // 이름, 행사명, 행사날짜(마지막날)
-        var name = intent.getStringExtra("userName")
-        var eventName = intent.getStringExtra("eventName")
-        var eventDate = intent.getStringExtra("eventDate")
+        // 유저id, 이벤트id 필요
+        var userId = intent.getLongExtra("userId",0)
+        var eventId = intent.getLongExtra("eventId",0)
+        var userName = intent.getStringExtra("userName")
 
-        binding.title.text = eventName
-        binding.name.text = name
-        binding.topDate.text = eventDate
-        binding.title2.text = eventName
-        binding.month.text = eventDate?.substring(5,7)
-        binding.date.text = eventDate?.substring(8,10)
+        // 참석증 정보 불러오기
+        Client.retrofit.findCertificateData(eventId, userId).enqueue(object:retrofit2.Callback<CertificateData>{
+            override fun onResponse(call: Call<CertificateData>,response: Response<CertificateData>) {
+                val data = response.body() as CertificateData
+//                CertificateData(eventTitle=행사 2, appUserName=한태산, presidentName=김운학, schedules=[{scheduleId=2.0, eventDate=2024-10-14}])
+                Log.d("findCertificateData", "$data")
+
+                binding.name.text = userName
+                binding.title.text = data.eventTitle
+                // 여러날이면 기간 인덱스0~ 끝
+                if(data.schedules.size == 1){
+                    binding.topDate.text = data.schedules[0].get("eventDate").toString()
+                }
+                else{
+                    binding.topDate.text = "${data.schedules[0].get("eventDate").toString()}~${data.schedules[data.schedules.size-1].get("eventDate").toString()}"
+                }
+
+                binding.title2.text = data.eventTitle // 내용 속 제목
+
+                // 수료증 날짜 = 마지막 날의 날짜
+                binding.month.text =data.schedules[data.schedules.size-1].get("eventDate").toString().substring(5, 7)
+                binding.date.text=data.schedules[data.schedules.size-1].get("eventDate").toString().substring(8, 10)
+
+                binding.president.text = data.presidentName
+            }
+
+            override fun onFailure(call: Call<CertificateData>, t: Throwable) {
+                Log.d("findCertificateData","error : ${t.message}")
+            }
+
+        })
+
+
 
         // 뒤로가기
         binding.btnBack.setOnClickListener {

@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.adapter.AttendAllAdapter
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.EventAppData
-import com.fullstack405.bitcfinalprojectkotlin.databinding.FragmentAttendAllBinding
 import com.fullstack405.bitcfinalprojectkotlin.databinding.FragmentAttendCompleteBinding
 import retrofit2.Call
 import retrofit2.Response
@@ -49,7 +47,7 @@ class AttendCompleteFragment : Fragment() {
         lateinit var compList:MutableList<EventAppData>
 
         // db 연결버전
-        Client.retrofit.findMyCompleteApplication(userId).enqueue(object:retrofit2.Callback<List<EventAppData>>{
+        Client.retrofit.findMyCompleteApplicationList(userId).enqueue(object:retrofit2.Callback<List<EventAppData>>{
             override fun onResponse(call: Call<List<EventAppData>>, response: Response<List<EventAppData>>) {
                 compList = response.body() as MutableList<EventAppData>
 

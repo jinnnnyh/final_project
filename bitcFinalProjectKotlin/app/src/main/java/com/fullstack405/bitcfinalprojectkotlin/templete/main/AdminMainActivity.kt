@@ -10,15 +10,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.adapter.MainEventListAdapter
-import com.fullstack405.bitcfinalprojectkotlin.adapter.MainNoticeListAdapter
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
+import com.fullstack405.bitcfinalprojectkotlin.data.AdminUpcomingEventData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
-import com.fullstack405.bitcfinalprojectkotlin.data.NoticeData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityAdminMainBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
+import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
-import com.fullstack405.bitcfinalprojectkotlin.templete.notice.NoticeListActivity
+import com.fullstack405.bitcfinalprojectkotlin.templete.notice_XXX.NoticeListActivity
 import retrofit2.Call
 import retrofit2.Response
 
@@ -56,105 +56,86 @@ class AdminMainActivity : AppCompatActivity() {
         val intentAttendList = Intent(this, AttendListActivity::class.java)
         intentAttendList.putExtra("userId",userId)
 
-        val intent_notice = Intent(this, NoticeListActivity::class.java)
         val intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
         intent_userInfoEdit.putExtra("userId",userId)
 
-        // 행사 안내 어댑터
-        val eventList = mutableListOf<EventListData>()
 
-
-        val mainEventListAdapter = MainEventListAdapter(eventList,userId, userPermission!!)
-        binding.eventRecyclerView.adapter = mainEventListAdapter
-        binding.eventRecyclerView.layoutManager = LinearLayoutManager(this)
-
-        // 행사 관리
+        // 행사 관리 >> 행사안내 리스트로 이동
         binding.adminEventList.setOnClickListener {
             startActivity(intent_event)
         }
 
-        // 신청 내역
+        // 신청 내역 리스트로 이동
         binding.attendList.setOnClickListener {
             startActivity(intentAttendList)
         }
 
-        // 행사 안내
+        // 행사 내역 중 제일 빠른 일자 1개
+        // 행사 당일 끝나는 시간 지나면 데이터 없음 > 화면에서 사라짐
+        Client.retrofit.findAdminUpcomingEvent().enqueue(object:retrofit2.Callback<AdminUpcomingEventData>{
+            override fun onResponse(call: Call<AdminUpcomingEventData>,response: Response<AdminUpcomingEventData>) {
+                val data = response.body() as AdminUpcomingEventData
+                val intent_eventDetail = Intent(this@AdminMainActivity,EventDetailActivity::class.java)
+                binding.txtAttend.setOnClickListener {
+                    intent_eventDetail.putExtra("eventId",data.eventId)
+                    intent_eventDetail.putExtra("userId",userId)
+                    intent_eventDetail.putExtra("userPermission",userPermission)
+                    intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
+
+                    startActivity(intent_eventDetail)
+                }
+                binding.txtAttend.text = data.eventTitle
+                binding.attendDate.text = "행사일자 : ${data.eventDate} | ${data.startTime}"
+            }
+
+            override fun onFailure(call: Call<AdminUpcomingEventData>, t: Throwable) {
+                binding.txtAttend.text = "예정된 행사가 없습니다."
+            }
+
+        })
+
+
+
+
+
+
+        // 행사 안내 리스트로 이동
         binding.eventList.setOnClickListener {
             startActivity(intent_event)
         }
 
+        // 행사 안내
+        val eventList = mutableListOf<EventListData>()
+        lateinit var mainEventListAdapter:MainEventListAdapter
+
         // db 연결버전
-    Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
-      override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
-        var resList = response.body() as MutableList<EventListData>
-        // 목록은 항상 내림차순으로 받아옴, 상위 4개만 메인에 표출
-        for(i in 0..resList.size-1){
-          eventList.add(resList[i])
-        }
-          mainEventListAdapter.notifyDataSetChanged()
-      }
+        Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
+            override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
+                var resList = response.body() as MutableList<EventListData>
 
-      override fun onFailure(call: Call<List<EventListData>>, t: Throwable) {
-        Log.d("main eventlsit error", "main eventList load error")
-      }
-    })
+                // 목록은 항상 내림차순으로 받아옴, 상위 5개만 메인에 표출
+                if(resList.size-1 < 5){ // 5개 미만일 경우
+                    for(i in 0..resList.size-1){
+                        eventList.add(resList[i])
+                    }
+                }else{
+                    for(i in 0..5){
+                        eventList.add(resList[i])
+                    }
+                }
 
-        // 공지사항 어댑터
-        var noticeList = mutableListOf<NoticeData>()
-        noticeList.add(
-            NoticeData(0,"운영위원 모집 공고",
-            "메인화면\n" +
-                    "- 관리자 = 예정된 행사/행사관리 \n" +
-                    "- 회원 = 신청현황/신청내역\n" +
-                    "- 나머지는 동일\n" +
-                    "- 공지사항은 게시일 표출\n" +
-                    "\n" +
-                    "(관리자) 행사관리\n" +
-                    "- 진행중/완료 탭으로 구분(전체보기 필요시 탭 추가 가능)\n" +
-                    "- 현재 날짜 기준 오늘 포함 이전이면 진행중, 이후면 완료\n" +
-                    "\n" +
-                    "\n" +
-                    "(공통)행사 안내\n" +
-                    "- 게시일 기준 내림차순 \n" +
-                    "- 제목에 모집중/마감 표시(정렬에는 영향X) 행사테이블에 마감 Y/N 컬럼 필요\n" +
-                    "- 신청기간 보이게 하려면 해당컬럼 추가해야함 > 등록일 작업\n" +
-                    "\n" +
-                    "\n" +
-                    "(공통)공지사항\n" +
-                    "-게시일 기준으로 내림차순","20240203")
-        )
-        noticeList.add(
-            NoticeData(0,"운영위원 모집 공고",
-            "메인화면\n" +
-                    "- 관리자 = 예정된 행사/행사관리 \n" +
-                    "- 회원 = 신청현황/신청내역\n" +
-                    "- 나머지는 동일\n" +
-                    "- 공지사항은 게시일 표출\n" +
-                    "\n" +
-                    "(관리자) 행사관리\n" +
-                    "- 진행중/완료 탭으로 구분(전체보기 필요시 탭 추가 가능)\n" +
-                    "- 현재 날짜 기준 오늘 포함 이전이면 진행중, 이후면 완료\n" +
-                    "\n" +
-                    "\n" +
-                    "(공통)행사 안내\n" +
-                    "- 게시일 기준 내림차순 \n" +
-                    "- 제목에 모집중/마감 표시(정렬에는 영향X) 행사테이블에 마감 Y/N 컬럼 필요\n" +
-                    "- 신청기간 보이게 하려면 해당컬럼 추가해야함 > 등록일 작업\n" +
-                    "\n" +
-                    "\n" +
-                    "(공통)공지사항\n" +
-                    "-게시일 기준으로 내림차순","20240203")
-        )
-        noticeList.add(NoticeData(0,"운영위원 모집 공고","","20240203"))
-        noticeList.add(NoticeData(0,"운영위원 모집 공고","","20240203"))
+                mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission!!)
 
-        var mainNoticeListAdapter = MainNoticeListAdapter(noticeList)
-        binding.noticeRecyclerView.adapter = mainNoticeListAdapter
-        binding.noticeRecyclerView.layoutManager = LinearLayoutManager(this)
+                binding.eventRecyclerView.adapter = mainEventListAdapter
+                binding.eventRecyclerView.layoutManager = LinearLayoutManager(this@AdminMainActivity)
 
-        binding.noticeList.setOnClickListener {
-            startActivity(intent_notice)
-        }
+                mainEventListAdapter.notifyDataSetChanged()
+            }
+
+            override fun onFailure(call: Call<List<EventListData>>, t: Throwable) {
+                Log.d("main eventlsit error", "main eventList load error")
+            }
+        })
 
         // 회원정보수정 클릭 이벤트
         binding.userInfoEdit.setOnClickListener {

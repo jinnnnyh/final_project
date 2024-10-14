@@ -18,9 +18,11 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="210dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="제1회 ai 컨퍼런스"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/state"
@@ -30,7 +32,7 @@
         android:id="@+id/txt_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="5dp"
         android:text="게시일"
         android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="parent"

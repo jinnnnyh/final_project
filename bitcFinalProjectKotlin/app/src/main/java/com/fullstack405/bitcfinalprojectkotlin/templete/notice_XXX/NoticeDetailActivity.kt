@@ -1,4 +1,4 @@
-package com.fullstack405.bitcfinalprojectkotlin.templete.notice
+package com.fullstack405.bitcfinalprojectkotlin.templete.notice_XXX
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -7,7 +7,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityNoticeDetailBinding
-import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityNoticeListBinding
 
 class NoticeDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

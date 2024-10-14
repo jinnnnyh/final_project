@@ -31,7 +31,7 @@ class EventListAdapter(val eventList:MutableList<EventListData>, val userId:Long
         }
 
         holder.binding.title.text = event.eventTitle
-        holder.binding.date.text = event.visibleDate // 게시일
+        holder.binding.txtDate.text = "게시일  ${event.visibleDate}" // 게시일
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.binding.root.context, EventDetailActivity::class.java)
