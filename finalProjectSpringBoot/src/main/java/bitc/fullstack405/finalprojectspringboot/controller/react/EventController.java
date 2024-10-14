@@ -89,7 +89,7 @@ public class EventController {
 
 //  이벤트정보삭제
 @DeleteMapping("/deleteEvent/{eventId}")
-public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId) {
+public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId) throws Exception {
   eventService.deleteEvent(eventId);
   return ResponseEntity.noContent().build();
 }

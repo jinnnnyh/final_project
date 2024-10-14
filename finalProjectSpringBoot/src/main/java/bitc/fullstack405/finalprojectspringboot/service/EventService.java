@@ -288,7 +288,14 @@ public class EventService {
         .build();
   }
 
-  public void deleteEvent(Long eventId) {
+//  행사 삭제
+  public void deleteEvent(Long eventId) throws Exception {
+    EventEntity event = eventRepository.findById(eventId).get();
+
+    FileUtils fileUtils = new FileUtils();
+
+    fileUtils.deleteFile(event.getEventPoster());
+
     eventRepository.deleteById(eventId);
   }
 
