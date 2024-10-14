@@ -2,6 +2,7 @@ package bitc.fullstack405.finalprojectspringboot.database.repository;
 
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventAppEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -22,6 +23,16 @@ public interface EventAppRepository extends JpaRepository<EventAppEntity, Long> 
 
     // <APP> QR 스캔 - eventId와 userId로 eventAppEntity 조회
     EventAppEntity findByEvent_EventIdAndUser_UserId(Long eventId, Long userId);
+
+    // <APP> 회원 - 신청 내역 중 곧 시작하는 행사
+    @Query("SELECT ea, e, s " +
+            "FROM EventAppEntity ea " +
+            "JOIN ea.event e " +
+            "JOIN e.scheduleList s " +
+            "WHERE ea.user.userId = :userId " +
+            "AND (CURRENT_DATE < s.eventDate OR (CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime)) " +
+            "ORDER BY s.scheduleId ASC")
+    List<Object[]> findUpcomingEventForUser(Long userId);
 
 
     ///////////////////////////

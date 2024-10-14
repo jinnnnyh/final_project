@@ -24,27 +24,13 @@ public interface EventScheduleRepository extends JpaRepository<EventScheduleEnti
     // <APP> eventId로 해당 행사에 속한 모든 스케줄 조회(schedule id 기준 내림차순)
     List<EventScheduleEntity> findByEvent_EventIdOrderByScheduleIdDesc(Long eventId);
 
-    // <APP> 관리자 - 신청 내역 중 곧 시작하는 행사 1개
+    // <APP> 관리자 - 곧 시작하는 행사
     @Query("SELECT s FROM EventScheduleEntity s " +
             "JOIN s.event e " +
             "WHERE (CURRENT_DATE < s.eventDate OR (CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime)) " +
             "ORDER BY s.scheduleId ASC")
     List<EventScheduleEntity> findUpcomingEventSchedules();
 
-    // <APP> 회원 - 신청 내역 중 곧 시작하는 행사 1개
-//    SELECT s.event_id, e.event_title, a.event_comp, s.event_date, s.schedule_id, s.start_time, s.end_time
-//    FROM event_app AS a
-//    INNER JOIN event_schedule AS s
-//    ON a.event_id = s.event_id
-//    INNER JOIN event AS e
-//    ON a.event_id = e.event_id
-//    WHERE a.user_id = 2
-//    AND a.event_comp = 'N'
-//    AND (DATE(NOW()) < DATE(s.event_date) OR (DATE(NOW()) = DATE(s.event_date) AND TIME(NOW()) <= s.start_time))
-//    ORDER BY s.schedule_id ASC;
-//-- LIMIT 1;
-//    @Query("")
-//    AppUpcomingEventResponse findMyUpcomingEvent(Long userId);
 
     ///////////////////////////
     ////////// <WEB> //////////

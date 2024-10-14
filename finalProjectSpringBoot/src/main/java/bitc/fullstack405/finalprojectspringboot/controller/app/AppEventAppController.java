@@ -1,6 +1,7 @@
 package bitc.fullstack405.finalprojectspringboot.controller.app;
 
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppEventAppListResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppUserUpcomingEventResponse;
 import bitc.fullstack405.finalprojectspringboot.service.EventAppService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,10 @@ public class AppEventAppController {
         return ResponseEntity.ok(2);
     }
 
+    // 행사 당일 관리자가 신청자 직접 추가
+    // 매개변수 : event, userAccount
+    // 회원인지 아닌지는 내가 할 영역 X, 그냥 매개 변수 맏아온 거로 addApplication처럼 똑같이 만들면 됨
+
     // 특정 유저의 행사 신청 전체 내역 (행사 id 기준 내림차순)
     // event id, app id, 제목, 신청일, 수료/미수료(Y/N)
     @GetMapping("/application-list/{userId}")
@@ -55,5 +60,15 @@ public class AppEventAppController {
     public ResponseEntity<List<AppEventAppListResponse>> findMyIncompleteApplication(@PathVariable Long userId) {
         List<AppEventAppListResponse> eventAppList = eventAppService.findMyIncompleteEvents(userId);
         return ResponseEntity.ok().body(eventAppList);
+    }
+
+    // 회원 - 신청 내역 중 곧 시작하는 행사 1개
+    // 예정 행사 없으면 error, 앱에서 예정 행사 없음 처리
+    // [조건] 신청 행사 중 오늘 기준으로 가장 가까운 날짜, 시간 체크((현재 시각 <= end_time), 해당 회차의 행사가 종료할 때까지 보이게)
+    // [반환] event id, event title, 조건에 맞는 행사 날짜(eventDate), 수료 여부(eventComp), 해당 회차의 시작(start_time)/종료(end_time) 시간(HH:MM)
+    @GetMapping("/upcoming-event/{userId}")
+    public ResponseEntity<AppUserUpcomingEventResponse> findUpcomingEventForUser(@PathVariable Long userId) {
+        AppUserUpcomingEventResponse upcomingEvent = eventAppService.findUpcomingEventForUser(userId);
+        return ResponseEntity.ok().body(upcomingEvent);
     }
 }
