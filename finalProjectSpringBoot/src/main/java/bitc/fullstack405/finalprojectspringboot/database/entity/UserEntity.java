@@ -51,10 +51,6 @@ public class UserEntity {
     @Column(name = "user_pw", length = 200, nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<NotificationEntity> notificationList = new ArrayList<>();
-
     @OneToMany(mappedBy = "posterUser", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<EventEntity> postedEventList = new ArrayList<>();
