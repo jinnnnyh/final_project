@@ -1,15 +1,13 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.AttendInfoDTO;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.AttendListDTO;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.AttendUserDTO;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventListDTO;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.*;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -254,7 +252,7 @@ public class EventService {
 //  이벤트 참석자 정보 조회
   public AttendListDTO getAttendeeList(Long eventId) {
 
-    EventEntity event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Event not found"));
+    EventEntity event = eventRepository.findById(eventId).get();
 
     List<EventScheduleEntity> schedules = eventScheduleRepository.findByEvent(event);
 
@@ -325,6 +323,65 @@ public class EventService {
         .invisibleDate(event.getInvisibleDate())
         .build();
 
+    eventRepository.save(updatedEvent);
+  }
+
+  
+//  행사 수정
+  @Transactional
+  public void updateEvent(Long eventId, EventUpdateDTO eventUpdateDTO, MultipartFile file) throws Exception {
+    
+    EventEntity event = eventRepository.findById(eventId).get();
+    
+    EventEntity updatedEvent = event.toBuilder()
+        .eventTitle(eventUpdateDTO.getEventTitle())
+        .eventContent(eventUpdateDTO.getEventContent())
+        .maxPeople(Integer.parseInt(eventUpdateDTO.getMaxPeople()))
+        .posterUser(userRepository.findById(eventUpdateDTO.getUserId()).get())
+        .eventAccept(1)     // 승인/거부 상태여도 수정한 뒤에는 승인대기로 변경
+        .isRegistrationOpen(event.getIsRegistrationOpen())
+        .uploadDate(event.getUploadDate()) // 수정일로 바꿀지? 아니면 최초업로드일자 유지할지?
+        .acceptedDate(null) // 승인했더라도 승인대기상태가 되므로 승인일자 공백
+        .approver(null)    // 승인했더라도 승인대기상태가 되므로 승인자 공백
+        .build();
+
+    FileUtils fileUtil = new FileUtils();
+
+    if (file != null && !file.isEmpty()) {
+      if (event.getEventPoster() != null) {
+        fileUtil.deleteFile(event.getEventPoster());
+      }
+      String fileName = fileUtil.parseFileInfo(file);
+      updatedEvent = updatedEvent.toBuilder()
+          .eventPoster(fileName)
+          .build();
+    }
+    
+    eventScheduleRepository.deleteByEvent(event);
+    LocalDate startDate = LocalDate.parse(eventUpdateDTO.getEventStartDate());
+    LocalDate endDate = LocalDate.parse(eventUpdateDTO.getEventEndDate());
+    LocalTime startTime = LocalTime.parse(eventUpdateDTO.getStartTime());
+    LocalTime endTime = LocalTime.parse(eventUpdateDTO.getEndTime());
+
+    LocalDate invisDate = startDate.minusWeeks(1);
+    LocalDate visDate = startDate.minusWeeks(2);
+
+    event.toBuilder()
+        .visibleDate(visDate)
+        .invisibleDate(invisDate)
+        .build();
+
+    for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+      EventScheduleEntity newSchedule = EventScheduleEntity.builder()
+          .event(updatedEvent)
+          .eventDate(date)
+          .startTime(startTime)
+          .endTime(endTime)
+          .build();
+
+      eventScheduleRepository.save(newSchedule);
+    }
+    
     eventRepository.save(updatedEvent);
   }
 }

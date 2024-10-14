@@ -11,4 +11,6 @@ import java.util.List;
 public interface EventScheduleRepository extends JpaRepository<EventScheduleEntity, Long> {
 
   List<EventScheduleEntity> findByEvent(EventEntity eventEntity);
+
+  void deleteByEvent(EventEntity eventEntity);
 }

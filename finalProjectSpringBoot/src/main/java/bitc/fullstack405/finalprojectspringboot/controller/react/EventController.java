@@ -2,6 +2,7 @@ package bitc.fullstack405.finalprojectspringboot.controller.react;
 
 import bitc.fullstack405.finalprojectspringboot.database.dto.event.AttendListDTO;
 import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventListDTO;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventUpdateDTO;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
@@ -95,11 +96,33 @@ public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId) throws Excep
 }
 
 //  이벤트 수정
-  @PutMapping("/updateEvent/{eventId}")
-  public String updateEvent(@PathVariable Long eventId) {
+@PutMapping("/updateEvent/{eventId}")
+public ResponseEntity<Void> updateEvent(@PathVariable Long eventId,
+                                        @RequestParam("eventTitle") String eventTitle,
+                                        @RequestParam("eventContent") String eventContent,
+                                        @RequestParam("eventStartDate") String eventStartDate,
+                                        @RequestParam("eventEndDate") String eventEndDate,
+                                        @RequestParam("startTime") String startTime,
+                                        @RequestParam("endTime") String endTime,
+                                        @RequestParam("maxPeople") String maxPeople,
+                                        @RequestParam("userId") String userId,
+                                        @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
 
-    return "성공";
-  }
+  EventUpdateDTO eventUpdateDTO = EventUpdateDTO.builder()
+      .eventTitle(eventTitle)
+      .eventContent(eventContent)
+      .eventStartDate(eventStartDate)
+      .eventEndDate(eventEndDate)
+      .startTime(startTime)
+      .endTime(endTime)
+      .maxPeople(maxPeople)
+      .userId(Long.parseLong(userId))
+      .build();
+
+  eventService.updateEvent(eventId, eventUpdateDTO, file);
+
+  return ResponseEntity.noContent().build();
+}
 
 //  이벤트 승인
   @PutMapping("/acceptEvent/{eventId}")
