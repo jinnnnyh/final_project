@@ -37,7 +37,7 @@ class MainEventListAdapter(val eventList:MutableList<EventListData>, val userId:
             val intent = Intent(holder.binding.root.context, EventDetailActivity::class.java)
             intent.putExtra("eventId",event.eventId)
             intent.putExtra("visibleDate",event.visibleDate)
-
+            intent.putExtra("isRegistrationOpen",event.isRegistrationOpen)
             // 유저id
             intent.putExtra("userId",userId)
             intent.putExtra("userPermission",userPermission)

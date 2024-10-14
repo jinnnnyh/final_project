@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.adapter.MainEventListAdapter
@@ -72,24 +73,34 @@ class AdminMainActivity : AppCompatActivity() {
 
         // 행사 내역 중 제일 빠른 일자 1개
         // 행사 당일 끝나는 시간 지나면 데이터 없음 > 화면에서 사라짐
+        // onFailure로 가는게 아니라 onResponse로 null 값이 넘어옴
         Client.retrofit.findAdminUpcomingEvent().enqueue(object:retrofit2.Callback<AdminUpcomingEventData>{
             override fun onResponse(call: Call<AdminUpcomingEventData>,response: Response<AdminUpcomingEventData>) {
-                val data = response.body() as AdminUpcomingEventData
-                val intent_eventDetail = Intent(this@AdminMainActivity,EventDetailActivity::class.java)
-                binding.txtAttend.setOnClickListener {
-                    intent_eventDetail.putExtra("eventId",data.eventId)
-                    intent_eventDetail.putExtra("userId",userId)
-                    intent_eventDetail.putExtra("userPermission",userPermission)
-                    intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
-
-                    startActivity(intent_eventDetail)
+                val data = response.body() as AdminUpcomingEventData?
+                if(response.body() == null){
+                    binding.txtAttend.text = "예정된 행사가 없습니다."
+                    binding.attendDate.isVisible = false
                 }
-                binding.txtAttend.text = data.eventTitle
-                binding.attendDate.text = "행사일자 : ${data.eventDate} | ${data.startTime}"
+                else{
+                    val intent_eventDetail = Intent(this@AdminMainActivity,EventDetailActivity::class.java)
+                    binding.txtAttend.setOnClickListener {
+                        // 관리자) 행사 상세 페이지로 이동
+                        intent_eventDetail.putExtra("eventId",data!!.eventId)
+                        intent_eventDetail.putExtra("userId",userId)
+                        intent_eventDetail.putExtra("userPermission",userPermission)
+                        intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
+
+                        startActivity(intent_eventDetail)
+                    }
+
+                    binding.txtAttend.text = data!!.eventTitle
+                    binding.attendDate.text = "행사일자 : ${data.eventDate} | ${data.startTime}"
+                }
+
             }
 
             override fun onFailure(call: Call<AdminUpcomingEventData>, t: Throwable) {
-                binding.txtAttend.text = "예정된 행사가 없습니다."
+                Log.d("findAdminUpcomingEvent","error :${t.message}")
             }
 
         })

@@ -8,6 +8,7 @@ import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
 import com.fullstack405.bitcfinalprojectkotlin.data.InsertUserData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserData
 import com.fullstack405.bitcfinalprojectkotlin.data.UpdateData
+import com.fullstack405.bitcfinalprojectkotlin.data.UserUpcomingEventData
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -49,10 +50,14 @@ interface Interface {
 
 
 
-  /////////// 관리자
-  //// 예정된 행사 1개
+
+  //// 관리자 예정된 행사 1개
   @GET("/app/upcoming-event/admin")
   fun findAdminUpcomingEvent():Call<AdminUpcomingEventData>
+
+  //// 회원 신청 현황 1개
+  @GET("/app/upcoming-event/{userId}")
+  fun findUpcomingEventForUser(@Path("userId")userId:Long):Call<UserUpcomingEventData>
 
 
   /////////// event

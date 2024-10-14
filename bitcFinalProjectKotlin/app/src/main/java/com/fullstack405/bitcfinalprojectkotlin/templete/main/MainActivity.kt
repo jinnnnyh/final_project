@@ -8,13 +8,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.adapter.MainEventListAdapter
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
+import com.fullstack405.bitcfinalprojectkotlin.data.AdminUpcomingEventData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
+import com.fullstack405.bitcfinalprojectkotlin.data.UserUpcomingEventData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityMainBinding
+import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
+import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.notice_XXX.NoticeListActivity
@@ -70,7 +75,37 @@ class MainActivity : AppCompatActivity() {
       startActivity(intentAttendList)
     }
 
+    // 신청 내역 중 제일 빠른 일자 1개
+    // onFailure로 가는게 아니라 onResponse로 null 값이 넘어옴
+    Client.retrofit.findUpcomingEventForUser(userId).enqueue(object:retrofit2.Callback<UserUpcomingEventData>{
+      override fun onResponse(call: Call<UserUpcomingEventData>,response: Response<UserUpcomingEventData>) {
+        val data = response.body() as UserUpcomingEventData?
+        if(response.body() == null){
+          binding.txtAttend.text = "예정된 행사가 없습니다."
+          binding.attendDate.isVisible = false
+        }else{
+          val intent_attendDetail = Intent(this@MainActivity, AttendDetailActivity::class.java)
+          binding.txtAttend.setOnClickListener {
+            // 회원) 신청 상세 페이지로 이동
+            intent_attendDetail.putExtra("eventId",data!!.eventId)
+            intent_attendDetail.putExtra("userId",userId)
+            intent_attendDetail.putExtra("complete",data.eventComp)
+//          intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
+            startActivity(intent_attendDetail)
+          }
+          binding.txtAttend.text = data!!.eventTitle
+          binding.attendDate.text = data.startTime
 
+        }
+      }
+      override fun onFailure(call: Call<UserUpcomingEventData>, t: Throwable) {
+        Log.d("findUpcomingEventForUser","error :${t.message}")
+      }
+
+    })
+
+
+    // 행사 안내 목록으로 이동
     binding.eventList.setOnClickListener {
       startActivity(intent_event)
     }
