@@ -1,16 +1,21 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.event.AppEventDetailResponse;
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.event.AppEventListResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppAdminUpcomingEventResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppEventDetailResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppEventListResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
+import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.AttendInfoRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.EventRepository;
+import bitc.fullstack405.finalprojectspringboot.database.repository.EventScheduleRepository;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -18,6 +23,7 @@ import java.util.stream.Collectors;
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final EventScheduleRepository eventScheduleRepository;
     private final UserRepository userRepository;
     private final AttendInfoRepository attendInfoRepository;
     private final FileUtils fileUtils;
@@ -40,6 +46,53 @@ public class EventService {
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + eventId));
 
         return new AppEventDetailResponse(event);
+    }
+
+//    // <APP> 회원 - 신청 내역 중 곧 시작하는 행사 1개
+//    public AppUpcomingEventResponse findMyUpcomingEvent(Long userId) {
+//        AppUpcomingEventResponse upcomingEvent = eventAppRepository.findMyUpcomingEvent(userId);
+//    }
+
+    // <APP> 관리자 - 예정 행사 1개
+//    public Optional<AppAdminUpcomingEventResponse> findAdminUpcomingEvent() {
+//        List<EventScheduleEntity> eventSchedules = eventScheduleRepository.findUpcomingEventSchedules();
+//
+//        if (!eventSchedules.isEmpty()) {
+//            EventScheduleEntity eventSchedule = eventSchedules.get(0); // 첫 번째 결과 선택
+//
+//            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+//            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+//
+//            return Optional.of(AppAdminUpcomingEventResponse.builder()
+//                    .eventId(eventSchedule.getEvent().getEventId())
+//                    .eventTitle(eventSchedule.getEvent().getEventTitle())
+//                    .isRegistrationOpen(eventSchedule.getEvent().getIsRegistrationOpen())
+//                    .eventDate(eventSchedule.getEventDate().format(dateFormatter))
+//                    .startTime(eventSchedule.getStartTime().format(timeFormatter))
+//                    .endTime(eventSchedule.getEndTime().format(timeFormatter))
+//                    .build());
+//        } else {
+//            return Optional.empty(); // 결과가 없을 경우
+//        }
+//    }
+
+    // <APP> 관리자 - 예정 행사 1개
+    public AppAdminUpcomingEventResponse findAdminUpcomingEvent() {
+        List<EventScheduleEntity> eventSchedules = eventScheduleRepository.findUpcomingEventSchedules();
+
+        EventScheduleEntity eventSchedule = eventSchedules.get(0); // 첫 번째 결과 선택
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        return AppAdminUpcomingEventResponse.builder()
+                .eventId(eventSchedule.getEvent().getEventId())
+                .eventTitle(eventSchedule.getEvent().getEventTitle())
+                .isRegistrationOpen(eventSchedule.getEvent().getIsRegistrationOpen())
+                .eventDate(eventSchedule.getEventDate().format(dateFormatter))
+                .startTime(eventSchedule.getStartTime().format(timeFormatter))
+                .endTime(eventSchedule.getEndTime().format(timeFormatter))
+                .build();
     }
 
 

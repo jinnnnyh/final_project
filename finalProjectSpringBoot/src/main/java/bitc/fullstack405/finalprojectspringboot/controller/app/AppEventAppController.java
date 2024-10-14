@@ -1,6 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.controller.app;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.application.AppEventAppListResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppEventAppListResponse;
 import bitc.fullstack405.finalprojectspringboot.service.EventAppService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

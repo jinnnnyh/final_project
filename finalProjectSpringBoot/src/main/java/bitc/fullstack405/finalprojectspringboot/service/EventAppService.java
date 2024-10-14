@@ -1,9 +1,9 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.application.AppEventAppListResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppAdminUpcomingEventResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppEventAppListResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.*;
-import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import bitc.fullstack405.finalprojectspringboot.utils.QRCodeGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,8 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service

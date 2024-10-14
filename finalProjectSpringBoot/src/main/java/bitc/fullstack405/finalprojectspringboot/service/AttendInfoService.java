@@ -1,9 +1,8 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppCertificateResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
-import bitc.fullstack405.finalprojectspringboot.database.repository.AttendInfoRepository;
-import bitc.fullstack405.finalprojectspringboot.database.repository.EventAppRepository;
-import bitc.fullstack405.finalprojectspringboot.database.repository.EventScheduleRepository;
+import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
@@ -22,6 +21,8 @@ public class AttendInfoService {
     private final AttendInfoRepository attendInfoRepository;
     private final EventScheduleRepository eventScheduleRepository;
     private final EventAppRepository eventAppRepository;
+    private final UserRepository userRepository;
+    private final EventRepository eventRepository;
 
     // <APP> QR 이미지 조회
     // eventId와 userId로 scheduleId, eventDate, qrImage 조회
@@ -104,5 +105,20 @@ public class AttendInfoService {
             EventAppEntity eventApp = eventAppRepository.findByEvent_EventIdAndUser_UserId(eventId, userId);
             eventApp.updateEventComp();
         }
+    }
+
+    // <APP> 수료증 데이터 생성
+    public AppCertificateResponse generateCertificate(Long eventId, Long userId) {
+        EventEntity event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // 협회장 이름을 approver 필드에서 가져옴
+        String presidentName = event.getApprover() != null ? event.getApprover().getName() : "No Approver";
+
+        // AppCertificateResponse 객체를 반환하여 수료증 데이터를 제공
+        return new AppCertificateResponse(event, user, presidentName);
     }
 }

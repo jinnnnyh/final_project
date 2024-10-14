@@ -4,7 +4,6 @@ import bitc.fullstack405.finalprojectspringboot.database.entity.EventAppEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface EventAppRepository extends JpaRepository<EventAppEntity, Long> {
 
