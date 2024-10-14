@@ -14,5 +14,5 @@ public class AttendListDTO {
   private LocalDate endDate;
   private LocalTime startTime;
   private LocalTime endTime;
-  private List<AttendInfoDTO> attendUserList;
+  private List<AttendAppDTO> attendUserList;
 }

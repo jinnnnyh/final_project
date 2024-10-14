@@ -254,18 +254,39 @@ public class EventService {
 
     List<EventScheduleEntity> schedules = eventScheduleRepository.findByEvent(event);
 
+    List<AttendInfoDTO> attendInfoDTOList = schedules.stream()
+        .flatMap(schedule -> schedule.getAttendInfoList().stream())
+        .map(attendInfoEntity -> AttendInfoDTO.builder()
+            .attendId(attendInfoEntity.getAttendId())
+            .attendComp(attendInfoEntity.getAttendComp())
+            .attendDate(attendInfoEntity.getAttendDate())
+            .checkInTime(attendInfoEntity.getCheckInTime())
+            .checkOutTime(attendInfoEntity.getCheckOutTime())
+            .userId(attendInfoEntity.getUser().getUserId())
+            .build()
+        )
+        .toList();
+
     List<EventAppEntity> eventAppList = eventAppRepository.findByEvent(event);
 
-    List<AttendInfoDTO> attendInfoDTOList = eventAppList.stream()
+    List<AttendAppDTO> attendAppDTOList = eventAppList.stream()
         .map(eventApp -> {
           UserEntity user = userRepository.findById(eventApp.getUser().getUserId()).orElse(null);
-          return AttendInfoDTO.builder()
+
+          List<AttendInfoDTO> userAttendInfoList = attendInfoDTOList.stream()
+              .filter(attendInfoDTO -> attendInfoDTO.getUserId().equals(user.getUserId()))
+              .toList();
+
+          return AttendAppDTO.builder()
               .userId(user.getUserId())
               .userAccount(user.getUserAccount())
               .name(user.getName())
               .userPhone(user.getUserPhone())
               .userDepart(user.getUserDepart())
               .role(user.getRole())
+              .attendInfoDTOList(userAttendInfoList)
+              .appId(eventApp.getAppId())
+              .eventComp(eventApp.getEventComp())
               .build();
         })
         .collect(Collectors.toList());
@@ -281,7 +302,7 @@ public class EventService {
         .endDate(endDate)
         .startTime(startTime)
         .endTime(endTime)
-        .attendUserList(attendInfoDTOList)
+        .attendUserList(attendAppDTOList)
         .build();
   }
 
@@ -410,6 +431,7 @@ public class EventService {
     eventRepository.save(updatedEvent);
   }
 
+//  이벤트 마감
   @Transactional
   public void endEvent(Long eventId) {
     EventEntity event = eventRepository.findById(eventId).get();
