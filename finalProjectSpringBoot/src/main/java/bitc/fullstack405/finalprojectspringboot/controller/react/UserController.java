@@ -72,16 +72,6 @@ public ResponseEntity<List<UserListForManageDTO>> userManage() {
     return "성공";
   }
 
-//  회원정보 수정 승인
-  @PutMapping("/updateUser/{userId}")
-//  public ResponseEntity<UserEntity> updateUser(@RequestBody UserEntity userEntity) {
-  public String updateUser(@PathVariable Long userId) {
-
-    return "성공";
-  }
-
-
-
 //  Web 데이터베이스 추가용 회원가입
   @PutMapping("/signup")
   public ResponseEntity<UserEntity> signup(@RequestBody Map<String, String> signupData) {

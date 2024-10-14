@@ -239,6 +239,7 @@ public class EventService {
           .endDate(endDate)
           .startTime(startTime)
           .endTime(endTime)
+          .eventId(event.getEventId())
           .totalAppliedPeople(appliedPeople + completedPeople)
           .completedPeople(completedPeople)
           .build();

@@ -18,6 +18,7 @@ public class EventListDTO {
   private int maxPeople;
   private int eventAccept;
   private char isRegistrationOpen;
+  private Long eventId;
 
   private LocalTime startTime;
   private LocalTime endTime;
