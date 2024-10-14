@@ -384,4 +384,29 @@ public class EventService {
     
     eventRepository.save(updatedEvent);
   }
+
+//  이벤트 승인 거부
+  @Transactional
+  public void denyEvent(Long eventId) {
+    EventEntity event = eventRepository.findById(eventId).get();
+
+    EventEntity updatedEvent = event.toBuilder()
+        .eventTitle(event.getEventTitle())
+        .eventContent(event.getEventContent())
+        .maxPeople(event.getMaxPeople())
+        .posterUser(event.getPosterUser())
+        .eventAccept(3)
+        .isRegistrationOpen(event.getIsRegistrationOpen())
+        .uploadDate(event.getUploadDate())
+        .acceptedDate(event.getAcceptedDate())
+        .approver(event.getApprover())
+        .eventAppList(event.getEventAppList())
+        .scheduleList(event.getScheduleList())
+        .eventPoster(event.getEventPoster())
+        .visibleDate(event.getVisibleDate())
+        .invisibleDate(event.getInvisibleDate())
+        .build();
+
+    eventRepository.save(updatedEvent);
+  }
 }

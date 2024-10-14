@@ -134,7 +134,7 @@ public ResponseEntity<Void> updateEvent(@PathVariable Long eventId,
 //  이벤트 거부
   @PutMapping("/denyEvent/{eventId}")
   public ResponseEntity<Void> denyEvent(@PathVariable Long eventId) {
-//    eventService.denyEvent(eventId);
+    eventService.denyEvent(eventId);
     return ResponseEntity.noContent().build();
   }
 }
