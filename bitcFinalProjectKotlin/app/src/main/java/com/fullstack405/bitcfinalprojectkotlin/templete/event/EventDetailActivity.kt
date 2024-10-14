@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +23,7 @@ import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBinding
+import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogAdduserBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.QR.CustomCaptureActivity
 import retrofit2.Call
 import retrofit2.Response
@@ -51,11 +53,27 @@ class EventDetailActivity : AppCompatActivity() {
         var userPermission = intent?.getStringExtra("userPermission")
 
         binding.btnQRscanner.isVisible = false
-
+        binding.btnAddAppUser.isVisible = false
         if (!userPermission.equals("정회원")) { // 정회원이 아니면
-            binding.btnQRscanner.isVisible = true
-            binding.btnQRscanner.setOnClickListener {
-                checkCameraPermission()
+            binding.run{
+                btnQRscanner.isVisible = true
+                btnQRscanner.setOnClickListener {
+                    checkCameraPermission()
+                }
+
+                btnAddAppUser.isVisible = true
+                btnAddAppUser.setOnClickListener {
+                    val dialogAdd = DialogAdduserBinding.inflate(LayoutInflater.from(this@EventDetailActivity))
+                    AlertDialog.Builder(this@EventDetailActivity).run {
+                        setTitle("참석 인원 추가하기")
+                        setView(dialogAdd.root)
+                        dialogAdd.btnSearch.setOnClickListener {
+                            val account = dialogAdd.editId.text.toString()
+//                            Client.retrofit.CheckedId(account).enqueue(object:retrofit2.Callback)
+                        }
+                    }
+                }
+
             }
         } // if permission
 
