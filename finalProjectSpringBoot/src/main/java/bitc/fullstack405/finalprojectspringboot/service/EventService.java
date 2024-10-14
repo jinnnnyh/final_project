@@ -4,11 +4,8 @@ import bitc.fullstack405.finalprojectspringboot.database.dto.event.*;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -272,6 +269,7 @@ public class EventService {
               .build();
         })
         .collect(Collectors.toList());
+
     LocalDate startDate = schedules.get(0).getEventDate();
     LocalDate endDate = schedules.get(schedules.size() - 1).getEventDate();
     LocalTime startTime = schedules.get(0).getStartTime();
@@ -359,6 +357,7 @@ public class EventService {
     }
     
     eventScheduleRepository.deleteByEvent(event);
+
     LocalDate startDate = LocalDate.parse(eventUpdateDTO.getEventStartDate());
     LocalDate endDate = LocalDate.parse(eventUpdateDTO.getEventEndDate());
     LocalTime startTime = LocalTime.parse(eventUpdateDTO.getStartTime());

@@ -7,7 +7,6 @@ import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import bitc.fullstack405.finalprojectspringboot.service.EventService;
-import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,6 @@ public class EventController {
 
   private final EventService eventService;
   private final UserRepository userRepository;
-  private final FileUtils fileUtils;
 
 //  행사 등록
   @PostMapping("/write")
@@ -89,44 +87,44 @@ public class EventController {
   }
 
 //  이벤트정보삭제
-@DeleteMapping("/deleteEvent/{eventId}")
-public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId) throws Exception {
-  eventService.deleteEvent(eventId);
-  return ResponseEntity.noContent().build();
-}
+  @DeleteMapping("/deleteEvent/{eventId}")
+  public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId) throws Exception {
+    eventService.deleteEvent(eventId);
+    return ResponseEntity.noContent().build();
+  }
 
 //  이벤트 수정
-@PutMapping("/updateEvent/{eventId}")
-public ResponseEntity<Void> updateEvent(@PathVariable Long eventId,
-                                        @RequestParam("eventTitle") String eventTitle,
-                                        @RequestParam("eventContent") String eventContent,
-                                        @RequestParam("eventStartDate") String eventStartDate,
-                                        @RequestParam("eventEndDate") String eventEndDate,
-                                        @RequestParam("startTime") String startTime,
-                                        @RequestParam("endTime") String endTime,
-                                        @RequestParam("maxPeople") String maxPeople,
-                                        @RequestParam("userId") String userId,
-                                        @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
+  @PutMapping("/updateEvent/{eventId}")
+  public ResponseEntity<Void> updateEvent(@PathVariable Long eventId,
+                                          @RequestParam("eventTitle") String eventTitle,
+                                          @RequestParam("eventContent") String eventContent,
+                                          @RequestParam("eventStartDate") String eventStartDate,
+                                          @RequestParam("eventEndDate") String eventEndDate,
+                                          @RequestParam("startTime") String startTime,
+                                          @RequestParam("endTime") String endTime,
+                                          @RequestParam("maxPeople") String maxPeople,
+                                          @RequestParam("userId") String userId,
+                                          @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
 
-  EventUpdateDTO eventUpdateDTO = EventUpdateDTO.builder()
-      .eventTitle(eventTitle)
-      .eventContent(eventContent)
-      .eventStartDate(eventStartDate)
-      .eventEndDate(eventEndDate)
-      .startTime(startTime)
-      .endTime(endTime)
-      .maxPeople(maxPeople)
-      .userId(Long.parseLong(userId))
-      .build();
+    EventUpdateDTO eventUpdateDTO = EventUpdateDTO.builder()
+        .eventTitle(eventTitle)
+        .eventContent(eventContent)
+        .eventStartDate(eventStartDate)
+        .eventEndDate(eventEndDate)
+        .startTime(startTime)
+        .endTime(endTime)
+        .maxPeople(maxPeople)
+        .userId(Long.parseLong(userId))
+        .build();
 
-  eventService.updateEvent(eventId, eventUpdateDTO, file);
+    eventService.updateEvent(eventId, eventUpdateDTO, file);
 
-  return ResponseEntity.noContent().build();
-}
+    return ResponseEntity.noContent().build();
+  }
 
 //  이벤트 승인
   @PutMapping("/acceptEvent/{eventId}")
-  public ResponseEntity<Void> acceptEvent(@PathVariable Long eventId, @RequestParam Long userId) {
+  public ResponseEntity<Void> acceptEvent(@PathVariable Long eventId, @RequestParam("userId") Long userId) {
     eventService.acceptEvent(eventId, userId);
     return ResponseEntity.noContent().build();
   }

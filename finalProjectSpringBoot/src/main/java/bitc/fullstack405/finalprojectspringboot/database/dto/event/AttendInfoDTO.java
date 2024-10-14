@@ -4,8 +4,6 @@ import bitc.fullstack405.finalprojectspringboot.database.entity.Role;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.annotation.processing.Generated;
-
 @Getter
 @Builder
 public class AttendInfoDTO {
