@@ -38,23 +38,23 @@ public class UserController {
   }
 
 //  유저 관리 리스트 출력
-@GetMapping("/userManage")
-public ResponseEntity<List<UserListForManageDTO>> userManage() {
-  List<UserEntity> userEntities = userService.userListForManage();
+  @GetMapping("/userManage")
+  public ResponseEntity<List<UserListForManageDTO>> userManage() {
+    List<UserEntity> userEntities = userService.userListForManage();
 
-  List<UserListForManageDTO> userListForManageDTOs = userEntities.stream()
-      .map(user -> UserListForManageDTO.builder()
-          .userId(user.getUserId())
-          .userAccount(user.getUserAccount())
-          .name(user.getName())
-          .userPhone(user.getUserPhone())
-          .userDepart(user.getUserDepart())
-          .role(user.getRole())
-          .build())
-      .collect(Collectors.toList());
+    List<UserListForManageDTO> userListForManageDTOs = userEntities.stream()
+        .map(user -> UserListForManageDTO.builder()
+            .userId(user.getUserId())
+            .userAccount(user.getUserAccount())
+            .name(user.getName())
+            .userPhone(user.getUserPhone())
+            .userDepart(user.getUserDepart())
+            .role(user.getRole())
+            .build())
+        .collect(Collectors.toList());
 
-  return ResponseEntity.ok(userListForManageDTOs);
-}
+    return ResponseEntity.ok(userListForManageDTOs);
+  }
 
 //  가입대기 유저 승인
   @PutMapping("/signAccept/{userId}")
@@ -68,6 +68,7 @@ public ResponseEntity<List<UserListForManageDTO>> userManage() {
   @DeleteMapping("/signOut/{userId}")
 //  public ResponseEntity<UserEntity> signOut(@RequestBody UserEntity userEntity) {
   public String signOut(@PathVariable Long userId) {
+
 
     return "성공";
   }

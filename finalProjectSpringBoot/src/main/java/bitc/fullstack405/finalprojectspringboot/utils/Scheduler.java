@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -22,9 +23,25 @@ public class Scheduler {
 
     List<EventEntity> eventEntities = eventRepository.findByInvisibleDate(today);
 
-    eventEntities.replaceAll(eventEntity -> eventEntity.toBuilder()
-        .isRegistrationOpen('Y')
-        .build());
-    eventRepository.saveAll(eventEntities);
+    List<EventEntity> updatedEvents = eventEntities.stream()
+        .map(eventEntity -> eventEntity.toBuilder()
+            .isRegistrationOpen('N')
+            .eventTitle(eventEntity.getEventTitle())
+            .eventContent(eventEntity.getEventContent())
+            .maxPeople(eventEntity.getMaxPeople())
+            .posterUser(eventEntity.getPosterUser())
+            .eventAccept(eventEntity.getEventAccept())
+            .uploadDate(eventEntity.getUploadDate())
+            .acceptedDate(eventEntity.getAcceptedDate())
+            .approver(eventEntity.getApprover())
+            .eventAppList(eventEntity.getEventAppList())
+            .scheduleList(eventEntity.getScheduleList())
+            .eventPoster(eventEntity.getEventPoster())
+            .visibleDate(eventEntity.getVisibleDate())
+            .invisibleDate(eventEntity.getInvisibleDate())
+            .build())
+        .collect(Collectors.toList());
+
+    eventRepository.saveAll(updatedEvents);
   }
 }
