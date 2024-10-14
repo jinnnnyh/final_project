@@ -1,7 +1,7 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppAdminUpcomingEventResponse;
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppEventAppListResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.eventApp.AppEventAppListResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.eventApp.AppUserUpcomingEventResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import bitc.fullstack405.finalprojectspringboot.utils.QRCodeGenerator;
@@ -13,7 +13,6 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -126,6 +125,30 @@ public class EventAppService {
             .stream()
             .map(eventApp -> new AppEventAppListResponse(eventApp.getEvent(), eventApp))
             .toList();
+    }
+
+    // <APP> 회원 - 신청 내역 중 곧 시작하는 행사 1개
+    // 조건 : 수료 여부 N, 행사 첫 번째 날, 시간 체크((현재 시각 <= start_time), 이미 해당 회차의 행사가 시작하면 안 뜨게)
+    // event id, event title, 조건에 맞는 행사 날짜(eventDate), 수료 여부(eventComp), 해당 회차의 시작(start_time)/종료(end_time) 시간(HH:MM)
+    public AppUserUpcomingEventResponse findUpcomingEventForUser(Long userId) {
+        List<Object[]> results = eventAppRepository.findUpcomingEventForUser(userId);
+
+        Object[] result = results.get(0);
+        EventAppEntity eventApp = (EventAppEntity) result[0];
+        EventEntity event = (EventEntity) result[1];
+        EventScheduleEntity schedule = (EventScheduleEntity) result[2];
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        return AppUserUpcomingEventResponse.builder()
+                .eventId(event.getEventId())
+                .eventTitle(event.getEventTitle())
+                .eventDate(schedule.getEventDate().format(dateFormatter))
+                .eventComp(eventApp.getEventComp())
+                .startTime(schedule.getStartTime().format(timeFormatter))
+                .endTime(schedule.getEndTime().format(timeFormatter))
+                .build();
     }
 
 

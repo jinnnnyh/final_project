@@ -63,4 +63,11 @@ public class UserController {
     return ResponseEntity.ok().build();
   }
 
+  // 회원 탈퇴
+  @PutMapping("/app/user/delete/{userId}")
+  public ResponseEntity<Void> deleteAppUser(@PathVariable("userId") Long userId){
+    userService.deleteAppUser(userId);
+
+    return ResponseEntity.ok().build();
+  }
 }
