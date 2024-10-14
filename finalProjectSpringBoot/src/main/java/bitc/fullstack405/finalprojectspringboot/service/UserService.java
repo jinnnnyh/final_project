@@ -1,5 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.LoginDTO;
 import bitc.fullstack405.finalprojectspringboot.database.entity.Role;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
@@ -16,8 +17,19 @@ public class UserService {
   private final UserRepository userRepository;
 
 //  로그인
-  public UserEntity login(String userAccount, String userPw) {
-    return userRepository.findByUserAccountAndPassword(userAccount, userPw);
+  public LoginDTO login(String userAccount, String userPw) {
+    UserEntity user = userRepository.findByUserAccountAndPassword(userAccount, userPw);
+
+    LoginDTO loginDTO = LoginDTO.builder()
+        .userAccount(user.getUserAccount())
+        .name(user.getName())
+        .role(user.getRole())
+        .userDepart(user.getUserDepart())
+        .userPhone(user.getUserPhone())
+        .userId(user.getUserId())
+        .build();
+
+    return loginDTO;
   }
 
 //  회원가입(테스터용)
@@ -52,5 +64,26 @@ public class UserService {
 
       userRepository.save(updateUser);
     }
+  }
+
+//  회원강제탈퇴
+  @Transactional
+  public void signOut(Long userId) {
+    UserEntity userEntity = userRepository.findById(userId).get();
+
+    UserEntity signOutUser = userEntity.toBuilder()
+        .userAccount(userEntity.getUserAccount())
+        .name(userEntity.getName())
+        .userDepart(userEntity.getUserDepart())
+        .userPhone(userEntity.getUserPhone())
+        .approvedEventList(userEntity.getApprovedEventList())
+        .password(userEntity.getPassword())
+        .attendAppList(userEntity.getAttendAppList())
+        .postedEventList(userEntity.getPostedEventList())
+        .attendInfoList(userEntity.getAttendInfoList())
+        .role(Role.ROLE_DELETE)
+        .build();
+
+    userRepository.save(signOutUser);
   }
 }

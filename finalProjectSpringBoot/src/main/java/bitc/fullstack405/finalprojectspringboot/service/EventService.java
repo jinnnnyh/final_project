@@ -409,4 +409,28 @@ public class EventService {
 
     eventRepository.save(updatedEvent);
   }
+
+  @Transactional
+  public void endEvent(Long eventId) {
+    EventEntity event = eventRepository.findById(eventId).get();
+
+    EventEntity endEvent = event.toBuilder()
+        .eventTitle(event.getEventTitle())
+        .eventContent(event.getEventContent())
+        .maxPeople(event.getMaxPeople())
+        .posterUser(event.getPosterUser())
+        .eventAccept(event.getEventAccept())
+        .isRegistrationOpen('N')
+        .uploadDate(event.getUploadDate())
+        .acceptedDate(event.getAcceptedDate())
+        .approver(event.getApprover())
+        .eventAppList(event.getEventAppList())
+        .scheduleList(event.getScheduleList())
+        .eventPoster(event.getEventPoster())
+        .visibleDate(event.getVisibleDate())
+        .invisibleDate(event.getInvisibleDate())
+        .build();
+
+    eventRepository.save(endEvent);
+  }
 }

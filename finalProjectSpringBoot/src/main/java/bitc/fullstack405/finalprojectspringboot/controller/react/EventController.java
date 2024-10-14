@@ -135,4 +135,12 @@ public class EventController {
     eventService.denyEvent(eventId);
     return ResponseEntity.noContent().build();
   }
+
+//  이벤트 마감버튼 처리
+  @PutMapping("/endEvent/{eventId}")
+  public ResponseEntity<Void> endEvent(@PathVariable Long eventId) {
+    eventService.endEvent(eventId);
+
+    return ResponseEntity.noContent().build();
+  }
 }

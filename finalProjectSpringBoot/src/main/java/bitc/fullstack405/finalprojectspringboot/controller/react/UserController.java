@@ -1,10 +1,12 @@
 package bitc.fullstack405.finalprojectspringboot.controller.react;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.LoginDTO;
 import bitc.fullstack405.finalprojectspringboot.database.dto.user.UserListForManageDTO;
 import bitc.fullstack405.finalprojectspringboot.database.entity.Role;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +25,14 @@ public class UserController {
 
 //  Web 로그인
   @PostMapping("/login")
-  public ResponseEntity<UserEntity> login(@RequestBody Map<String, String> loginData) {
+  public ResponseEntity<LoginDTO> login(@RequestBody Map<String, String> loginData) {
     String userAccount = loginData.get("userAccount");
     String userPw = loginData.get("userPw");
 
-    UserEntity userEntity = userService.login(userAccount, userPw);
+    LoginDTO loginDTO = userService.login(userAccount, userPw);
 
-    if (userEntity != null) {
-      return ResponseEntity.ok(userEntity);
+    if (loginDTO != null) {
+      return ResponseEntity.ok(loginDTO);
     }
     else {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -65,10 +67,11 @@ public class UserController {
     return ResponseEntity.ok().build();
   }
 
-//  관리자가 직접 회원탈퇴(관리자권한, 탈퇴처리)
+//  관리자가 직접 회원탈퇴 시키기(관리자권한, 탈퇴처리)
   @DeleteMapping("/signOut/{userId}")
   public ResponseEntity<Void> signOut(@PathVariable Long userId) {
 
+    userService.signOut(userId);
 
     return ResponseEntity.ok().build();
   }
@@ -99,7 +102,6 @@ public class UserController {
         .name(signupData.get("name"))
         .role(userPerm)
         .build();
-
 
     userService.signup(userEntity);
 
