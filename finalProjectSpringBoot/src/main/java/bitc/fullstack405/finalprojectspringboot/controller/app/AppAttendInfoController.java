@@ -19,7 +19,7 @@ public class AppAttendInfoController {
     // QR 이미지 보기
     // schedule_id, 여러 회차의 행사 일자, QR 코드 리스트 반환(schedule_id 기준 오름차순)
     // 일주일 전 QR 코드 보기 버튼 활성화 => 앱에서 처리
-    @GetMapping("/qr-image/{eventId}/{userId}")
+    @PostMapping("/qr-image/{eventId}/{userId}")
     public ResponseEntity<List<Map<String, Object>>> findQRImages(@PathVariable Long eventId, @PathVariable Long userId) {
         List<Map<String, Object>> qrImages = attendInfoService.findQrImages(eventId, userId);
         return ResponseEntity.ok(qrImages);

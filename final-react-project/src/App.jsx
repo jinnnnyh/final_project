@@ -1,12 +1,10 @@
-// import TempComponent from "./components/temp/TempComponent.jsx";
-import FileUpload from "./components/FileUpload.jsx";
+import TempComponent from "./components/temp/TempComponent.jsx";
 
 function App() {
 
   return (
     <div>
-      {/*<TempComponent />*/}
-        <FileUpload/>
+      <TempComponent />
     </div>
   );
 }

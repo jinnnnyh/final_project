@@ -5,10 +5,7 @@ import bitc.fullstack405.finalprojectspringboot.service.EventAppService;
 import bitc.fullstack405.finalprojectspringboot.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,7 +28,7 @@ public class AppEventController {
 
     // 행사 상세 화면
     // 게시일, 제목, 내용, 이미지, 작성자(이름만), 해당 행사의 schedule 정보(schedule_id, event_date) 리스트(schedule id 기준 오름차순)
-    @GetMapping("/accepted-events/{eventId}")
+    @PostMapping("/accepted-events/{eventId}")
     public ResponseEntity<AppEventDetailResponse> findAppEventDetail(@PathVariable Long eventId) {
         AppEventDetailResponse eventDetail = eventService.findById(eventId);
         return ResponseEntity.ok().body(eventDetail);
