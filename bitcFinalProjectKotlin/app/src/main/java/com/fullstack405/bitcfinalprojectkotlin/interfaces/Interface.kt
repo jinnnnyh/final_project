@@ -2,6 +2,7 @@ package com.fullstack405.bitcfinalprojectkotlin.interfaces
 
 import com.fullstack405.bitcfinalprojectkotlin.data.AdminUpcomingEventData
 import com.fullstack405.bitcfinalprojectkotlin.data.CertificateData
+import com.fullstack405.bitcfinalprojectkotlin.data.CheckedIdData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventAppData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
@@ -39,15 +40,13 @@ interface Interface {
   @PUT("/app/user/{userId}")
   fun updateUser(@Path("userId")id: Long, @Body data: UpdateData):Call<Void>
 
-  // ID중복 여부/ 중복 있으면 T
+  // ID중복 여부/ 중복 있으면 null
   @POST("/signup/{userAccount}")
-  fun CheckedId(@Path("userAccount") userAccount:String):Call<Boolean>
+  fun CheckedId(@Path("userAccount") userAccount:String):Call<CheckedIdData>
 
   // 회원 탈퇴
   @PUT("/app/user/delete/{userId}")
   fun deleteUser(@Path("userId")userId:Long):Call<Void>
-
-
 
 
 
@@ -69,8 +68,14 @@ interface Interface {
   @POST("/app/accepted-events/{eventId}")
   fun findEventId(@Path("eventId") eventId:Long):Call<EventDetailData>
 
+  // 추가 신청 받기
+  // 2: 추가 완료, 1: 중복 신청
+  @POST("/app/application-direct/{eventId}/{userAccount}")
+  fun adminAppDirect(@Path("eventId")eventId: Long, @Path("userAccount")userAccount: String):Call<Int>
+
   /////////// attend
   // 신청
+  // 2: 신청 완료, 1: 중복 신청
   @POST("/app/application/{eventId}/{userId}")
   fun insertEventApp(@Path("eventId") eventId:Long, @Path("userId") userId:Long):Call<Int>
 

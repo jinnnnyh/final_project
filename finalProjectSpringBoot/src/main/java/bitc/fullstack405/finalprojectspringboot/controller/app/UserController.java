@@ -1,5 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.controller.app;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.CheckedIdResponse;
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.InsertUserRequest;
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.LoginResponse;
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.UpdateAppUserRequest;
@@ -39,13 +40,13 @@ public class UserController {
 
   // 아이디 중복확인
   @PostMapping("/signup/{userAccount}")
-  public ResponseEntity<Boolean> checkUserAccount(@PathVariable("userAccount") String userAccount){
-    UserEntity user = userService.findUserAccount(userAccount);
+  public ResponseEntity<CheckedIdResponse> checkUserAccount(@PathVariable("userAccount") String userAccount){
+    CheckedIdResponse user = userService.findUserAccount(userAccount);
 
-    if(user == null){ // 같은 계정이 없으면 false
-      return ResponseEntity.ok(false);
+    if(user == null){ // 같은 계정이 없으면 null
+      return ResponseEntity.ok().build();
     }
-    return ResponseEntity.ok(true); // 있으면 true
+    return ResponseEntity.ok(user); // 있으면 user 전송
   }
 
   // 회원 1명 정보

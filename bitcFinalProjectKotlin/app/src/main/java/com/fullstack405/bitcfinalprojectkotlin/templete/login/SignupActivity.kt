@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
+import com.fullstack405.bitcfinalprojectkotlin.data.CheckedIdData
 import com.fullstack405.bitcfinalprojectkotlin.data.InsertUserData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivitySignupBinding
 import retrofit2.Call
@@ -47,10 +48,10 @@ class SignupActivity : AppCompatActivity() {
             // 준회원으로 등록됨
             var user = InsertUserData(name,phone,account,pw,dept)
 //             중복확인 없이 회원가입 되는지부터 확인하기
-            Client.retrofit.CheckedId(account).enqueue(object:retrofit2.Callback<Boolean>{
-                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+            Client.retrofit.CheckedId(account).enqueue(object:retrofit2.Callback<CheckedIdData>{
+                override fun onResponse(call: Call<CheckedIdData>, response: Response<CheckedIdData>) {
                     // 아이디 존재 T / 없음 F
-                    if(response.body() == false){
+                    if(response.body() == null){
                         Toast.makeText(this@SignupActivity,"회원가입에 성공하였습니다.",Toast.LENGTH_SHORT).show()
                         insertUser(user)
                     }
@@ -59,7 +60,7 @@ class SignupActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                override fun onFailure(call: Call<CheckedIdData>, t: Throwable) {
                     Log.d("signup error","id checkError")
                 }
 

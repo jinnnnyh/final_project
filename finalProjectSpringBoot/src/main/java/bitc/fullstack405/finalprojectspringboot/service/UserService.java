@@ -1,5 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.CheckedIdResponse;
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.InsertUserRequest;
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.LoginResponse;
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.UpdateAppUserRequest;
@@ -9,6 +10,7 @@ import bitc.fullstack405.finalprojectspringboot.database.repository.EventReposit
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Check;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -32,8 +34,9 @@ public class UserService {
     return userRepository.save(req.toUserEntity());
   }
 
-  public UserEntity findUserAccount(String userAccount) {
-    return userRepository.findUserByUserAccount(userAccount);
+  public CheckedIdResponse findUserAccount(String userAccount) {
+    UserEntity user = userRepository.findUserByUserAccount(userAccount);
+    return new CheckedIdResponse(user);
   }
 
   public LoginResponse findByUserId(Long userId) {

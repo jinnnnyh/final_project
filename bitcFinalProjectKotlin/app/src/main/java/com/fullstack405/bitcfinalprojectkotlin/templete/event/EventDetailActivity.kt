@@ -21,6 +21,7 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
+import com.fullstack405.bitcfinalprojectkotlin.data.CheckedIdData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBinding
 import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogAdduserBinding
@@ -64,14 +65,57 @@ class EventDetailActivity : AppCompatActivity() {
                 btnAddAppUser.isVisible = true
                 btnAddAppUser.setOnClickListener {
                     val dialogAdd = DialogAdduserBinding.inflate(LayoutInflater.from(this@EventDetailActivity))
+                    var userAccount = ""
                     AlertDialog.Builder(this@EventDetailActivity).run {
                         setTitle("참석 인원 추가하기")
                         setView(dialogAdd.root)
                         dialogAdd.btnSearch.setOnClickListener {
                             val account = dialogAdd.editId.text.toString()
-//                            Client.retrofit.CheckedId(account).enqueue(object:retrofit2.Callback)
-                        }
-                    }
+                            Client.retrofit.CheckedId(account).enqueue(object:retrofit2.Callback<CheckedIdData>{
+                                override fun onResponse(call: Call<CheckedIdData>,response: Response<CheckedIdData>) {
+                                    if(response.body() == null){
+                                        dialogAdd.txtName.text = "일치하는 회원이 없습니다."
+                                        dialogAdd.txtPhone.text = ""
+                                    }
+                                    else{
+                                        val data = response.body() as CheckedIdData
+                                        dialogAdd.txtName.text = "이름 : ${data.name}"
+                                        dialogAdd.txtPhone.text = "핸드폰 번호 : ${data.userPhone}"
+                                        userAccount = data.userAccount
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<CheckedIdData>, t: Throwable) {
+                                    Log.d("btnAddAppUser error","eventDetail CheckedId error ${t.message}")
+                                }
+                            }) // checkedID
+                        }// btnSearch dialog
+
+                        setPositiveButton("추가",object :DialogInterface.OnClickListener{
+                            override fun onClick(p0: DialogInterface?, p1: Int) {
+                                if(userAccount != null){
+                                    Client.retrofit.adminAppDirect(eventId!!, userAccount).enqueue(object:retrofit2.Callback<Int>{
+                                        override fun onResponse(call: Call<Int>,response: Response<Int>) {
+                                            if(response.body() == 2){
+                                                Toast.makeText(this@EventDetailActivity,"추가 신청이 완료되었습니다. QR을 확인해주세요.",Toast.LENGTH_SHORT).show()
+                                            }
+                                            else{
+                                                Toast.makeText(this@EventDetailActivity,"이미 신청한 회원입니다. 다시 확인해주세요.",Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+
+                                        override fun onFailure(call: Call<Int>, t: Throwable) {
+                                            Log.d("btnAddAppUser error","eventDetail setPositiveButton error ${t.message}")
+                                        }
+
+                                    })
+                                }
+
+                            }
+                        }) // positiveBtn
+                        setNegativeButton("취소",null)
+                        show()
+                    } //추가하기 dialog
                 }
 
             }
@@ -83,7 +127,7 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        var url = "http://10.100.105.220:8080/eventImg/"
+        var url = "http://192.168.45.150:8080/eventImg/"
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기
