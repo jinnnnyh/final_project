@@ -1,6 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.controller.app;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppCertificateResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.attendInfo.AppCertificateResponse;
 import bitc.fullstack405.finalprojectspringboot.service.AttendInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

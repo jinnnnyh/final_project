@@ -44,7 +44,13 @@ public class UserService {
   @Transactional
   public void updateAppUser(Long userId, UpdateAppUserRequest req) {
     UserEntity user = userRepository.findByUserId(userId);
-    user.updateAppUser(req.getPassword(), req.getUserPhone());
+    user.updateAppUser(req.getPassword(), req.getUserPhone(), req.getUserDepart());
+  }
+
+  @Transactional
+  public void deleteAppUser(Long userId) {
+    UserEntity user = userRepository.findByUserId(userId);
+    user.deleteAppUser();
   }
 
 //  public EventAppEntity insertApp(EventAppInsertRequest req){

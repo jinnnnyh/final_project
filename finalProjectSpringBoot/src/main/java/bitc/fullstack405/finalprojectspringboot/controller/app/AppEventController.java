@@ -1,6 +1,8 @@
 package bitc.fullstack405.finalprojectspringboot.controller.app;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.*;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.event.AppAdminUpcomingEventResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.event.AppEventDetailResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.event.AppEventListResponse;
 import bitc.fullstack405.finalprojectspringboot.service.EventAppService;
 import bitc.fullstack405.finalprojectspringboot.service.EventService;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppEventAppListResponse;
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppUserUpcomingEventResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.eventApp.AppEventAppListResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.eventApp.AppUserUpcomingEventResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import bitc.fullstack405.finalprojectspringboot.utils.QRCodeGenerator;
