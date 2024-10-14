@@ -269,7 +269,7 @@ public class EventService {
 
     List<EventAppEntity> eventAppList = eventAppRepository.findByEvent(event);
 
-    List<AttendAppDTO> attendAppDTOList = eventAppList.stream()
+    List<EventAppDTO> eventAppDTOList = eventAppList.stream()
         .map(eventApp -> {
           UserEntity user = userRepository.findById(eventApp.getUser().getUserId()).orElse(null);
 
@@ -277,7 +277,7 @@ public class EventService {
               .filter(attendInfoDTO -> attendInfoDTO.getUserId().equals(user.getUserId()))
               .toList();
 
-          return AttendAppDTO.builder()
+          return EventAppDTO.builder()
               .userId(user.getUserId())
               .userAccount(user.getUserAccount())
               .name(user.getName())
@@ -302,7 +302,7 @@ public class EventService {
         .endDate(endDate)
         .startTime(startTime)
         .endTime(endTime)
-        .attendUserList(attendAppDTOList)
+        .attendUserList(eventAppDTOList)
         .build();
   }
 
