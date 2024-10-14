@@ -43,12 +43,12 @@ class EventDetailActivity : AppCompatActivity() {
             insets
         }
 
-        var eventId = intent.getLongExtra("eventId",0)
-        var isRegistrationOpen = intent.getCharExtra("isRegistrationOpen",'N') // 행사신청 마감 Y : 진행중 , N:마감
-        var userId = intent.getLongExtra("userId",0) // 접속자Id
+        var eventId = intent?.getLongExtra("eventId",0)
+        var isRegistrationOpen = intent?.getCharExtra("isRegistrationOpen",'N') // 행사신청 마감 Y : 진행중 , N:마감
+        var userId = intent?.getLongExtra("userId",0) // 접속자Id
 
         // 회원인지 아닌지만 판단
-        var userPermission = intent.getStringExtra("userPermission")
+        var userPermission = intent?.getStringExtra("userPermission")
 
         binding.btnQRscanner.isVisible = false
 
@@ -65,11 +65,11 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        var url = "http://10.100.105.205:8080/eventImg/"
+        var url = "http://10.100.105.220:8080/eventImg/"
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기
-        Client.retrofit.findEventId(eventId).enqueue(object:retrofit2.Callback<EventDetailData>{
+        Client.retrofit.findEventId(eventId!!).enqueue(object:retrofit2.Callback<EventDetailData>{
             override fun onResponse(call: Call<EventDetailData>, response: Response<EventDetailData>) {
                 Log.d("findEventId","${response.body()}")
                 event = response.body() as EventDetailData
@@ -110,7 +110,7 @@ class EventDetailActivity : AppCompatActivity() {
                     setPositiveButton("확인",object:DialogInterface.OnClickListener{
                         override fun onClick(p0: DialogInterface?, p1: Int) {
                             // db 연결버전
-                            Client.retrofit.insertEventApp(eventId, userId).enqueue(object:retrofit2.Callback<Int>{
+                            Client.retrofit.insertEventApp(eventId, userId!!).enqueue(object:retrofit2.Callback<Int>{
                                 override fun onResponse(call: Call<Int>, response: Response<Int>) {
                                     Log.d("insert num","${response.body()}")
                                     AlertDialog.Builder(this@EventDetailActivity).run {

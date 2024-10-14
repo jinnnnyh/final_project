@@ -30,8 +30,8 @@ class CompleteViewActivity : AppCompatActivity() {
         binding.name.text = name
         binding.topDate.text = eventDate
         binding.title2.text = eventName
-        binding.month.text = eventDate!!.substring(5,7)
-        binding.date.text = eventDate.substring(8,10)
+        binding.month.text = eventDate?.substring(5,7)
+        binding.date.text = eventDate?.substring(8,10)
 
         // 뒤로가기
         binding.btnBack.setOnClickListener {

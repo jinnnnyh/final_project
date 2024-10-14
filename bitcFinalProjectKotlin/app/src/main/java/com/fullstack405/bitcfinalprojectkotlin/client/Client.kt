@@ -6,9 +6,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object Client {
   val retrofit: Interface = Retrofit.Builder()
-  .baseUrl("http://192.168.0.22:8080")
+  .baseUrl("http://10.100.105.220:8080")
   .addConverterFactory(GsonConverterFactory.create())
   .build()
   .create(Interface::class.java)
 
+  // EventDetailActivity 이미지 url, QrViewActivity 이미지 url ip 주소 수정하기
 }

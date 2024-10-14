@@ -52,7 +52,7 @@ class QrViewActivity : AppCompatActivity() {
         // 오늘날짜
         cal_t.time = Date()
         val td = dateFormat.format(cal_t.time) // 오늘 날짜 string 타입
-        var url="http://10.100.105.205:8080/qrImg/"
+        var url="http://10.100.105.220:8080/qrImg/"
         binding.imgQr.isVisible = false
 
         lateinit var QRlist:List<Map<String,Any>>
@@ -63,15 +63,15 @@ class QrViewActivity : AppCompatActivity() {
                 Log.d("QR list response","${QRlist[0].get("eventDate").toString()}//${QRlist[0].get("qrImage").toString()}")
 
                 var sd = QRlist[0].get("eventDate").toString() // 제일 처음 회차의 날짜
-                var ed = QRlist[QRlist.size-1].get("eventDate").toString() // 마지막 회차의 날짜
+//                var ed = QRlist[QRlist.size-1].get("eventDate").toString() // 마지막 회차의 날짜
 
 //                val start_7: Date? = dateFormat.parse(sd) // 이벤트 날짜 String > Date 변환
                 val startDate: Date? = dateFormat.parse(sd)
-                val endDate: Date? = dateFormat.parse(ed)
+//                val endDate: Date? = dateFormat.parse(ed)
 
                 cal_s.time = startDate // 시작일 - 7일
                 cal_sdate.time = startDate // 시작일
-                cal_e.time = endDate // 종료일
+//                cal_e.time = endDate // 종료일
 
                 cal_s.add(Calendar.DATE,-7) // 시작일 일주일 전 날짜
 
