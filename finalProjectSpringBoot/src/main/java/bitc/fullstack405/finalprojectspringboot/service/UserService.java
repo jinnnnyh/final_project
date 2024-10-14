@@ -36,19 +36,21 @@ public class UserService {
   public void signAccept(Long userId) {
     UserEntity userEntity = userRepository.findById(userId).orElse(null);
 
-    UserEntity updateUser = userEntity.toBuilder()
-        .role(Role.ROLE_REGULAR)
-        .userAccount(userEntity.getUserAccount())
-        .name(userEntity.getName())
-        .userDepart(userEntity.getUserDepart())
-        .userPhone(userEntity.getUserPhone())
-        .approvedEventList(userEntity.getApprovedEventList())
-        .password(userEntity.getPassword())
-        .attendAppList(userEntity.getAttendAppList())
-        .postedEventList(userEntity.getPostedEventList())
-        .attendInfoList(userEntity.getAttendInfoList())
-        .build();
+    if (userEntity.getRole() == Role.ROLE_ASSOCIATE) {
+      UserEntity updateUser = userEntity.toBuilder()
+          .role(Role.ROLE_REGULAR)
+          .userAccount(userEntity.getUserAccount())
+          .name(userEntity.getName())
+          .userDepart(userEntity.getUserDepart())
+          .userPhone(userEntity.getUserPhone())
+          .approvedEventList(userEntity.getApprovedEventList())
+          .password(userEntity.getPassword())
+          .attendAppList(userEntity.getAttendAppList())
+          .postedEventList(userEntity.getPostedEventList())
+          .attendInfoList(userEntity.getAttendInfoList())
+          .build();
 
-    userRepository.save(updateUser);
+      userRepository.save(updateUser);
+    }
   }
 }
