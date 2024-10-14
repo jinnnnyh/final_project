@@ -47,7 +47,6 @@ class SignupActivity : AppCompatActivity() {
             // 준회원으로 등록됨
             var user = InsertUserData(name,phone,account,pw,dept)
 //             중복확인 없이 회원가입 되는지부터 확인하기
-//            insertUser(user)
             Client.retrofit.CheckedId(account).enqueue(object:retrofit2.Callback<Boolean>{
                 override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                     // 아이디 존재 T / 없음 F
@@ -58,9 +57,6 @@ class SignupActivity : AppCompatActivity() {
                     else{
                         Toast.makeText(this@SignupActivity,"이미 존재하는 아이디입니다. 다시 입력해주세요.",Toast.LENGTH_SHORT).show()
                     }
-
-//                  var user = InsertUserData(0,name,phone,account,pw,dept,"준회원")
-//                  insertUser(user)
                 }
 
                 override fun onFailure(call: Call<Boolean>, t: Throwable) {

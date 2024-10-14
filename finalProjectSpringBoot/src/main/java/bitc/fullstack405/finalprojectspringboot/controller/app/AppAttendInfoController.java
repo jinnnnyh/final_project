@@ -69,7 +69,7 @@ public class AppAttendInfoController {
 
     // 수료증 발급
     // [반환] 행사 제목, 유저 이름, 협회장 이름, QR 이미지 저장(행사 신청)처럼 schedule id, 이벤트 날짜
-    @GetMapping("/certificate/{eventId}/{userId}")
+    @PostMapping("/certificate/{eventId}/{userId}")
     public ResponseEntity<AppCertificateResponse> certificate(@PathVariable Long eventId, @PathVariable Long userId) {
         AppCertificateResponse certificateData = attendInfoService.generateCertificate(eventId, userId);
         return ResponseEntity.ok(certificateData);

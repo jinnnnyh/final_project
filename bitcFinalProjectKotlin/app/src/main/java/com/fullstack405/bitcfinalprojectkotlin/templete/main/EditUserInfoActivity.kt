@@ -1,10 +1,12 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.main
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -13,6 +15,7 @@ import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.UpdateData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEditUserInfoBinding
+import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
 import retrofit2.Call
 import retrofit2.Response
 
@@ -39,8 +42,7 @@ class EditUserInfoActivity : AppCompatActivity() {
 
 
 
-        // 비밀번호, 폰번호만 수정 가능, 나머지는 비활성화
-        binding.editCompany.isEnabled = false
+        // 비밀번호, 폰번호, 소속만 수정 가능, 나머지는 비활성화
         binding.editName.isEnabled = false
         binding.editAccount.isEnabled = false
 
@@ -68,9 +70,10 @@ class EditUserInfoActivity : AppCompatActivity() {
         binding.btnSubmit.setOnClickListener {
             var pw = binding.editPw.text.toString()
             var phone = binding.editPhone.text.toString()
+            var company = binding.editCompany.text.toString()
 
             // db에 보낼 데이터 수정 데이터 타입 다르게 만들기
-            var data = UpdateData(pw,phone)
+            var data = UpdateData(pw,phone,company)
             Client.retrofit.updateUser(userId,data).enqueue(object:retrofit2.Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     Toast.makeText(this@EditUserInfoActivity,"수정이 완료되었습니다",Toast.LENGTH_SHORT).show()
@@ -87,6 +90,32 @@ class EditUserInfoActivity : AppCompatActivity() {
         binding.btnCancle.setOnClickListener {
             finish()
         }
+
+        // 회원탈퇴
+        binding.deleteUser.setOnClickListener {
+            AlertDialog.Builder(this).run{
+                setMessage("회원을 탈퇴하시겠습니까?")
+                setPositiveButton("확인",object:DialogInterface.OnClickListener{
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        Client.retrofit.deleteUser(userId).enqueue(object:retrofit2.Callback<Void>{
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                val intent = Intent(this@EditUserInfoActivity, LoginActivity::class.java)
+                                startActivity(intent)
+                            }
+
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Toast.makeText(this@EditUserInfoActivity,"회원탈퇴 실패",Toast.LENGTH_SHORT).show()
+                            }
+                        }) // retrofit
+                    }
+                }) // positive btn
+                setNegativeButton("취소",null)
+                show()
+            } // dialog
+        } // deleteUser
+
+
+
 
     } // onCreate
 }
