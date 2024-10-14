@@ -46,7 +46,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
   implementation(libs.play.services.mlkit.barcode.scanning)
-  testImplementation(libs.junit)
+    implementation(libs.cronet.embedded)
+    testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
 

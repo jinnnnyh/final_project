@@ -72,7 +72,7 @@ public class AppAttendInfoController {
     // 백엔드에서는 수료증에 들어갈 데이터만 보내주기
     // [매개변수] event id, user id
     // [반환] QR 이미지 저장(행사 신청)처럼 schedule id, 이벤트 날짜, 행사 제목, 유저 이름, 협회장 이름 보내주면 됨
-    @GetMapping("/certificate/{eventId}/{userId}")
+    @PostMapping("/certificate/{eventId}/{userId}")
     public ResponseEntity<AppCertificateResponse> certificate(@PathVariable Long eventId, @PathVariable Long userId) {
         AppCertificateResponse certificateData = attendInfoService.generateCertificate(eventId, userId);
         return ResponseEntity.ok(certificateData);

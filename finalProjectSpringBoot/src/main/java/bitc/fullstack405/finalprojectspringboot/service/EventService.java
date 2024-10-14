@@ -82,7 +82,7 @@ public class EventService {
 
         EventScheduleEntity eventSchedule = eventSchedules.get(0); // 첫 번째 결과 선택
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 10/14 날짜 포맷 수정
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
         return AppAdminUpcomingEventResponse.builder()

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fullstack405.bitcfinalprojectkotlin.data.NoticeData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ItemNoticeBinding
-import com.fullstack405.bitcfinalprojectkotlin.templete.notice.NoticeDetailActivity
+import com.fullstack405.bitcfinalprojectkotlin.templete.notice_XXX.NoticeDetailActivity
 
 class NoticeListAdapter(val noticeList:MutableList<NoticeData>):RecyclerView.Adapter<NoticeListAdapter.Holder>() {
     class Holder(val binding: ItemNoticeBinding):RecyclerView.ViewHolder(binding.root) {

@@ -47,13 +47,6 @@ class AttendDetailActivity : AppCompatActivity() {
                 binding.dContent.text = event.eventContent
                 binding.dCreateDate.text=event.visibleDate
                 binding.dWriter.text = event.posterUserName
-                var eventDate = event.schedules
-
-
-                // 참석증 데이터 보내면
-
-                intentComplete.putExtra("eventName",event.eventTitle)
-                intentComplete.putExtra("eventDate",eventDate.get(eventDate.size-1).get("eventDate").toString())
             }
 
             override fun onFailure(call: Call<EventDetailData>, t: Throwable) {
@@ -67,6 +60,8 @@ class AttendDetailActivity : AppCompatActivity() {
             binding.btnComplete.isEnabled = true
             binding.btnComplete.setOnClickListener {
                 // 참석증 페이지로 이동
+                intentComplete.putExtra("userId",userId)
+                intentComplete.putExtra("eventId",eventId)
                 intentComplete.putExtra("userName",userName)
                 startActivity(intentComplete)
             }

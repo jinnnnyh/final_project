@@ -19,8 +19,6 @@
         android:textSize="35sp" />
 
 
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/section1"
         android:orientation="vertical"
@@ -87,32 +85,6 @@
             />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/eventRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/section3"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="#FFF879"
-        android:layout_marginBottom="30dp">
-
-        <TextView
-            android:id="@+id/noticeList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="공지사항 >"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:fontFamily="@font/notosans_bold"
-            android:textSize="25dp"
-            />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/noticeRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
