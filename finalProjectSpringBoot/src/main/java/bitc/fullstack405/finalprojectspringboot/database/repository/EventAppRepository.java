@@ -1,10 +1,7 @@
 package bitc.fullstack405.finalprojectspringboot.database.repository;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.app.AppAdminUpcomingEventResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventAppEntity;
-import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

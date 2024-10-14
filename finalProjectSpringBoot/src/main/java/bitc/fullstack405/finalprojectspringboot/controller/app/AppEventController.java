@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/app")
@@ -52,11 +51,19 @@ public class AppEventController {
     // 매개변수 없음
     // 조건 : 오늘 기준으로 가장 가까운 날짜, 시간 체크((현재 시각 <= end_time), 해당 회차의 행사가 종료할 때까지 보이게)
     // event id, event title, 신청 마감 여부(registration) - view 에 보이는 건 아니고 데이터를 쓰려고, 조건에 맞는 행사 날짜(eventDate), 해당 회차의 시작(start_time)/종료(end_time) 시간(HH:MM)
+//    @GetMapping("/upcoming-event/admin")
+//    public ResponseEntity<AppAdminUpcomingEventResponse> findAdminUpcomingEvent() {
+//        Optional<AppAdminUpcomingEventResponse> upcomingEvent = eventService.findAdminUpcomingEvent();
+//
+//        return upcomingEvent.map(ResponseEntity::ok)
+//                .orElseGet(() -> ResponseEntity.notFound().build());
+//    }
+
+    // 관리자 - 예정 행사 1개
+    // 예정 행사 없으면 error
     @GetMapping("/upcoming-event/admin")
     public ResponseEntity<AppAdminUpcomingEventResponse> findAdminUpcomingEvent() {
-        Optional<AppAdminUpcomingEventResponse> upcomingEvent = eventService.findAdminUpcomingEvent();
-
-        return upcomingEvent.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        AppAdminUpcomingEventResponse upcomingEvent = eventService.findAdminUpcomingEvent();
+        return ResponseEntity.ok().body(upcomingEvent);
     }
 }
