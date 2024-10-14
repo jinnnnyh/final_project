@@ -54,26 +54,45 @@ public class EventService {
 //    }
 
     // <APP> 관리자 - 예정 행사 1개
-    public Optional<AppAdminUpcomingEventResponse> findAdminUpcomingEvent() {
+//    public Optional<AppAdminUpcomingEventResponse> findAdminUpcomingEvent() {
+//        List<EventScheduleEntity> eventSchedules = eventScheduleRepository.findUpcomingEventSchedules();
+//
+//        if (!eventSchedules.isEmpty()) {
+//            EventScheduleEntity eventSchedule = eventSchedules.get(0); // 첫 번째 결과 선택
+//
+//            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+//            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+//
+//            return Optional.of(AppAdminUpcomingEventResponse.builder()
+//                    .eventId(eventSchedule.getEvent().getEventId())
+//                    .eventTitle(eventSchedule.getEvent().getEventTitle())
+//                    .isRegistrationOpen(eventSchedule.getEvent().getIsRegistrationOpen())
+//                    .eventDate(eventSchedule.getEventDate().format(dateFormatter))
+//                    .startTime(eventSchedule.getStartTime().format(timeFormatter))
+//                    .endTime(eventSchedule.getEndTime().format(timeFormatter))
+//                    .build());
+//        } else {
+//            return Optional.empty(); // 결과가 없을 경우
+//        }
+//    }
+
+    // <APP> 관리자 - 예정 행사 1개
+    public AppAdminUpcomingEventResponse findAdminUpcomingEvent() {
         List<EventScheduleEntity> eventSchedules = eventScheduleRepository.findUpcomingEventSchedules();
 
-        if (!eventSchedules.isEmpty()) {
-            EventScheduleEntity eventSchedule = eventSchedules.get(0); // 첫 번째 결과 선택
+        EventScheduleEntity eventSchedule = eventSchedules.get(0); // 첫 번째 결과 선택
 
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-            return Optional.of(AppAdminUpcomingEventResponse.builder()
-                    .eventId(eventSchedule.getEvent().getEventId())
-                    .eventTitle(eventSchedule.getEvent().getEventTitle())
-                    .isRegistrationOpen(eventSchedule.getEvent().getIsRegistrationOpen())
-                    .eventDate(eventSchedule.getEventDate().format(dateFormatter))
-                    .startTime(eventSchedule.getStartTime().format(timeFormatter))
-                    .endTime(eventSchedule.getEndTime().format(timeFormatter))
-                    .build());
-        } else {
-            return Optional.empty(); // 결과가 없을 경우
-        }
+        return AppAdminUpcomingEventResponse.builder()
+                .eventId(eventSchedule.getEvent().getEventId())
+                .eventTitle(eventSchedule.getEvent().getEventTitle())
+                .isRegistrationOpen(eventSchedule.getEvent().getIsRegistrationOpen())
+                .eventDate(eventSchedule.getEventDate().format(dateFormatter))
+                .startTime(eventSchedule.getStartTime().format(timeFormatter))
+                .endTime(eventSchedule.getEndTime().format(timeFormatter))
+                .build();
     }
 
 
