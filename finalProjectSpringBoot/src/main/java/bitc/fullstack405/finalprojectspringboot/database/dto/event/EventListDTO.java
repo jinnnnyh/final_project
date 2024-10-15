@@ -8,9 +8,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
-@Setter
 @Builder
-public class EventList {
+public class EventListDTO {
 
   private String eventPoster;
   private String eventTitle;
@@ -25,6 +24,6 @@ public class EventList {
   private LocalDate startDate;
   private LocalDate endDate;
 
-  private int appliedPeople; // 신청 인원
+  private int totalAppliedPeople; // 신청 인원
   private int completedPeople; // 수료 인원
 }

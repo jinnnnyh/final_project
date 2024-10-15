@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface EventScheduleRepository extends JpaRepository<EventScheduleEntity, Long> {
 
-  List<EventScheduleEntity> findByEvent(EventEntity event);
+  List<EventScheduleEntity> findByEvent(EventEntity eventEntity);
 
+  void deleteByEvent(EventEntity eventEntity);
 }

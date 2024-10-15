@@ -1,10 +1,12 @@
 package bitc.fullstack405.finalprojectspringboot.controller.react;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.LoginDTO;
+import bitc.fullstack405.finalprojectspringboot.database.dto.user.UserListForManageDTO;
 import bitc.fullstack405.finalprojectspringboot.database.entity.Role;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,14 +25,14 @@ public class UserController {
 
 //  Web 로그인
   @PostMapping("/login")
-  public ResponseEntity<UserEntity> login(@RequestBody Map<String, String> loginData) {
+  public ResponseEntity<LoginDTO> login(@RequestBody Map<String, String> loginData) {
     String userAccount = loginData.get("userAccount");
     String userPw = loginData.get("userPw");
 
-    UserEntity userEntity = userService.login(userAccount, userPw);
+    LoginDTO loginDTO = userService.login(userAccount, userPw);
 
-    if (userEntity != null) {
-      return ResponseEntity.ok(userEntity);
+    if (loginDTO != null) {
+      return ResponseEntity.ok(loginDTO);
     }
     else {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -38,37 +41,40 @@ public class UserController {
 
 //  유저 관리 리스트 출력
   @GetMapping("/userManage")
-//  public ResponseEntity<List<UserEntity>> userManage() {
-  public String userManage() {
+  public ResponseEntity<List<UserListForManageDTO>> userManage() {
+    List<UserEntity> userEntities = userService.userListForManage();
 
-    return "성공";
+    List<UserListForManageDTO> userListForManageDTOs = userEntities.stream()
+        .map(user -> UserListForManageDTO.builder()
+            .userId(user.getUserId())
+            .userAccount(user.getUserAccount())
+            .name(user.getName())
+            .userPhone(user.getUserPhone())
+            .userDepart(user.getUserDepart())
+            .role(user.getRole())
+            .build())
+        .collect(Collectors.toList());
+
+    return ResponseEntity.ok(userListForManageDTOs);
   }
 
 //  가입대기 유저 승인
   @PutMapping("/signAccept/{userId}")
-//  public String signAccept(@RequestBody Map<String, String> loginData) {
-  public String signAccept(@PathVariable Long userId) {
+  public ResponseEntity<Void> signAccept(@PathVariable Long userId) {
 
-    return "성공";
+    userService.signAccept(userId);
+
+    return ResponseEntity.ok().build();
   }
 
-//  회원삭제(관리자권한)
+//  관리자가 직접 회원탈퇴 시키기(관리자권한, 탈퇴처리)
   @DeleteMapping("/signOut/{userId}")
-//  public ResponseEntity<UserEntity> signOut(@RequestBody UserEntity userEntity) {
-  public String signOut(@PathVariable Long userId) {
+  public ResponseEntity<Void> signOut(@PathVariable Long userId) {
 
-    return "성공";
+    userService.signOut(userId);
+
+    return ResponseEntity.ok().build();
   }
-
-//  회원정보 수정 승인
-  @PutMapping("/updateUser/{userId}")
-//  public ResponseEntity<UserEntity> updateUser(@RequestBody UserEntity userEntity) {
-  public String updateUser(@PathVariable Long userId) {
-
-    return "성공";
-  }
-
-
 
 //  Web 데이터베이스 추가용 회원가입
   @PutMapping("/signup")
@@ -96,7 +102,6 @@ public class UserController {
         .name(signupData.get("name"))
         .role(userPerm)
         .build();
-
 
     userService.signup(userEntity);
 

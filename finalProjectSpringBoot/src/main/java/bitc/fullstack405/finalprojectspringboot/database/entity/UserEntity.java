@@ -5,14 +5,12 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Getter
-@NoArgsConstructor//(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
@@ -50,10 +48,6 @@ public class UserEntity {
     // user 비밀번호
     @Column(name = "user_pw", length = 200, nullable = false)
     private String password;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<NotificationEntity> notificationList = new ArrayList<>();
 
     @OneToMany(mappedBy = "posterUser", cascade = CascadeType.ALL)
     @ToString.Exclude

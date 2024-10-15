@@ -1,21 +1,19 @@
 package bitc.fullstack405.finalprojectspringboot.controller.react;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventList;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.AttendListDTO;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventListDTO;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventUpdateDTO;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import bitc.fullstack405.finalprojectspringboot.service.EventService;
-import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +24,6 @@ public class EventController {
 
   private final EventService eventService;
   private final UserRepository userRepository;
-  private final FileUtils fileUtils;
 
 //  행사 등록
   @PostMapping("/write")
@@ -76,44 +73,74 @@ public class EventController {
   }
 
 //  이벤트리스트 출력
-@GetMapping("/list")
-public ResponseEntity<List<EventList>> listEvents() {
-  List<EventList> eventList = eventService.getEventList();
-  return ResponseEntity.ok(eventList);
-}
+  @GetMapping("/list")
+  public ResponseEntity<List<EventListDTO>> listEvents() {
+    List<EventListDTO> eventListDTO = eventService.getEventList();
+    return ResponseEntity.ok(eventListDTO);
+  }
 
-//  참석자리스트 출력
+//  해당 이벤트의 참석자리스트 출력
   @GetMapping("/attendList/{eventId}")
-  public String attendList(@PathVariable Long eventId) {
-
-    return "성공";
+  public ResponseEntity<AttendListDTO> attendList(@PathVariable Long eventId) {
+    AttendListDTO attendListDTO = eventService.getAttendeeList(eventId);
+    return ResponseEntity.ok(attendListDTO);
   }
 
 //  이벤트정보삭제
   @DeleteMapping("/deleteEvent/{eventId}")
-  public String deleteEvent(@PathVariable Long eventId) {
-
-    return "성공";
+  public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId) throws Exception {
+    eventService.deleteEvent(eventId);
+    return ResponseEntity.noContent().build();
   }
 
 //  이벤트 수정
   @PutMapping("/updateEvent/{eventId}")
-  public String updateEvent(@PathVariable Long eventId) {
+  public ResponseEntity<Void> updateEvent(@PathVariable Long eventId,
+                                          @RequestParam("eventTitle") String eventTitle,
+                                          @RequestParam("eventContent") String eventContent,
+                                          @RequestParam("eventStartDate") String eventStartDate,
+                                          @RequestParam("eventEndDate") String eventEndDate,
+                                          @RequestParam("startTime") String startTime,
+                                          @RequestParam("endTime") String endTime,
+                                          @RequestParam("maxPeople") String maxPeople,
+                                          @RequestParam("userId") String userId,
+                                          @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
 
-    return "성공";
+    EventUpdateDTO eventUpdateDTO = EventUpdateDTO.builder()
+        .eventTitle(eventTitle)
+        .eventContent(eventContent)
+        .eventStartDate(eventStartDate)
+        .eventEndDate(eventEndDate)
+        .startTime(startTime)
+        .endTime(endTime)
+        .maxPeople(maxPeople)
+        .userId(Long.parseLong(userId))
+        .build();
+
+    eventService.updateEvent(eventId, eventUpdateDTO, file);
+
+    return ResponseEntity.noContent().build();
   }
 
 //  이벤트 승인
   @PutMapping("/acceptEvent/{eventId}")
-  public String acceptEvent(@PathVariable Long eventId) {
-
-    return "성공";
+  public ResponseEntity<Void> acceptEvent(@PathVariable Long eventId, @RequestParam("userId") Long userId) {
+    eventService.acceptEvent(eventId, userId);
+    return ResponseEntity.noContent().build();
   }
 
 //  이벤트 거부
-  @PutMapping("/denyEvent")
-  public String denyEvent(@PathVariable Long eventId) {
+  @PutMapping("/denyEvent/{eventId}")
+  public ResponseEntity<Void> denyEvent(@PathVariable Long eventId) {
+    eventService.denyEvent(eventId);
+    return ResponseEntity.noContent().build();
+  }
 
-    return "성공";
+//  이벤트 마감버튼 처리
+  @PutMapping("/endEvent/{eventId}")
+  public ResponseEntity<Void> endEvent(@PathVariable Long eventId) {
+    eventService.endEvent(eventId);
+
+    return ResponseEntity.noContent().build();
   }
 }
