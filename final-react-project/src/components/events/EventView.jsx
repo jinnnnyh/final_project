@@ -2,6 +2,10 @@ import Events from "../../pages/Events.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import PresidentButton from "../common/PresidentButton.jsx";
+import SecretaryButton from "../common/SecretaryButton.jsx";
+
+
 
 function EventView () {
   const { eventId } = useParams();
@@ -21,6 +25,7 @@ function EventView () {
   const [uploader, setUploader] = useState('');
   const [prover, setProver] = useState('');
   const [uploadDate, setUploadDate] = useState('');
+
 
   // 이벤트 포스터를 표시하는 함수
   const posterView = () => {
@@ -86,6 +91,11 @@ function EventView () {
     }
   }, [eventData, scheduleList, userData, approver]);
 
+
+  const user = {
+    role: 'ROLE_SECRETARY',
+  };
+
   return (
     <section>
       <Events/>
@@ -120,26 +130,14 @@ function EventView () {
             {eventData.eventContent || '내용 없음'}
           </div>
 
-          {/* 글 등록자 view */}
-          <div className={'d-flex justify-content-between mt-5'}>
-            <div className={'justify-content-start'}>
-              <button type={'submit'} className={'btn btn-outline-danger'}>삭제</button>
-            </div>
-            <div className={'justify-content-end'}>
-              <button type={'button'} className={'btn btn-outline-point me-2'}>수정</button>
-              <button type={'button'} className={'btn btn-point'} onClick={() => navigate('/')}>목록</button>
-            </div>
-          </div>
+          {/* 협회장 / 총무 다른 button view */}
+          {user.role === 'ROLE_PRESIDENT' && ( // 협회장
+            <PresidentButton/> 
+          )}
+          {user.role === 'ROLE_SECRETARY' && ( // 총무
+            <SecretaryButton/>
+          )}
 
-          {/* 협회장 view */}
-          {/* <div className={'d-flex justify-content-between mt-5'}>
-            <div className={'justify-content-start'}>
-              <button type={'submit'} className={'btn btn-outline-danger'}>거부</button>
-            </div>
-            <div className={'justify-content-end'}>
-              <button type={'button'} className={'btn btn-outline-point me-2'}>승인대기</button>
-            </div>
-          </div> */}
         </div>
       ) : (
         <div>...로딩중</div>

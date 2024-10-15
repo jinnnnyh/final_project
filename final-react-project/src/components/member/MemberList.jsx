@@ -86,10 +86,12 @@ function MemberList () {
   // 승인여부
   const handleApproval = () => {
     // 기본 승인대기 (1)
-    // 클릭 시 승인 confirm 모달창 =>
-    // 확인 : 승인완료 (2) 버튼 명, 색상 변경
+    // 승인할 회원 체크 후 승인대기 버튼 클릭 => 승인알림창(버튼 : 승인, 거부) => 승인 => 승인완료
+    // 승인 : 승인완료 (2) 버튼 명, 색상 변경
     // 거부 : 승인거부 (3) 버튼 명, 색상 변경
+    // 승인완료한 버튼 클릭 = > 승인 취소 알림창 => 확인 => 승인대기로 변경
     // 협회장 아닐 시 권한이 없습니다. 모달창띄움
+
     console.log('승인되었습니다!');
   };
 
@@ -101,7 +103,7 @@ function MemberList () {
         <p className={'text-danger mt-1 me-3'}>※ 직위별 구분 가능</p>
         <form action="">
           <select value={selectedOption} onChange={handleSelectChange} className={'px-2 py-1'}>
-            <option value="all" >전체</option>
+            <option value="all">전체</option>
             <option value="ROLE_PRESIDENT">협회장</option>
             <option value="ROLE_SECRETARY">총무</option>
             <option value="ROLE_REGULAR">정회원</option>
@@ -156,7 +158,7 @@ function MemberList () {
                   <td>{item.userDepart}</td>
                   <td>{item.role}</td>
                   <td>
-                    <button type={'button'} className={'btn btn-outline-point py-1'} onClick={() => setModalOpen(true)}>승인대기</button>
+                    <button type={'button'} className={'btn btn-outline-point py-1'} onClick={() => handleButtonClick}>승인대기</button>
                     {isModalOpen && (
                       <Confirm
                         message="회원을 정회원으로 승인하시겠습니까?"

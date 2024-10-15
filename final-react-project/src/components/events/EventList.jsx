@@ -7,6 +7,7 @@ import Pagination from "../common/Pagination.jsx";
 // 대체 이미지 import
 import replace from '/noimg.png';
 
+
 function EventList () {
 
   // 리스트 데이터 불러옴
@@ -110,6 +111,7 @@ function EventList () {
                   {message}
               </p>  {/* 모집중 / 마감 */}
               </div>
+
               <Link to={`/event/${item.eventId}`}><h4>{item.eventTitle}</h4></Link>
               <ul className={'ps-0 mt-3'}>
                 <li>행사기간 : <span>{item.startDate} ~ {item.endDate}</span></li>
