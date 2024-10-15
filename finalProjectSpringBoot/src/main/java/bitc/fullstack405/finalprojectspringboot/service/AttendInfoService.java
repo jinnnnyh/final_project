@@ -1,6 +1,8 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.attendInfo.AppCertificateResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.attendInfo.AppQRScanResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.eventApp.AppUserUpcomingEventResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +55,11 @@ public class AttendInfoService {
 
     // <APP> QR 스캔 - 입장/퇴장 데이터 업데이트, 회차별 수료/미수료 업데이트, 행사 수료/미수료 업데이트
     @Transactional
-    public void qrScan(Long eventId, Long scheduleId, Long userId) {
+    public AppQRScanResponse qrScan(Long eventId, Long scheduleId, Long userId) {
+
+        // userEntity 가져오기
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("not found user"));
 
         // attendInfoEntity 가져오기
         AttendInfoEntity attendInfo = attendInfoRepository.findByEventSchedule_ScheduleIdAndUser_UserId(scheduleId, userId)
@@ -83,6 +90,20 @@ public class AttendInfoService {
                 updateEventCompletionStatus(eventId, userId);
             }
         }
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        return AppQRScanResponse.builder()
+                .eventTitle(eventSchedule.getEvent().getEventTitle())
+                .eventDate(eventSchedule.getEventDate().format(dateFormatter))
+                .startTime(eventSchedule.getStartTime().format(timeFormatter))
+                .endTime(eventSchedule.getEndTime().format(timeFormatter))
+                .name(user.getName())
+                .userPhone(user.getUserPhone())
+                .checkInTime(attendInfo.getCheckInTime().format(timeFormatter))
+                .checkoutTime(attendInfo.getCheckOutTime() != null ? attendInfo.getCheckOutTime().format(timeFormatter) : null)
+                .build();
     }
 
     // <APP> 해당 회차가 해당 행사(eventId)의 마지막 회차인지 확인
