@@ -1,6 +1,7 @@
 package bitc.fullstack405.finalprojectspringboot.controller.app;
 
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.attendInfo.AppCertificateResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.attendInfo.AppQRScanResponse;
 import bitc.fullstack405.finalprojectspringboot.service.AttendInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class AppAttendInfoController {
 
     // QR 스캔
     // 매개변수로 event id, schedule id, user id 들어옴
-    // [반환] QR 스캔 실패: 1, QR 스캔 성공: 2
+    // [반환] QR 스캔 실패: null, QR 스캔 성공: eventTitle, eventDate, startTime/endTime, name, userPhone, checkInTime/checkOutTime
     // event_schedule, event_app, attend_info, user 테이블 사용
 
     // 1. 올바른 QR 코드인지 확인
@@ -52,19 +53,20 @@ public class AppAttendInfoController {
     // 5. [행사 수료]
     // 마지막 회차 퇴장 체크 시 해당 행사의 attend_info 테이블 - attend_comp 가 모두 Y => 매개변수로 받아온 eventId와 event_app 테이블의 eventId와 같은 데이터의 event_comp 컬럼을 N->Y 변경
     @PutMapping("/qr-scan/{eventId}/{scheduleId}/{userId}")
-    public ResponseEntity<Integer> qrScan(@PathVariable Long eventId, @PathVariable Long scheduleId, @PathVariable Long userId) {
+    public ResponseEntity<AppQRScanResponse> qrScan(@PathVariable Long eventId, @PathVariable Long scheduleId, @PathVariable Long userId) {
 
         // QR 스캔 실패
         // 올바른 행사 정보인지 확인 (eventDate, scheduleId, userId 가 DB 정보와 맞지 않음)
         // 이미 입장/퇴장 체크를 다 한 QR 코드인지 확인 (check_in_time, check_out_time 둘 다 null 아님)
         if (!attendInfoService.validEvent(scheduleId, userId) || attendInfoService.usedQR(scheduleId, userId)) {
-            return ResponseEntity.ok(1);
+            return ResponseEntity.ok(null);
         }
 
         // QR 스캔 성공
         // 입장/퇴장 업데이트, 회차별 수료/미수료 업데이트, 행사 수료/미수료 업데이트
-        attendInfoService.qrScan(eventId, scheduleId, userId);
-        return ResponseEntity.ok(2);
+        // 행사이름, 날짜, 행사 시작/종료시각, 회원 이름, 휴대폰 번호, 회원 입장/퇴장시각 반환
+        AppQRScanResponse appQRScanResponse = attendInfoService.qrScan(eventId, scheduleId, userId);
+        return ResponseEntity.ok(appQRScanResponse);
     }
 
     // 수료증 발급
