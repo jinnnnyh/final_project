@@ -55,4 +55,5 @@ public class UserEntity {
     public void deleteAppUser() {
         this.role = Role.ROLE_DELETE;
     }
+
 }

@@ -4,7 +4,9 @@ import android.content.Intent
 import android.media.metrics.Event
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -59,7 +61,6 @@ class MainActivity : AppCompatActivity() {
     intent_event.putExtra("userId",userId)
     intent_event.putExtra("userPermission",userPermission)
 
-    var intent_notice = Intent(this,NoticeListActivity::class.java)
 
     var intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
     intent_userInfoEdit.putExtra("userId",userId)
@@ -68,6 +69,9 @@ class MainActivity : AppCompatActivity() {
     var intentAttendList = Intent(this,AttendListActivity::class.java)
     intentAttendList.putExtra("userId",userId)
     intentAttendList.putExtra("userName",userName)
+
+
+
 
     // 신청 현황
     // 신청 내역 버튼 연결
@@ -94,20 +98,52 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent_attendDetail)
           }
           binding.txtAttend.text = data!!.eventTitle
-          binding.attendDate.text = data.startTime
+          binding.attendDate.text = "행사일 : ${data.eventDate}  |  ${data.startTime}"
 
         }
       }
       override fun onFailure(call: Call<UserUpcomingEventData>, t: Throwable) {
         Log.d("findUpcomingEventForUser","error :${t.message}")
       }
-
     })
 
 
+
+    // 행사 목록에서 뒤로 나오면 화면 갱신
+    val launcher= registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+      if (it.resultCode == RESULT_OK) {
+        Client.retrofit.findUpcomingEventForUser(userId).enqueue(object:retrofit2.Callback<UserUpcomingEventData>{
+          override fun onResponse(call: Call<UserUpcomingEventData>,response: Response<UserUpcomingEventData>) {
+            val data = response.body() as UserUpcomingEventData?
+            if(response.body() == null){
+              binding.txtAttend.text = "예정된 행사가 없습니다."
+              binding.attendDate.isVisible = false
+            }else{
+              val intent_attendDetail = Intent(this@MainActivity, AttendDetailActivity::class.java)
+              binding.txtAttend.setOnClickListener {
+                // 회원) 신청 상세 페이지로 이동
+                intent_attendDetail.putExtra("eventId",data!!.eventId)
+                intent_attendDetail.putExtra("userId",userId)
+                intent_attendDetail.putExtra("complete",data.eventComp)
+//          intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
+                startActivity(intent_attendDetail)
+              }
+              binding.txtAttend.text = data!!.eventTitle
+              binding.attendDate.text = data.startTime
+
+            }
+          }
+          override fun onFailure(call: Call<UserUpcomingEventData>, t: Throwable) {
+            Log.d("findUpcomingEventForUser","error :${t.message}")
+          }
+        })
+
+      }
+    }
+
     // 행사 안내 목록으로 이동
     binding.eventList.setOnClickListener {
-      startActivity(intent_event)
+      launcher.launch(intent_event)
     }
 
     // 행사 안내
@@ -130,7 +166,7 @@ class MainActivity : AppCompatActivity() {
           }
         }
 
-        mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission!!)
+        mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission)
 
         binding.eventRecyclerView.adapter = mainEventListAdapter
         binding.eventRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)

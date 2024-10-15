@@ -25,6 +25,7 @@ import com.fullstack405.bitcfinalprojectkotlin.data.CheckedIdData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBinding
 import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogAdduserBinding
+import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogQrInfoBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.QR.CustomCaptureActivity
 import retrofit2.Call
 import retrofit2.Response
@@ -34,10 +35,10 @@ import java.util.Date
 class EventDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEventDetailBinding
     private val CAMERA_REQUEST_CODE = 1001
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-//        setContentView(R.layout.activity_event_detail)
         binding = ActivityEventDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -57,11 +58,13 @@ class EventDetailActivity : AppCompatActivity() {
         binding.btnAddAppUser.isVisible = false
         if (!userPermission.equals("정회원")) { // 정회원이 아니면
             binding.run{
+                // 스캐너 버튼, 클릭 이벤트 오픈
                 btnQRscanner.isVisible = true
                 btnQRscanner.setOnClickListener {
                     checkCameraPermission()
                 }
 
+                // 추가하기 버튼, 클릭 이벤트 오픈
                 btnAddAppUser.isVisible = true
                 btnAddAppUser.setOnClickListener {
                     val dialogAdd = DialogAdduserBinding.inflate(LayoutInflater.from(this@EventDetailActivity))
@@ -127,7 +130,7 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        var url = "http://192.168.45.150:8080/eventImg/"
+        var url = "http://10.100.105.220:8080/eventImg/"
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기
@@ -160,6 +163,7 @@ class EventDetailActivity : AppCompatActivity() {
             }
         }) // retrofit
 
+
         binding.btnSubmit.isEnabled = false
         // 신청버튼
         // 행사 신청 마감여부에 따라 활성화 비활성화
@@ -186,6 +190,7 @@ class EventDetailActivity : AppCompatActivity() {
                                         setNegativeButton("닫기",null)
                                         show()
                                     }
+
                                 }
 
                                 override fun onFailure(call: Call<Int>, t: Throwable) {
@@ -202,6 +207,7 @@ class EventDetailActivity : AppCompatActivity() {
 
         // 뒤로가기
         binding.btnBack.setOnClickListener {
+            setResult(RESULT_OK)
             finish()
         }
 
@@ -250,6 +256,17 @@ class EventDetailActivity : AppCompatActivity() {
 
             Client.retrofit.insertQRCheck(eventId, scheduleId, userId).enqueue(object:retrofit2.Callback<Int>{
                 override fun onResponse(call: Call<Int>, response: Response<Int>) {
+//                    val dialogQr = DialogQrInfoBinding.inflate(LayoutInflater.from(this@EventDetailActivity))
+//                    AlertDialog.Builder(this@EventDetailActivity).run{
+//                        if(response.body() == null){
+//                            setMessage("일치하는 신청 내역이 없습니다. QR을 다시 확인해주세요.")
+//                        }
+//                        else{
+//                            val data = response.body() as QrScanData
+//                            setView(dialogQr.root)
+//                            // 데이터 받고 text 셋팅
+//                        }
+//                    }
 
                     if(response.body() == 1){ // 실패
                         Toast.makeText(this@EventDetailActivity,"QR 인증에 실패하였습니다. 다시 확인해주세요.",Toast.LENGTH_SHORT).show()
@@ -257,7 +274,7 @@ class EventDetailActivity : AppCompatActivity() {
                     else if(response.body() == 2){ // 성공
                         Toast.makeText(this@EventDetailActivity,"출석체크 완료!!",Toast.LENGTH_SHORT).show()
                     }
-                }
+                } // onResponse
 
                 override fun onFailure(call: Call<Int>, t: Throwable) {
                     Toast.makeText(this@EventDetailActivity,"QR scan Error",Toast.LENGTH_SHORT).show()

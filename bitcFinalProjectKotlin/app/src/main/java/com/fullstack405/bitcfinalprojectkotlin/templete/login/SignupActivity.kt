@@ -61,7 +61,7 @@ class SignupActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<CheckedIdData>, t: Throwable) {
-                    Log.d("signup error","id checkError")
+                    Log.d("signup error","id checkError ${t.message}")
                 }
 
             }) //checkedId

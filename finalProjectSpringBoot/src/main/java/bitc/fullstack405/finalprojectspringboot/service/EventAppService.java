@@ -138,7 +138,7 @@ public class EventAppService {
         EventEntity event = (EventEntity) result[1];
         EventScheduleEntity schedule = (EventScheduleEntity) result[2];
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 10/15 날짜포맷수정
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
         return AppUserUpcomingEventResponse.builder()

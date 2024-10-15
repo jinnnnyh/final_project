@@ -91,7 +91,6 @@ interface Interface {
   @POST("/app/incomplete-application-list/{userId}")
   fun findMyIncompleteApplicationList(@Path("userId") id:Long):Call<List<EventAppData>>
 
-  // 유저id > 신청한 행사 미수료 내역 중 오늘 기준 행사 첫 번째 날이 가장 빠른 것
 
   // 유저 1명 참석증
   @POST("/app/certificate/{eventId}/{userId}")

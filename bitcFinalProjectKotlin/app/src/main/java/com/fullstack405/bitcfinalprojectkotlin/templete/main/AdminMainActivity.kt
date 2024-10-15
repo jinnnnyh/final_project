@@ -56,6 +56,7 @@ class AdminMainActivity : AppCompatActivity() {
 
         val intentAttendList = Intent(this, AttendListActivity::class.java)
         intentAttendList.putExtra("userId",userId)
+        intentAttendList.putExtra("userName",userName)
 
         val intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
         intent_userInfoEdit.putExtra("userId",userId)
@@ -135,7 +136,7 @@ class AdminMainActivity : AppCompatActivity() {
                     }
                 }
 
-                mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission!!)
+                mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission)
 
                 binding.eventRecyclerView.adapter = mainEventListAdapter
                 binding.eventRecyclerView.layoutManager = LinearLayoutManager(this@AdminMainActivity)
