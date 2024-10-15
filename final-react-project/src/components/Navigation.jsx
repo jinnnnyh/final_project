@@ -29,14 +29,14 @@ function Navigation() {
         // { path: '/member/permission', name: '승인대기' },
       ],
     },
-    {
-      id: 3,
-      name: '공지사항',
-      icon: '/src/assets/images/ico_notice_w.svg',
-      activeIcon: '/src/assets/images/ico_notice.svg',
-      path: '/notice',
-      subMenus: [],
-    },
+    // {
+    //   id: 3,
+    //   name: '공지사항',
+    //   icon: '/src/assets/images/ico_notice_w.svg',
+    //   activeIcon: '/src/assets/images/ico_notice.svg',
+    //   path: '/notice',
+    //   subMenus: [],
+    // },
   ];
 
   const handleMenuClick = (id) => {

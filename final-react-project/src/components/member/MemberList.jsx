@@ -1,79 +1,125 @@
 import Member from "../../pages/Member.jsx";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {NavLink, useNavigate} from "react-router-dom";
+import Pagination from "../common/Pagination.jsx";
+import {useParams} from "react-router-dom";
+import Confirm from "../common/Confirm.jsx";
 
 
 function MemberList () {
 
-  // 리스트 데이터 불러오기
-  const [memberList, setMemberList] = useState([
-    {eventId: 1, userAccount:'iu', name:'아이유', userPhone:'010-1111-1111', userDepart: 'AI협회', role: '일반회원'},
-    {eventId: 2, userAccount:'iu', name:'아이유', userPhone:'010-1111-2222', userDepart: 'AI협회', role: '일반회원'},
-    {eventId: 3, userAccount:'iu', name:'아이유', userPhone:'010-1111-3333', userDepart: 'AI협회', role: '일반회원'},
-  ]);
+  const [memberList, setMemberList] = useState([]);
+  const [memberListData, setMemberListData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(8); // 한 페이지당 항목 수
+  const [selectedOption, setSelectedOption] = useState('all'); // 기본값 'all'
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const { userId } = useParams();
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  // const [memberList, setMemberList] = useState();
-  //
-  // useEffect(() => {
-  //   axios.get('http://localhost:8080/member')
-  //     .then(res => {
-  //       setMemberList(res.data);
-  //       //console.log(memberList);
-  //     })
-  //     .catch(err => {
-  //       alert("통신 실패." + err);
-  //     });
-  // }, [memberList]);
+  useEffect(() => {
+    axios.get('http://localhost:8080/user/userManage')
+      .then(res => {
+        setMemberList(res.data);
+        setMemberListData(res.data);
+        //console.log(memberList);
+      })
+      .catch(err => {
+        alert("통신 실패." + err);
+      });
+  }, []);
 
-  // 게시물 체크
-  const listCheck = (eventId) => {
-    const checkedCount = memberList.filter(item => item.checked).length;
 
-    // 이미 체크된 항목이 있을 때
-    if (checkedCount > 0 && !memberList.find(item => item.eventId === eventId).checked) {
-      alert('하나의 항목만 체크할 수 있습니다.');
+  useEffect(() => {
+    // 선택된 옵션에 따라 데이터 필터링
+    if (selectedOption === 'all') {
+      setMemberListData(memberList);
+    } else {
+      setMemberListData(memberList.filter(item => item.role === selectedOption));
+    }
+  }, [selectedOption, memberList]);
+
+
+  // 페이징 현재 페이지에 표시할 데이터
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const memberItems = memberListData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+    setCurrentPage(1);// 옵션 변경 시 페이지를 1로 리셋
+  };
+
+  // 체크박스 하나만 선택 가능
+  const handleCheck = (userId) => {
+    if (selectedItemId !== null && selectedItemId !== userId) {
+      alert("하나의 항목만 선택할 수 있습니다.");
       return;
     }
-
-    setMemberList(memberList.map(item =>
-      item.eventId === eventId ? { ...item, checked: !item.checked } : { ...item, checked: false } // 체크된 항목 외에는 모두 해제
-    ));
-
+    setSelectedItemId(selectedItemId === userId ? null : userId);
   };
 
-  // 리스트 체크 후 삭제버튼 클릭 시 삭제
-  const btnCheckedDelete = () => {
-    const confirmed = window.confirm('체크한 게시물을 삭제하시겠습니까?');
-    if (confirmed) {
-      setMemberList(memberList.filter(item => !item.checked));
+
+  // 회원탈퇴
+  const handleDelete = async () => {
+    if (selectedItemId === null) {
+      alert("삭제할 항목을 선택해주세요.");
+      return;
+    }
+    const confirmed = window.confirm('회원을 탈퇴처리 하시겠습니까?');
+
+    try {
+      await axios.delete(`http://localhost:8080/user/signOut/${userId}`);
+      setMemberList(memberList.filter(item => item.userId !== selectedItemId));
+      setSelectedItemId(null);
+      alert("항목이 삭제되었습니다.");
+    } catch (error) {
+      console.error("삭제 오류:", error);
+      alert("삭제 중 오류가 발생했습니다.");
     }
   };
 
-  // 리스트 체크 후 수정버튼 클릭 시 수정페이지로 연결
-  const navigate = useNavigate();
-  const btnCheckedEdit = () => {
-    const selectedItem = memberList.find(item => item.checked);
-    if (selectedItem) {
-      // navigate(`/member/${selectedItem.eventId}`); // 수정 페이지로 이동
-      navigate('/member/edit'); // 수정 페이지로 이동
-    } else {
-      alert('수정할 항목을 선택해주세요.');
-    }
+  // 승인여부
+  const handleApproval = () => {
+    // 기본 승인대기 (1)
+    // 클릭 시 승인 confirm 모달창 =>
+    // 확인 : 승인완료 (2) 버튼 명, 색상 변경
+    // 거부 : 승인거부 (3) 버튼 명, 색상 변경
+    // 협회장 아닐 시 권한이 없습니다. 모달창띄움
+    console.log('승인되었습니다!');
   };
 
 
   return (
     <section>
       <Member/>
+      <div className={'d-flex justify-content-end mb-3'}>
+        <p className={'text-danger mt-1 me-3'}>※ 직위별 구분 가능</p>
+        <form action="">
+          <select value={selectedOption} onChange={handleSelectChange} className={'px-2 py-1'}>
+            <option value="all" >전체</option>
+            <option value="ROLE_PRESIDENT">협회장</option>
+            <option value="ROLE_SECRETARY">총무</option>
+            <option value="ROLE_REGULAR">정회원</option>
+            <option value="ROLE_ASSOCIATE">준회원</option>
+            <option value="ROLE_DELETE">탈퇴회원</option>
+          </select>
+        </form>
+      </div>
+
       <div>
         <table className={'table table-custom'}>
           <colgroup>
-            <col width={"7%"}/>
-            <col width={"7%"}/>
+            <col width={"6%"}/>
+            <col width={"6%"}/>
             <col width={"auto"}/>
             <col width={"15%"}/>
-            <col width={"20%"}/>
+            <col width={"15%"}/>
+            <col width={"15%"}/>
             <col width={"15%"}/>
             <col width={"15%"}/>
           </colgroup>
@@ -86,39 +132,52 @@ function MemberList () {
             <th scope={'col'}>전화번호</th>
             <th scope={'col'}>소속기관</th>
             <th scope={'col'}>직위</th>
+            <th scope={'col'}>승인여부</th>
           </tr>
           </thead>
           <tbody>
-          {
-            memberList.map(item => {
-              return (
-                <tr key={item.eventId}>
+
+          {memberItems.map((item) => (
+                <tr key={item.userId}>
                   <td>
                     <div className="form-check">
-                      <input className="form-check-input" type="checkbox" id="checkbox" checked={item.checked} onChange={() => listCheck(item.eventId)}/>
+                      <input className="form-check-input"
+                        type="checkbox"
+                        checked={selectedItemId === item.userId}
+                        onChange={() => handleCheck(item.userId)}
+                      />
                       <label className="form-check-label" htmlFor="checkbox"></label>
                     </div>
                   </td>
-                  <td>{item.eventId}</td>
+                  <td>{item.userId}</td>
                   <td>{item.userAccount}</td>
                   <td>{item.name}</td>
                   <td>{item.userPhone}</td>
                   <td>{item.userDepart}</td>
                   <td>{item.role}</td>
+                  <td>
+                    <button type={'button'} className={'btn btn-outline-point py-1'} onClick={() => setModalOpen(true)}>승인대기</button>
+                    {isModalOpen && (
+                      <Confirm
+                        message="회원을 정회원으로 승인하시겠습니까?"
+                        onConfirm={handleApproval}
+                        onCancel={() => setModalOpen(false)}
+                      />
+                    )}
+                  </td>
                 </tr>
-              );
-            })
-          }
+          ))}
           </tbody>
         </table>
+        <Pagination
+          currentPage={currentPage}
+          itemsCount={memberListData.length}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+        />
 
-        <div className={'d-flex justify-content-between mt-5'}>
-          <div className={'justify-content-start'}>
-          <button type={'button'} className={'btn btn-outline-danger'} onClick={btnCheckedDelete}>삭제</button>
-          </div>
-          <div className={'justify-content-end'}>
-            <button type={'submit'} className={'btn btn-point'} onClick={btnCheckedEdit}>수정</button>
-          </div>
+        <div className={'d-flex mt-3 justify-content-end'}>
+          <button type={'button'} className={'btn btn-outline-danger'} onClick={handleDelete}>회원탈퇴</button>
         </div>
       </div>
 
