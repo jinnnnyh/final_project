@@ -7,6 +7,7 @@ import com.fullstack405.bitcfinalprojectkotlin.data.EventAppData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
 import com.fullstack405.bitcfinalprojectkotlin.data.InsertUserData
+import com.fullstack405.bitcfinalprojectkotlin.data.QRscanData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserData
 import com.fullstack405.bitcfinalprojectkotlin.data.UpdateData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserUpcomingEventData
@@ -96,9 +97,9 @@ interface Interface {
   @POST("/app/certificate/{eventId}/{userId}")
   fun findCertificateData(@Path("eventId")eventId: Long, @Path("userId")userId: Long):Call<CertificateData>
 
-  // QR 스캔 후 정보 전달 성공:2, 실패:1
+  // QR 스캔 후 성공:data, 실패:null
   @PUT("/app/qr-scan/{eventId}/{scheduleId}/{userId}")
-  fun insertQRCheck(@Path("eventId")eventId:Long, @Path("scheduleId")scheduleId:Long, @Path("userId")userId:Long):Call<Int>
+  fun insertQRCheck(@Path("eventId")eventId:Long, @Path("scheduleId")scheduleId:Long, @Path("userId")userId:Long):Call<QRscanData>
 
   // qr 이미지
   // 이벤트id, 회원id >  스케쥴id, QR 이미지 주소, 행사날짜

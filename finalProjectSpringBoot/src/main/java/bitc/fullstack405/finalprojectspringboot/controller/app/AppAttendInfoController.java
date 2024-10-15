@@ -59,7 +59,7 @@ public class AppAttendInfoController {
         // 올바른 행사 정보인지 확인 (eventDate, scheduleId, userId 가 DB 정보와 맞지 않음)
         // 이미 입장/퇴장 체크를 다 한 QR 코드인지 확인 (check_in_time, check_out_time 둘 다 null 아님)
         if (!attendInfoService.validEvent(scheduleId, userId) || attendInfoService.usedQR(scheduleId, userId)) {
-            return ResponseEntity.ok(null);
+            return ResponseEntity.ok().build(); // 10/15 null 전송방식 수정
         }
 
         // QR 스캔 성공

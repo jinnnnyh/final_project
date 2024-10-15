@@ -23,6 +23,7 @@ import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.CheckedIdData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventDetailData
+import com.fullstack405.bitcfinalprojectkotlin.data.QRscanData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBinding
 import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogAdduserBinding
 import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogQrInfoBinding
@@ -35,6 +36,7 @@ import java.util.Date
 class EventDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEventDetailBinding
     private val CAMERA_REQUEST_CODE = 1001
+    private var eventId = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +49,7 @@ class EventDetailActivity : AppCompatActivity() {
             insets
         }
 
-        var eventId = intent?.getLongExtra("eventId",0)
+        eventId = intent.getLongExtra("eventId",0)
         var isRegistrationOpen = intent?.getCharExtra("isRegistrationOpen",'N') // 행사신청 마감 Y : 진행중 , N:마감
         var userId = intent?.getLongExtra("userId",0) // 접속자Id
 
@@ -250,34 +252,50 @@ class EventDetailActivity : AppCompatActivity() {
             val scanResult = result.data?.getStringExtra("SCAN_RESULT")
             binding.btnSubmit.text = scanResult ?: "스캔 실패"
 
-            val eventId = scanResult!!.substring(0,1).toLong()
-            val scheduleId = scanResult.substring(2,3).toLong()
-            val userId = scanResult.substring(4).toLong()
+            val qr_eventId = scanResult!!.substring(0,1).toLong()
+            val qr_scheduleId = scanResult.substring(2,3).toLong()
+            val qr_userId = scanResult.substring(4).toLong()
 
-            Client.retrofit.insertQRCheck(eventId, scheduleId, userId).enqueue(object:retrofit2.Callback<Int>{
-                override fun onResponse(call: Call<Int>, response: Response<Int>) {
-//                    val dialogQr = DialogQrInfoBinding.inflate(LayoutInflater.from(this@EventDetailActivity))
-//                    AlertDialog.Builder(this@EventDetailActivity).run{
-//                        if(response.body() == null){
-//                            setMessage("일치하는 신청 내역이 없습니다. QR을 다시 확인해주세요.")
-//                        }
-//                        else{
-//                            val data = response.body() as QrScanData
-//                            setView(dialogQr.root)
-//                            // 데이터 받고 text 셋팅
-//                        }
-//                    }
+            if(qr_eventId != eventId){
+                AlertDialog.Builder(this@EventDetailActivity).run{
+                    setMessage("해당 행사와 일치하지 않는 QR 입니다. 다시 확인해주세요.")
+                    setNegativeButton("닫기", null)
+                    show()
+                }
+                return@registerForActivityResult
+            }
 
-                    if(response.body() == 1){ // 실패
-                        Toast.makeText(this@EventDetailActivity,"QR 인증에 실패하였습니다. 다시 확인해주세요.",Toast.LENGTH_SHORT).show()
+            Client.retrofit.insertQRCheck(qr_eventId, qr_scheduleId, qr_userId).enqueue(object:retrofit2.Callback<QRscanData>{
+                override fun onResponse(call: Call<QRscanData>, response: Response<QRscanData>) {
+                    val data = response.body() as QRscanData
+                    val dialogQr = DialogQrInfoBinding.inflate(LayoutInflater.from(this@EventDetailActivity))
+                    Log.d("insertQRCheck","${response.body()}")
+                    AlertDialog.Builder(this@EventDetailActivity).run {
+                        setView(dialogQr.root)
+                        dialogQr.eventName.text = "행사명 : ${data.eventTitle}"
+                        dialogQr.eventDate.text =
+                            "일자 : ${data.eventDate}  |  ${data.startTime}~${data.endTime}"
+                        dialogQr.userName.text = "이름 : ${data.name}"
+                        dialogQr.userPhone.text = "휴대폰 : ${data.userPhone}"
+                        dialogQr.userIn.text = "입장시간 : ${data.checkInTime}"
+                        if (data.checkoutTime == null) {
+                            dialogQr.userOut.text = "퇴장시간 : "
+                        } else {
+                            dialogQr.userOut.text = "퇴장시간 : ${data.checkoutTime}"
+                        }
+                        setNegativeButton("닫기", null)
+                        show()
                     }
-                    else if(response.body() == 2){ // 성공
-                        Toast.makeText(this@EventDetailActivity,"출석체크 완료!!",Toast.LENGTH_SHORT).show()
-                    }
+
                 } // onResponse
 
-                override fun onFailure(call: Call<Int>, t: Throwable) {
-                    Toast.makeText(this@EventDetailActivity,"QR scan Error",Toast.LENGTH_SHORT).show()
+                override fun onFailure(call: Call<QRscanData>, t: Throwable) {
+                    AlertDialog.Builder(this@EventDetailActivity).run {
+                        setMessage("이미 처리된 QR입니다. 다시 확인해주세요.")
+                        setNegativeButton("닫기", null)
+                        show()
+                    }
+                    Log.d("insertQRCheck", "${t.message}")
                 }
             })
         }

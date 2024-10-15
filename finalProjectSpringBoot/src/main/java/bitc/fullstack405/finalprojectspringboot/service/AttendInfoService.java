@@ -91,7 +91,7 @@ public class AttendInfoService {
             }
         }
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 10/15 날짜 포맷 변경
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
         return AppQRScanResponse.builder()
