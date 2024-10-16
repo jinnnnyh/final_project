@@ -27,8 +27,12 @@ public interface EventScheduleRepository extends JpaRepository<EventScheduleEnti
     // <APP> 관리자 - 곧 시작하는 행사
     @Query("SELECT s FROM EventScheduleEntity s " +
             "JOIN s.event e " +
-            "WHERE (CURRENT_DATE < s.eventDate OR (CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime)) " +
-            "ORDER BY s.scheduleId ASC")
+            "WHERE ((CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime) OR CURRENT_DATE < s.eventDate) " +
+            "ORDER BY " +
+            "CASE " +
+            "  WHEN CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime THEN 0 " +
+            "  WHEN CURRENT_DATE < s.eventDate THEN 1 " +
+            "END, s.scheduleId ASC")
     List<EventScheduleEntity> findUpcomingEventSchedules();
 
 
