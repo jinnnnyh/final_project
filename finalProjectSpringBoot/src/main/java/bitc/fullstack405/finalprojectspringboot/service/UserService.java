@@ -40,9 +40,6 @@ public class UserService {
 
   public CheckedIdResponse findUserAccount(String userAccount) {
     UserEntity user = userRepository.findUserByUserAccount(userAccount);
-//    if(user.getRole() == ROLE_DELETE){// 탈퇴회원일 경우 아이디 null 반환 아이디 사용가능
-//      user = null;
-//    }
     return new CheckedIdResponse(Objects.requireNonNull(user));
   }
 

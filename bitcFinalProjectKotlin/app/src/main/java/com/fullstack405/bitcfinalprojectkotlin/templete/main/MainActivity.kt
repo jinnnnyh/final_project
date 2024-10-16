@@ -15,26 +15,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.adapter.MainEventListAdapter
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
-import com.fullstack405.bitcfinalprojectkotlin.data.AdminUpcomingEventData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserUpcomingEventData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityMainBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
-import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
-import com.fullstack405.bitcfinalprojectkotlin.templete.notice_XXX.NoticeListActivity
 import retrofit2.Call
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+  lateinit var binding:ActivityMainBinding
+  var userId = 0L
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
-//    setContentView(R.layout.activity_main)
-    val binding = ActivityMainBinding.inflate(layoutInflater)
+    binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
     ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
       val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -42,7 +40,7 @@ class MainActivity : AppCompatActivity() {
       insets
     }
 
-    var userId = intent.getLongExtra("userId",0)
+    userId = intent.getLongExtra("userId",0)
     var userName = intent.getStringExtra("userName")
     var userPermission = intent.getStringExtra("userPermission")
 
@@ -79,71 +77,12 @@ class MainActivity : AppCompatActivity() {
       startActivity(intentAttendList)
     }
 
-    // 신청 내역 중 제일 빠른 일자 1개
-    // onFailure로 가는게 아니라 onResponse로 null 값이 넘어옴
-    Client.retrofit.findUpcomingEventForUser(userId).enqueue(object:retrofit2.Callback<UserUpcomingEventData>{
-      override fun onResponse(call: Call<UserUpcomingEventData>,response: Response<UserUpcomingEventData>) {
-        val data = response.body() as UserUpcomingEventData?
-        if(response.body() == null){
-          binding.txtAttend.text = "예정된 행사가 없습니다."
-          binding.attendDate.isVisible = false
-        }else{
-          val intent_attendDetail = Intent(this@MainActivity, AttendDetailActivity::class.java)
-          binding.txtAttend.setOnClickListener {
-            // 회원) 신청 상세 페이지로 이동
-            intent_attendDetail.putExtra("eventId",data!!.eventId)
-            intent_attendDetail.putExtra("userId",userId)
-            intent_attendDetail.putExtra("complete",data.eventComp)
-//          intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
-            startActivity(intent_attendDetail)
-          }
-          binding.txtAttend.text = data!!.eventTitle
-          binding.attendDate.text = "행사일 : ${data.eventDate}  |  ${data.startTime}"
-
-        }
-      }
-      override fun onFailure(call: Call<UserUpcomingEventData>, t: Throwable) {
-        Log.d("findUpcomingEventForUser","error :${t.message}")
-      }
-    })
-
-
-
-    // 행사 목록에서 뒤로 나오면 화면 갱신
-    val launcher= registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-      if (it.resultCode == RESULT_OK) {
-        Client.retrofit.findUpcomingEventForUser(userId).enqueue(object:retrofit2.Callback<UserUpcomingEventData>{
-          override fun onResponse(call: Call<UserUpcomingEventData>,response: Response<UserUpcomingEventData>) {
-            val data = response.body() as UserUpcomingEventData?
-            if(response.body() == null){
-              binding.txtAttend.text = "예정된 행사가 없습니다."
-              binding.attendDate.isVisible = false
-            }else{
-              val intent_attendDetail = Intent(this@MainActivity, AttendDetailActivity::class.java)
-              binding.txtAttend.setOnClickListener {
-                // 회원) 신청 상세 페이지로 이동
-                intent_attendDetail.putExtra("eventId",data!!.eventId)
-                intent_attendDetail.putExtra("userId",userId)
-                intent_attendDetail.putExtra("complete",data.eventComp)
-//          intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
-                startActivity(intent_attendDetail)
-              }
-              binding.txtAttend.text = data!!.eventTitle
-              binding.attendDate.text = data.startTime
-
-            }
-          }
-          override fun onFailure(call: Call<UserUpcomingEventData>, t: Throwable) {
-            Log.d("findUpcomingEventForUser","error :${t.message}")
-          }
-        })
-
-      }
-    }
+    // 신청 내역 중 제일 빠른 일자 1개 초반 셋팅
+    updateUpcomingEvent()
 
     // 행사 안내 목록으로 이동
     binding.eventList.setOnClickListener {
-      launcher.launch(intent_event)
+      startActivity(intent_event)
     }
 
     // 행사 안내
@@ -194,6 +133,51 @@ class MainActivity : AppCompatActivity() {
 
 
   }// oncreate
+
+
+  // 액티비티 다시 호출될 때
+  override fun onResume() {
+    super.onResume()
+    updateUpcomingEvent() // 데이터 갱신
+  }
+
+  // resultcode를 가지고 왔을 때
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if(resultCode == RESULT_OK){
+      updateUpcomingEvent()
+    }
+  } // onActivityResult
+
+  private fun updateUpcomingEvent(){
+    Client.retrofit.findUpcomingEventForUser(userId).enqueue(object:retrofit2.Callback<UserUpcomingEventData>{
+      override fun onResponse(call: Call<UserUpcomingEventData>,response: Response<UserUpcomingEventData>) {
+        val data = response.body() as UserUpcomingEventData?
+        if(response.body() == null){
+          binding.txtAttend.text = "예정된 행사가 없습니다."
+          binding.attendDate.isVisible = false
+        }else{
+          val intent_attendDetail = Intent(this@MainActivity, AttendDetailActivity::class.java)
+          binding.txtAttend.setOnClickListener {
+            // 회원) 신청 상세 페이지로 이동
+            intent_attendDetail.putExtra("eventId",data!!.eventId)
+            intent_attendDetail.putExtra("userId",userId)
+            intent_attendDetail.putExtra("complete",data.eventComp)
+//          intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
+            startActivity(intent_attendDetail)
+          }
+          binding.txtAttend.text = data!!.eventTitle
+          binding.attendDate.text = "행사일 : ${data.eventDate}  |  ${data.startTime}"
+
+        }
+      }
+      override fun onFailure(call: Call<UserUpcomingEventData>, t: Throwable) {
+        Log.d("findUpcomingEventForUser","error :${t.message}")
+      }
+    })
+  } // updateUpcomingEvent
+
+
 }// main
 
 

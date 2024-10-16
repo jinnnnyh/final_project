@@ -192,7 +192,7 @@ class EventDetailActivity : AppCompatActivity() {
                                         setNegativeButton("닫기",null)
                                         show()
                                     }
-
+                                    setResult(RESULT_OK)
                                 }
 
                                 override fun onFailure(call: Call<Int>, t: Throwable) {

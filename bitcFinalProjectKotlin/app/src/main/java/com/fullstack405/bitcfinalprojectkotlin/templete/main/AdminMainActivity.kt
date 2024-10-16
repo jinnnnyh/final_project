@@ -14,30 +14,35 @@ import com.fullstack405.bitcfinalprojectkotlin.adapter.MainEventListAdapter
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
 import com.fullstack405.bitcfinalprojectkotlin.data.AdminUpcomingEventData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
+import com.fullstack405.bitcfinalprojectkotlin.data.UserUpcomingEventData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityAdminMainBinding
+import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityMainBinding
+import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
-import com.fullstack405.bitcfinalprojectkotlin.templete.notice_XXX.NoticeListActivity
 import retrofit2.Call
 import retrofit2.Response
 
 class AdminMainActivity : AppCompatActivity() {
+    lateinit var binding: ActivityAdminMainBinding
+    var userId = 0L
+    var userPermission =""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-//        setContentView(R.layout.activity_admin_main)
-        val binding = ActivityAdminMainBinding.inflate(layoutInflater)
+        binding = ActivityAdminMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val userId = intent.getLongExtra("userId",0)
+        userId = intent.getLongExtra("userId",0)
         val userName = intent.getStringExtra("userName")
-        var userPermission = intent.getStringExtra("userPermission")
+        userPermission = intent.getStringExtra("userPermission")!!
 
         if(userPermission.equals("ROLE_SECRETARY")){
             userPermission = "총무"
@@ -72,44 +77,8 @@ class AdminMainActivity : AppCompatActivity() {
             startActivity(intentAttendList)
         }
 
-        // 행사 내역 중 제일 빠른 일자 1개
-        // 행사 당일 끝나는 시간 지나면 데이터 없음 > 화면에서 사라짐
-        // onFailure로 가는게 아니라 onResponse로 null 값이 넘어옴
-        Client.retrofit.findAdminUpcomingEvent().enqueue(object:retrofit2.Callback<AdminUpcomingEventData>{
-            override fun onResponse(call: Call<AdminUpcomingEventData>,response: Response<AdminUpcomingEventData>) {
-                val data = response.body() as AdminUpcomingEventData?
-                if(response.body() == null){
-                    binding.txtAttend.text = "예정된 행사가 없습니다."
-                    binding.attendDate.isVisible = false
-                }
-                else{
-                    val intent_eventDetail = Intent(this@AdminMainActivity,EventDetailActivity::class.java)
-                    binding.txtAttend.setOnClickListener {
-                        // 관리자) 행사 상세 페이지로 이동
-                        intent_eventDetail.putExtra("eventId",data!!.eventId)
-                        intent_eventDetail.putExtra("userId",userId)
-                        intent_eventDetail.putExtra("userPermission",userPermission)
-                        intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
-
-                        startActivity(intent_eventDetail)
-                    }
-
-                    binding.txtAttend.text = data!!.eventTitle
-                    binding.attendDate.text = "행사일자 : ${data.eventDate} | ${data.startTime}"
-                }
-
-            }
-
-            override fun onFailure(call: Call<AdminUpcomingEventData>, t: Throwable) {
-                Log.d("findAdminUpcomingEvent","error :${t.message}")
-            }
-
-        })
-
-
-
-
-
+        // 예정된 제일 빠른 행사 1개ㅁ
+        updateAdminUpcomingEvent()
 
         // 행사 안내 리스트로 이동
         binding.eventList.setOnClickListener {
@@ -160,7 +129,57 @@ class AdminMainActivity : AppCompatActivity() {
             var intentLogin = Intent(this, LoginActivity::class.java)
             startActivity(intentLogin)
         }
-
-
     }//onCreate
+
+    // 액티비티 다시 호출될 때
+    override fun onResume() {
+        super.onResume()
+        updateAdminUpcomingEvent() // 데이터 갱신
+    }
+
+    // resultcode를 가지고 왔을 때
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == RESULT_OK){
+            updateAdminUpcomingEvent()
+        }
+    } // onActivityResult
+
+    private fun updateAdminUpcomingEvent(){
+        // 행사 내역 중 제일 빠른 일자 1개
+        // 행사 당일 끝나는 시간 지나면 데이터 없음 > 화면에서 사라짐
+        // onFailure로 가는게 아니라 onResponse로 null 값이 넘어옴
+        Client.retrofit.findAdminUpcomingEvent().enqueue(object:retrofit2.Callback<AdminUpcomingEventData>{
+            override fun onResponse(call: Call<AdminUpcomingEventData>,response: Response<AdminUpcomingEventData>) {
+                val data = response.body() as AdminUpcomingEventData?
+                if(response.body() == null){
+                    binding.txtAttend.text = "예정된 행사가 없습니다."
+                    binding.attendDate.isVisible = false
+                }
+                else{
+                    val intent_eventDetail = Intent(this@AdminMainActivity,EventDetailActivity::class.java)
+                    binding.txtAttend.setOnClickListener {
+                        // 관리자) 행사 상세 페이지로 이동
+                        intent_eventDetail.putExtra("eventId",data!!.eventId)
+                        intent_eventDetail.putExtra("userId",userId)
+                        intent_eventDetail.putExtra("userPermission",userPermission)
+                        intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
+
+                        startActivity(intent_eventDetail)
+                    }
+
+                    binding.txtAttend.text = data!!.eventTitle
+                    binding.attendDate.text = "행사일자 : ${data.eventDate} | ${data.startTime}"
+                }
+
+            }
+
+            override fun onFailure(call: Call<AdminUpcomingEventData>, t: Throwable) {
+                Log.d("findAdminUpcomingEvent","error :${t.message}")
+            }
+
+        })
+    } // updateAdminUpcomingEvent
+
+
 }
