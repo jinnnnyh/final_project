@@ -69,6 +69,8 @@ function EventAttendDay({ day, attendData, eventDate, eventStartTime, eventEndTi
           <option value="ROLE_SECRETARY">총무</option>
           <option value="ROLE_PRESIDENT">협회장</option>
           <option value="ROLE_REGULAR">정회원</option>
+          <option value="ROLE_ASSOCIATE">준회원</option>
+          <option value="ROLE_WITHDRAWN">탈퇴회원</option>
         </select>
         <select onChange={handleLateChange} className="form-select me-2 mb-1" style={{ width: '150px' }}>
           <option value="">지각 여부</option>
@@ -121,6 +123,8 @@ function EventAttendDay({ day, attendData, eventDate, eventStartTime, eventEndTi
                 {item.role === 'ROLE_SECRETARY' && '총무'}
                 {item.role === 'ROLE_PRESIDENT' && '협회장'}
                 {item.role === 'ROLE_REGULAR' && '정회원'}
+                {item.role === 'ROLE_ASSOCIATE' && '준회원'}
+                {item.role === 'ROLE_WITHDRAWN' && '탈퇴회원'}
               </td>
               <td>{item.checkInTime || '미입장'}</td>
               <td>{item.checkOutTime || '미퇴장'}</td>
