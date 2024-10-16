@@ -77,7 +77,7 @@ function MemberList () {
 
     const confirmed = window.confirm('승인 하시겠습니까?');
     try {
-      await axios.post(`http://localhost:8080/user/signAccept/${userId}`);
+      await axios.put(`http://localhost:8080/user/signAccept/${userId}`);
       setMemberListData(memberListData.filter(item => item.userId !== userId));
       alert("승인되었습니다.");
     } catch (error) {
