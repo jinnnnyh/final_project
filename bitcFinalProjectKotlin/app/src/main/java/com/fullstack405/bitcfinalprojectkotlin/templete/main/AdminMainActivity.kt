@@ -19,7 +19,6 @@ import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivit
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
-import com.fullstack405.bitcfinalprojectkotlin.templete.notice_XXX.NoticeListActivity
 import retrofit2.Call
 import retrofit2.Response
 
@@ -27,7 +26,6 @@ class AdminMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-//        setContentView(R.layout.activity_admin_main)
         val binding = ActivityAdminMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

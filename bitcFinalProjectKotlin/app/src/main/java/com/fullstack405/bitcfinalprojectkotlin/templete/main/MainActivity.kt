@@ -15,16 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fullstack405.bitcfinalprojectkotlin.R
 import com.fullstack405.bitcfinalprojectkotlin.adapter.MainEventListAdapter
 import com.fullstack405.bitcfinalprojectkotlin.client.Client
-import com.fullstack405.bitcfinalprojectkotlin.data.AdminUpcomingEventData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserUpcomingEventData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityMainBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
-import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
-import com.fullstack405.bitcfinalprojectkotlin.templete.notice_XXX.NoticeListActivity
 import retrofit2.Call
 import retrofit2.Response
 
@@ -33,7 +30,6 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
-//    setContentView(R.layout.activity_main)
     val binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
     ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
