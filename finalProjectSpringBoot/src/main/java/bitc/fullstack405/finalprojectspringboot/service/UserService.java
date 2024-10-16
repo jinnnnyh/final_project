@@ -37,9 +37,9 @@ public class UserService {
     userRepository.save(userEntity);
   }
 
-//  유저목록출력
+//  유저목록출력 (협회장 - 총무 - 준회원 - 정회원 - 탈퇴회원 순서)
   public List<UserEntity> userListForManage() {
-    return userRepository.findAll();
+    return userRepository.findUsersForManage();
   }
 
 

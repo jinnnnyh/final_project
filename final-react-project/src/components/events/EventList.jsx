@@ -92,7 +92,7 @@ function EventList () {
 
             <div className={'col-10'}>
               <p className={'mb-2 approval-btn'} style={approvalBtnStyle(item.approval)}>{item.approval}</p> {/* 승인예정 / 승인완료 */}
-              <Link to={`/events/${item.eventId}`}><h4>{item.eventTitle}</h4></Link>
+              <Link to={`/event/${item.eventId}`}><h4>{item.eventTitle}</h4></Link>
               <ul className={'ps-0 mt-3'}>
                 <li>행사기간 : <span>{item.eventDate}</span></li>
                 <li className={'my-1'}>행사시간 : <span>{item.startTime} ~ {item.endTime}</span></li>
@@ -100,7 +100,7 @@ function EventList () {
               </ul>
             </div>
             <div className={'col-2'}>
-              <NavLink to={'/events/attend'} className={'btn w-100 btn-point'}>참석현황</NavLink>
+              <NavLink to={`/event/attend/${item.eventId}`} className={'btn w-100 btn-point'}>참석현황</NavLink>
               <button type={'submit'} className={'btn w-100 mt-2'}
                 onClick={handleClick}
                 disabled={eventData === '마감'} // 상태에 따라 비활성화
