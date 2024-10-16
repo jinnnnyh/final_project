@@ -63,7 +63,7 @@ function EventAttendList() {
     <section>
       <h4 className="mb-5">참석자 현황 리스트</h4>
       <h4>{eventData.eventTitle}</h4>
-      <h5 className="mb-3">정원: <strong>{eventData.maxPeople}</strong></h5>
+      <h5 className="mb-3">정원: <strong>{eventData.maxPeople > 0 ? eventData.maxPeople : '인원수 제한 없음'}</strong></h5>
       <div className="d-flex py-3 justify-content-between">
         <div className="w-50">
           행사기간 : <span className="ms-3 fw-bold">{eventData.startDate} ~ {eventData.endDate}</span>
