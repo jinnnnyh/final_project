@@ -92,10 +92,6 @@ function EventView () {
   }, [eventData, scheduleList, userData, approver]);
 
 
-  const user = {
-    role: 'ROLE_SECRETARY',
-  };
-
   return (
     <section>
       <Events/>
@@ -131,13 +127,14 @@ function EventView () {
           </div>
 
           {/* 협회장 / 총무 다른 button view */}
-          {user.role === 'ROLE_PRESIDENT' && ( // 협회장
+          {
+            sessionStorage.getItem('permission') === '협회장' && (
             <PresidentButton/> 
           )}
-          {user.role === 'ROLE_SECRETARY' && ( // 총무
+          {
+            sessionStorage.getItem('permission') === '총무' && (
             <SecretaryButton/>
           )}
-
         </div>
       ) : (
         <div>...로딩중</div>
