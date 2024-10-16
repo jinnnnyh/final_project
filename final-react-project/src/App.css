@@ -105,19 +105,18 @@
 
 
 /* eventList mark style */
-.markStyle {
+.markStyle > p {
+  margin-bottom: 8px;
   border-radius:50px;
-  padding: 4px;
-  width:65px;
+  padding: 4px 6px;
+  width:70px;
   font-size:0.8rem;
   text-align: center;
-  border:1px solid #ccc;
-  color:#888;
 }
 
 .redMark {
-  color: red;
-  border:1px solid red;
+  color: #dd0b0b;
+  border:1px solid #dd0b0b;
 }
 
 .blueMark {
@@ -125,6 +124,11 @@
   border:1px solid #283eae;
 }
 
+.grayMark {
+  color: #666;
+  border:1px solid #888;
+
+}
 
 /* 썸네일 이미지 */
 .thumbnail {
@@ -169,18 +173,6 @@
 .active>.page-link, .page-link.active {
   background-color: #283eae;
   border-color: #283eae;
-}
-
-.good {
-  color: green;
-}
-
-.bad {
-  color: red;
-}
-
-.default {
-  color: black;
 }
 
 

@@ -6,6 +6,7 @@ import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,9 +39,9 @@ public class UserService {
   }
 
 //  유저목록출력
-  public List<UserEntity> userListForManage() {
-    return userRepository.findAll();
-  }
+public List<UserEntity> userListForManage() {
+  return userRepository.findUsersForManage();
+}
 
 
 //  회원가입승인
@@ -86,4 +87,6 @@ public class UserService {
 
     userRepository.save(signOutUser);
   }
+
+
 }

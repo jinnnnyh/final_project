@@ -59,34 +59,6 @@ function EventList () {
   }
 
 
-
-  // 모집여부 표시
-  let message;
-  let className;
-
-  if (eventData.isRegistrationOpen === 'Y') {
-    message = '모집중';
-    className = 'redMark';
-  } else if (eventData.isRegistrationOpen === "N") {
-    message = '마감';
-  }  else {
-    message = 'Null';
-  }
-
-  // 승인여부 표시
-  if (eventData.eventAccept === "1") {
-    message = '승인대기';
-    className = 'redMark';
-  } else if (eventData.eventAccept === "2") {
-    message = '승인완료';
-    className = 'blueMark';
-  }else if (eventData.eventAccept === "3") {
-    message = '승인거부';
-  } else {
-    message = 'Null';
-  }
-
-
   return (
     <section>
       <Events/>
@@ -104,19 +76,26 @@ function EventList () {
 
             <div className={'col-10'}>
               <div className={'d-flex'}>
-                <p className={'mb-2 markStyle className'}>
-                  {message}
-                </p> {/* 승인예정 / 승인완료 */}
-                <p className={'mb-2 markStyle className ms-2'}>
-                  {message}
-              </p>  {/* 모집중 / 마감 */}
+                {/* 승인여부 */}
+                <div className={'markStyle'}>
+                  {item.eventAccept === 1 && <p className={'redMark'}>승인대기</p> ||
+                    item.eventAccept === 2 && <p className={'blueMark'}>승인완료</p> ||
+                    item.eventAccept === 3 && <p className={'redMark'}>승인거부</p> ||
+                    item.eventAccept === 'null' && <p className={'grayMark'}>null</p>
+                  }
+                </div>
+                {/* 모집여부 */}
+                <div className={'markStyle ms-2'}>
+                  {item.isRegistrationOpen === 'Y' ? <p className={'redMark'}>모집중</p> :
+                    <p className={'grayMark'}>마감</p>}
+                </div>
               </div>
 
               <Link to={`/event/${item.eventId}`}><h4>{item.eventTitle}</h4></Link>
               <ul className={'ps-0 mt-3'}>
                 <li>행사기간 : <span>{item.startDate} ~ {item.endDate}</span></li>
                 <li className={'my-1'}>행사시간 : <span>{item.startTime} ~ {item.endTime}</span></li>
-                <li className={'my-1'}>게시일 : <span>{item.uploadDate}</span></li>
+                <li className={'my-1'}>모집시작일 : <span>{item.uploadDate}</span></li>
                 <li className={'my-1'}>신청인원 / 정원 : <span>{item.totalAppliedPeople}명 / {item.maxPeople}명</span></li>
                 <li>수료인원 / 참석인원 : <span>{item.completedPeople}명 / {item.totalAppliedPeople}명</span></li>
               </ul>
