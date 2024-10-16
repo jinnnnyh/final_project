@@ -296,13 +296,23 @@ public class EventService {
     LocalTime startTime = schedules.get(0).getStartTime();
     LocalTime endTime = schedules.get(0).getEndTime();
 
+    List<EventScheduleDTO> eventScheduleDTOList = schedules.stream()
+        .map(schedule -> EventScheduleDTO.builder()
+            .scheduleId(schedule.getScheduleId())
+            .eventDate(schedule.getEventDate())
+            .build())
+        .collect(Collectors.toList());
+
+
     return AttendListDTO.builder()
         .eventTitle(event.getEventTitle())
         .startDate(startDate)
         .endDate(endDate)
         .startTime(startTime)
         .endTime(endTime)
+        .maxPeople(event.getMaxPeople())
         .attendUserList(eventAppDTOList)
+        .eventScheduleDTOList(eventScheduleDTOList)
         .build();
   }
 
