@@ -41,7 +41,7 @@ function App() {
                 <Route path="/event/write" element={<EventWrite/>}/>
                 {/*<Route path="/events/view" element={<EventView/>}/>*/}
                 <Route path="/event/:eventId" element={<EventView/>}/>
-                <Route path="/event/attend" element={<EventAttendList/>}/>
+                <Route path="/event/attend/:eventId" element={<EventAttendList/>}/>
                 <Route path="/member" element={<MemberList/>}/>
                 <Route path="/member/edit" element={<MemberEdit/>}/>
                 <Route path="/member/permission" element={<MemberPermission/>}/>
