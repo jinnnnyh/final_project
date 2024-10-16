@@ -71,9 +71,9 @@ function MemberList () {
 
   // 승인여부
   const handleApproval = async(userId) => {
-    if (sessionStorage.getItem('permission') !== '협회장') {
-      return  alert("승인권한이 없습니다.")
-    }
+    // if (sessionStorage.getItem('permission') !== '협회장') {
+    //   return  alert("승인권한이 없습니다.")
+    // }
 
     const confirmed = window.confirm('승인 하시겠습니까?');
     try {
