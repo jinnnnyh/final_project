@@ -23,17 +23,17 @@
             android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:text="User Name"
-            android:textStyle="bold"
-            android:textColor="#222222"
+            android:gravity="bottom"
             android:paddingEnd="10dp"
-            android:gravity="bottom"/>
+            android:text="User Name"
+            android:textColor="#222222"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/ic_user"/>
+            android:src="@drawable/ic_user" />
     </LinearLayout>
 
     <!-- Event Section -->
@@ -63,19 +63,6 @@
                 android:textColor="#333333"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/attendList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="신청내역 >"
-                android:textSize="18sp"
-                android:textColor="#007AFF"
-                android:layout_marginStart="24sp"
-                app:layout_constraintEnd_toStartOf="@+id/adminEventList"
-                app:layout_constraintStart_toEndOf="@id/textView5"
-                app:layout_constraintTop_toTopOf="@id/textView5" />
 
             <TextView
                 android:id="@+id/adminEventList"
@@ -108,6 +95,79 @@
 
             <TextView
                 android:id="@+id/attend_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="5dp"
+                android:text="시작 날짜"
+                android:textSize="16sp"
+                android:textColor="#999999"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+<!--관리자 신청현황-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/section1_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            app:cardBackgroundColor="@color/white">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_bold"
+                android:layout_marginStart="10dp"
+                android:text="신청현황"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/attendList2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="신청내역 >"
+                android:textColor="#007AFF"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtAttend2"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="행사제목"
+                android:textSize="20sp"
+                android:textColor="#555555"
+                app:layout_constraintBottom_toTopOf="@+id/attend_date2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+            <TextView
+                android:id="@+id/attend_date2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -160,7 +220,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_marginTop="30dp"
+        >
 
         <TextView
             android:id="@+id/userInfoEdit"

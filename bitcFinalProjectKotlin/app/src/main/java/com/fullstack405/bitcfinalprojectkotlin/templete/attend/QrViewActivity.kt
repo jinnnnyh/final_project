@@ -39,6 +39,7 @@ class QrViewActivity : AppCompatActivity() {
     var url="http://10.100.105.205:8080/qrImg/"
 
     val dateFormat =SimpleDateFormat("yyyy-MM-dd") // 포맷설정
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

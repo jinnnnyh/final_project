@@ -73,14 +73,19 @@ class AdminMainActivity : AppCompatActivity() {
         binding.adminEventList.setOnClickListener {
             startActivity(intent_event)
         }
+        // 예정된 제일 빠른 행사 1개
+        updateAdminUpcomingEvent()
+
 
         // 신청 내역 리스트로 이동
-        binding.attendList.setOnClickListener {
+        binding.attendList2.setOnClickListener {
             startActivity(intentAttendList)
         }
 
-        // 예정된 제일 빠른 행사 1개ㅁ
-        updateAdminUpcomingEvent()
+
+        // 신청 내역 중 제일 빠른 행사 1개
+        updateUpcomingEvent()
+
 
         // 행사 안내 리스트로 이동
         binding.eventList.setOnClickListener {
@@ -108,7 +113,8 @@ class AdminMainActivity : AppCompatActivity() {
     // 액티비티 다시 호출될 때
     override fun onResume() {
         super.onResume()
-        updateAdminUpcomingEvent() // 예정 1개
+        updateAdminUpcomingEvent() // 행사 예정ㅁ 1개
+        updateUpcomingEvent() // 신청현황 1개
         findEventList() // 행사 목록
     }
 
@@ -151,10 +157,42 @@ class AdminMainActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<AdminUpcomingEventData>, t: Throwable) {
                 Log.d("findAdminUpcomingEvent","error :${t.message}")
+                binding.txtAttend.text = "예정된 행사가 없습니다."
+                binding.attendDate.isVisible = false
             }
 
         })
     } // updateAdminUpcomingEvent
+
+    private fun updateUpcomingEvent(){
+        Client.retrofit.findUpcomingEventForUser(userId).enqueue(object:retrofit2.Callback<UserUpcomingEventData>{
+            override fun onResponse(call: Call<UserUpcomingEventData>,response: Response<UserUpcomingEventData>) {
+                val data = response.body() as UserUpcomingEventData?
+                if(response.body() == null){
+                    binding.txtAttend2.text = "예정된 행사가 없습니다."
+                    binding.attendDate2.isVisible = false
+                }else{
+                    val intent_attendDetail = Intent(this@AdminMainActivity, AttendDetailActivity::class.java)
+                    binding.txtAttend.setOnClickListener {
+                        // 회원) 신청 상세 페이지로 이동
+                        intent_attendDetail.putExtra("eventId",data!!.eventId)
+                        intent_attendDetail.putExtra("userId",userId)
+                        intent_attendDetail.putExtra("complete",data.eventComp)
+                        startActivity(intent_attendDetail)
+                    }
+                    binding.attendDate.isVisible = true
+                    binding.txtAttend2.text = data!!.eventTitle
+                    binding.attendDate2.text = "행사일 : ${data.eventDate}  |  ${data.startTime}"
+
+                }
+            }
+            override fun onFailure(call: Call<UserUpcomingEventData>, t: Throwable) {
+                Log.d("findUpcomingEventForUser","error :${t.message}")
+                binding.txtAttend2.text = "예정된 행사가 없습니다."
+                binding.attendDate2.isVisible = false
+            }
+        })
+    } // updateUpcomingEvent
 
     private fun findEventList(){
         Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
@@ -164,12 +202,12 @@ class AdminMainActivity : AppCompatActivity() {
                 var resList = response.body() as MutableList<EventListData>?
 
                 // 목록은 항상 내림차순으로 받아옴, 상위 5개만 메인에 표출
-                if(resList!!.size-1 < 5){ // 5개 미만일 경우
+                if(resList!!.size-1 < 3){ // 5개 미만일 경우
                     for(i in 0..resList.size-1){
                         eventList.add(resList[i])
                     }
                 }else{
-                    for(i in 0..5){
+                    for(i in 0..2){
                         eventList.add(resList[i])
                     }
                 }
@@ -186,7 +224,7 @@ class AdminMainActivity : AppCompatActivity() {
                 Log.d("main eventlsit error", "main eventList load error")
             }
         })
-    }
+    }//findEventList
 
 
 }

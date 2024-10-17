@@ -156,6 +156,7 @@ class EventDetailActivity : AppCompatActivity() {
                 if(binding.btnQRscanner.isVisible && !userPermission.equals("정회원")){
                     if(endDate < today){
                         binding.btnQRscanner.isEnabled = false
+                        binding.btnQRscanner.setBackgroundColor(Color.parseColor("#D5D5D5"))
                     }
 
                 }
@@ -253,10 +254,12 @@ class EventDetailActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val scanResult = result.data?.getStringExtra("SCAN_RESULT")
             binding.btnSubmit.text = scanResult ?: "스캔 실패"
+//            1-12-1
+            val splitData = scanResult!!.split("-")
 
-            val qr_eventId = scanResult!!.substring(0,1).toLong()
-            val qr_scheduleId = scanResult.substring(2,3).toLong()
-            val qr_userId = scanResult.substring(4).toLong()
+            val qr_eventId = splitData[0].toLong()
+            val qr_scheduleId = splitData[1].toLong()
+            val qr_userId = splitData[2].toLong()
 
             if(qr_eventId != eventId){
                 AlertDialog.Builder(this@EventDetailActivity).run{

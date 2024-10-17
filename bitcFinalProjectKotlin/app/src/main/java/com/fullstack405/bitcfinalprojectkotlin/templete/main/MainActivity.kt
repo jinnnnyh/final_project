@@ -150,6 +150,8 @@ class MainActivity : AppCompatActivity() {
       }
       override fun onFailure(call: Call<UserUpcomingEventData>, t: Throwable) {
         Log.d("findUpcomingEventForUser","error :${t.message}")
+        binding.txtAttend.text = "예정된 행사가 없습니다."
+        binding.attendDate.isVisible = false
       }
     })
   } // updateUpcomingEvent
@@ -168,7 +170,7 @@ class MainActivity : AppCompatActivity() {
             eventList.add(resList[i])
           }
         }else{
-          for(i in 0..5){
+          for(i in 0..4){
             eventList.add(resList[i])
           }
         }
