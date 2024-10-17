@@ -18,9 +18,7 @@ function EventAttendList() {
 
   const [completionFilter, setCompletionFilter] = useState('all');
   const [roleFilter, setRoleFilter] = useState('all');
-
   const [nameSearch, setNameSearch] = useState('');
-
   const [selectedDay, setSelectedDay] = useState('all');
 
   useEffect(() => {
@@ -159,6 +157,7 @@ function EventAttendList() {
             <thead>
             <tr>
               <th scope="col">번호</th>
+              <th scope="col">아이디</th>
               <th scope="col">이름</th>
               <th scope="col">전화번호</th>
               <th scope="col">소속기관</th>
@@ -170,6 +169,7 @@ function EventAttendList() {
             {filteredAttendData.map((user, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
+                <td>{user.userAccount}</td>
                 <td>{user.name}</td>
                 <td>{user.userPhone}</td>
                 <td>{user.userDepart}</td>
@@ -199,13 +199,12 @@ function EventAttendList() {
               <option value="all">전체보기</option>
               {eventSchedules.map((schedule, index) => (
                 <option key={index} value={index + 1}>
-                  {index + 1}차 ({schedule.eventDate})
+                  {index + 1}일 차 ({schedule.eventDate})
                 </option>
               ))}
             </select>
           </div>
 
-          {/* 전체보기일 때 각 일차별로 EventAttendDay를 렌더링 */}
           {selectedDay === 'all' ? (
             eventSchedules.map((schedule, index) => (
               <EventAttendDay
