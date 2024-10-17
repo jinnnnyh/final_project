@@ -14,7 +14,9 @@ function EventList() {
   const [itemsPerPage] = useState(3);
   const [approvalFilter, setApprovalFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
-  const [searchTerm, setSearchTerm] = useState(''); // 추가된 상태 변수
+  const [searchTerm, setSearchTerm] = useState('');
+  const [uploaderSearchTerm, setUploaderSearchTerm] = useState('');
+  const [approverSearchTerm, setApproverSearchTerm] = useState('');
 
   const today = new Date();
 
@@ -48,6 +50,10 @@ function EventList() {
       if (statusFilter !== '' && recruitmentStatus !== statusFilter) return false;
 
       if (searchTerm && !item.eventTitle.includes(searchTerm)) return false;
+
+      if (uploaderSearchTerm && !item.eventUploaderName.includes(uploaderSearchTerm)) return false;
+
+      if (approverSearchTerm && item.eventApproverName && !item.eventApproverName.includes(approverSearchTerm)) return false;
 
       return true;
     })
@@ -116,10 +122,27 @@ function EventList() {
         </select>
         <input
           type="text"
-          className={'form-control'}
-          placeholder="행사 이름으로 검색"
+          className={'form-control me-2'}
+          placeholder="행사 검색"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          style={{width: '250px'}}
+        />
+        <input
+          type="text"
+          className={'form-control me-2'}
+          placeholder="등록자 검색"
+          value={uploaderSearchTerm}
+          onChange={(e) => setUploaderSearchTerm(e.target.value)}
+          style={{width: '250px'}}
+        />
+        <input
+          type="text"
+          className={'form-control me-2'}
+          placeholder="승인자 검색 (승인자 없음: 미승인)"
+          value={approverSearchTerm}
+          onChange={(e) => setApproverSearchTerm(e.target.value)}
+          style={{width: '250px'}}
         />
       </div>
       {

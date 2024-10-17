@@ -262,43 +262,49 @@ public EventViewDTO eventView(Long eventId) {
 }
 
 //  이벤트 리스트 전체 출력
-  public List<EventListDTO> getEventList() {
-    List<EventEntity> events = eventRepository.findAllByOrderByEventIdDesc();
-    List<EventListDTO> eventListDTO = new ArrayList<>();
+public List<EventListDTO> getEventList() {
+  List<EventEntity> events = eventRepository.findAllByOrderByEventIdDesc();
+  List<EventListDTO> eventListDTO = new ArrayList<>();
 
-    for (EventEntity event : events) {
-      List<EventScheduleEntity> schedules = eventScheduleRepository.findByEvent(event);
-      LocalDate startDate = schedules.get(0).getEventDate();
-      LocalDate endDate = schedules.get(schedules.size() - 1).getEventDate();
-      LocalTime startTime = schedules.get(0).getStartTime();
-      LocalTime endTime = schedules.get(0).getEndTime();
+  for (EventEntity event : events) {
+    List<EventScheduleEntity> schedules = eventScheduleRepository.findByEvent(event);
+    LocalDate startDate = schedules.get(0).getEventDate();
+    LocalDate endDate = schedules.get(schedules.size() - 1).getEventDate();
+    LocalTime startTime = schedules.get(0).getStartTime();
+    LocalTime endTime = schedules.get(0).getEndTime();
 
-      int appliedPeople = eventAppRepository.countByEventAndEventComp(event, 'N');
-      int completedPeople = eventAppRepository.countByEventAndEventComp(event, 'Y');
+    int appliedPeople = eventAppRepository.countByEventAndEventComp(event, 'N');
+    int completedPeople = eventAppRepository.countByEventAndEventComp(event, 'Y');
 
-      EventListDTO eventListDTO2 = EventListDTO.builder()
-          .eventPoster(event.getEventPoster())
-          .eventTitle(event.getEventTitle())
-          .uploadDate(LocalDate.from(event.getUploadDate()))
-          .maxPeople(event.getMaxPeople())
-          .eventAccept(event.getEventAccept())
-          .isRegistrationOpen(event.getIsRegistrationOpen())
-          .startDate(startDate)
-          .endDate(endDate)
-          .startTime(startTime)
-          .endTime(endTime)
-          .eventId(event.getEventId())
-          .totalAppliedPeople(appliedPeople + completedPeople)
-          .completedPeople(completedPeople)
-          .visibleDate(event.getVisibleDate())
-          .invisibleDate(event.getInvisibleDate())
-          .build();
+    String eventUploaderName = event.getPosterUser().getName();
 
-      eventListDTO.add(eventListDTO2);
-    }
+    String eventApproverName = event.getApprover() != null ? event.getApprover().getName() : "미승인";
 
-    return eventListDTO;
+    EventListDTO eventListDTO2 = EventListDTO.builder()
+        .eventPoster(event.getEventPoster())
+        .eventTitle(event.getEventTitle())
+        .uploadDate(LocalDate.from(event.getUploadDate()))
+        .maxPeople(event.getMaxPeople())
+        .eventAccept(event.getEventAccept())
+        .isRegistrationOpen(event.getIsRegistrationOpen())
+        .startDate(startDate)
+        .endDate(endDate)
+        .startTime(startTime)
+        .endTime(endTime)
+        .eventId(event.getEventId())
+        .totalAppliedPeople(appliedPeople + completedPeople)
+        .completedPeople(completedPeople)
+        .visibleDate(event.getVisibleDate())
+        .invisibleDate(event.getInvisibleDate())
+        .eventApproverName(eventApproverName) // approver name 추가
+        .eventUploaderName(eventUploaderName) // uploader name 추가
+        .build();
+
+    eventListDTO.add(eventListDTO2);
   }
+
+  return eventListDTO;
+}
 
 //  이벤트 참석자 정보 조회
   public AttendListDTO getAttendeeList(Long eventId) {

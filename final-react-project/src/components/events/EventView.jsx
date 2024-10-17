@@ -48,10 +48,8 @@ function EventView () {
     axios
       .get(`http://localhost:8080/event/${eventId}`)
       .then((response) => {
-        console.log(response.data);
         if (response.data) {
           setEventData(response.data);
-          console.log(response.data)
           setScheduleList(response.data.eventSchedule || []);
           setUserData(response.data.posterUser || {});
           setApprover(response.data.approver || {});
@@ -61,7 +59,6 @@ function EventView () {
       })
       .catch((err) => {
         setError("서버 오류가 발생했습니다.");
-        console.error(err)
       });
   }, [eventId]);
 
@@ -86,9 +83,6 @@ function EventView () {
     }
     if (userData) {
       setUploader(userData.name || '');
-    }
-    if (approver) {
-      console.log(approver);
     }
   }, [eventData, scheduleList, userData, approver]);
 

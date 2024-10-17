@@ -19,6 +19,9 @@ public class EventListDTO {
   private char isRegistrationOpen;
   private Long eventId;
 
+  private String eventUploaderName;
+  private String eventApproverName;
+
   private LocalDate visibleDate;
   private LocalDate invisibleDate;
   private LocalTime startTime;
