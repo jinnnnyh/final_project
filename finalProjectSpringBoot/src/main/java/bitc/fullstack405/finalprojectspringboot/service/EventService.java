@@ -239,6 +239,8 @@ public class EventService {
           .eventId(event.getEventId())
           .totalAppliedPeople(appliedPeople + completedPeople)
           .completedPeople(completedPeople)
+          .visibleDate(event.getVisibleDate())
+          .invisibleDate(event.getInvisibleDate())
           .build();
 
       eventListDTO.add(eventListDTO2);

@@ -19,6 +19,8 @@ public class EventListDTO {
   private char isRegistrationOpen;
   private Long eventId;
 
+  private LocalDate visibleDate;
+  private LocalDate invisibleDate;
   private LocalTime startTime;
   private LocalTime endTime;
   private LocalDate startDate;
