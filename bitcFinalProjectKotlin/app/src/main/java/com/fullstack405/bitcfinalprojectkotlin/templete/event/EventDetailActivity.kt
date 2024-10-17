@@ -132,7 +132,7 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        var url = "http://10.100.105.168:8080/eventImg/"
+        var url = "http://10.100.105.205:8080/eventImg/"
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기
@@ -192,7 +192,7 @@ class EventDetailActivity : AppCompatActivity() {
                                         setNegativeButton("닫기",null)
                                         show()
                                     }
-
+                                    setResult(RESULT_OK)
                                 }
 
                                 override fun onFailure(call: Call<Int>, t: Throwable) {
