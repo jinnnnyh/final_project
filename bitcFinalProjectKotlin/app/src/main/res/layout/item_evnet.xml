@@ -4,15 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp" >
 
     <TextView
         android:id="@+id/state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:paddingTop="10dp"
         android:text="[모집중]"
-        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FF5733"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,11 +23,11 @@
         android:id="@+id/title"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="16dp"
         android:layout_marginBottom="3dp"
         android:text="제1회 ai 컨퍼런스"
-        android:textSize="16sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/txt_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/state"
@@ -35,9 +38,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="20dp"
         android:text="게시일"
-        android:textSize="12dp"
+        android:textSize="14sp"
+        android:textColor="#808080"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

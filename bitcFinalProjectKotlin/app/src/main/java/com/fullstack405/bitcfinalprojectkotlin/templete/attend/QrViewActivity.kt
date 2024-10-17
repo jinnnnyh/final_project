@@ -52,7 +52,7 @@ class QrViewActivity : AppCompatActivity() {
         // 오늘날짜
         cal_t.time = Date()
         val td = dateFormat.format(cal_t.time) // 오늘 날짜 string 타입
-        var url="http://192.168.45.150:8080/qrImg/"
+        var url="http://10.100.105.168:8080/qrImg/"
         binding.imgQr.isVisible = false
 
         lateinit var QRlist:List<Map<String,Any>>

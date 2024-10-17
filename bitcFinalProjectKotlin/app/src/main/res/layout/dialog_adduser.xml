@@ -9,9 +9,12 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
         android:text="회원 ID 검색"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        android:fontFamily="@font/notosans_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -19,8 +22,13 @@
         android:id="@+id/edit_id"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="5dp"
+        android:hint="회원 ID를 입력하세요"
+        android:textColor="#333333"
+        android:textColorHint="#B0B0B0"
+        android:fontFamily="@font/notosans_medium"
+        android:textSize="16sp"
         android:ems="10"
         android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,9 +38,12 @@
         android:id="@+id/txt_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="20dp"
         android:text="이름"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:fontFamily="@font/notosans_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_id" />
 
@@ -40,19 +51,24 @@
         android:id="@+id/txt_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
         android:text="폰번호"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:fontFamily="@font/notosans_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_name" />
 
     <ImageButton
         android:id="@+id/btn_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="38dp"
         app:layout_constraintStart_toEndOf="@+id/edit_id"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_search" />
+        app:srcCompat="@android:drawable/ic_menu_search"
+        android:background="?attr/selectableItemBackground"
+        app:tint="#FF5733" />
 </androidx.constraintlayout.widget.ConstraintLayout>

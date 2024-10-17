@@ -15,7 +15,8 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/notosans_bold"
         android:text="행사 안내"
-        android:textSize="20sp"
+        android:textSize="24sp"
+        android:textColor="#343A40"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,10 +38,10 @@
         android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/btn_submit"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,6 +52,7 @@
             android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             app:layout_constraintBottom_toBottomOf="@id/btn_submit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,6 +69,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/notosans_bold"
                     android:text="제목"
+                    android:textSize="20sp"
+                    android:textColor="#212529"
                     android:textAlignment="center" />
 
                 <TextView
@@ -75,26 +79,31 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/notosans_medium"
                     android:text="게시일"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:textColor="#6C757D"/>
 
                 <TextView
                     android:id="@+id/d_writer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="작성자"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:textColor="#6C757D"/>
 
                 <TextView
                     android:id="@+id/d_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/notosans_medium"
-                    android:text="행사 내용" />
+                    android:text="행사 내용"
+                    android:textColor="#212529"/>
 
                 <ImageView
                     android:id="@+id/d_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/testimg" />
 
             </LinearLayout>
@@ -110,6 +119,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="신청하기"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FF5733"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -121,6 +132,8 @@
         android:layout_marginBottom="16dp"
         android:text="QR스캐너"
         android:visibility="gone"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FF5733"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -131,6 +144,8 @@
         android:layout_marginBottom="16dp"
         android:text="추가하기"
         android:visibility="gone"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FF5733"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_submit"
         app:layout_constraintStart_toEndOf="@+id/btn_QRscanner" />

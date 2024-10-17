@@ -30,8 +30,12 @@ public interface EventAppRepository extends JpaRepository<EventAppEntity, Long> 
             "JOIN ea.event e " +
             "JOIN e.scheduleList s " +
             "WHERE ea.user.userId = :userId " +
-            "AND (CURRENT_DATE < s.eventDate OR (CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime)) " +
-            "ORDER BY s.scheduleId ASC")
+            "AND ((CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime) OR CURRENT_DATE < s.eventDate) " +
+            "ORDER BY " +
+            "CASE " +
+            "  WHEN CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime THEN 0 " +
+            "  WHEN CURRENT_DATE < s.eventDate THEN 1 " +
+            "END, s.scheduleId ASC")
     List<Object[]> findUpcomingEventForUser(Long userId);
 
 

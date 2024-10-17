@@ -21,6 +21,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".templete.login.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".templete.attend.CompleteViewActivity"
             android:exported="true">
             <intent-filter>
@@ -97,15 +106,6 @@
         <activity
             android:name=".templete.attend.AttendListActivity"
             android:exported="false" />
-        <activity
-            android:name=".templete.login.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".templete.main.MainActivity"
             android:exported="true">

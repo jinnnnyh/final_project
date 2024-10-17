@@ -6,117 +6,161 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F5F5F5"
     tools:context=".templete.main.AdminMainActivity">
 
-    <TextView
-        android:id="@+id/userName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:text="userName"
-        android:textAlignment="viewEnd"
-        android:textSize="35sp" />
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/section1"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="#FFC56F"
-        android:layout_marginBottom="30dp">
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="end"
+        android:layout_marginEnd="16dp">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:fontFamily="@font/notosans_bold"
-            android:text="예정된 행사"
-            android:textSize="25dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="22sp"
+            android:text="User Name"
+            android:textStyle="bold"
+            android:textColor="#222222"
+            android:paddingEnd="10dp"
+            android:gravity="bottom"/>
 
-        <TextView
-            android:id="@+id/adminEventList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/notosans_bold"
-            android:text="행사관리 >"
-            android:textSize="18dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/attendList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="116dp"
-            android:fontFamily="@font/notosans_bold"
-            android:text="신청내역 >"
-            android:textSize="18dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txtAttend"
-            android:layout_width="360dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="5dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="행사제목"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toTopOf="@+id/attend_date"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-        <TextView
-            android:id="@+id/attend_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="5dp"
-            android:text="시작 날짜"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/section2"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:layout_marginBottom="30dp"
-        android:background="#FFC9C9"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/eventList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/notosans_bold"
-            android:text="행사안내 >"
-            android:textSize="25dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/eventRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_user"/>
     </LinearLayout>
 
+    <!-- Event Section -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/section1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            app:cardBackgroundColor="@color/white">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_bold"
+                android:layout_marginStart="10dp"
+                android:text="예정된 행사"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/attendList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="신청내역 >"
+                android:textSize="18sp"
+                android:textColor="#007AFF"
+                android:layout_marginStart="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/adminEventList"
+                app:layout_constraintStart_toEndOf="@id/textView5"
+                app:layout_constraintTop_toTopOf="@id/textView5" />
+
+            <TextView
+                android:id="@+id/adminEventList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="#FF5733"
+                android:text="행사관리 >"
+                android:clickable="true"
+                android:textSize="18sp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtAttend"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="행사제목"
+                android:textSize="20sp"
+                android:textColor="#555555"
+                app:layout_constraintBottom_toTopOf="@+id/attend_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <TextView
+                android:id="@+id/attend_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="5dp"
+                android:text="시작 날짜"
+                android:textSize="16sp"
+                android:textColor="#999999"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Event List Section -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/section2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="10dp"
+        app:cardBackgroundColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/eventList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/notosans_bold"
+                android:text="행사안내 >"
+                android:textSize="22sp"
+                android:textColor="#333333"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/eventRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:id="@+id/userInfoEdit"
@@ -124,6 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="88dp"
             android:text="회원정보수정"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -133,6 +178,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="100dp"
             android:text="로그아웃"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -141,6 +187,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="|"
+            android:textColor="#999999"
             app:layout_constraintEnd_toStartOf="@+id/logout"
             app:layout_constraintStart_toEndOf="@+id/userInfoEdit"
             app:layout_constraintTop_toTopOf="parent" />

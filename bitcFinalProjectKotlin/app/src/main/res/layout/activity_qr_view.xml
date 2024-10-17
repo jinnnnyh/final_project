@@ -13,7 +13,8 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/notosans_bold"
         android:text="신청내역"
-        android:textSize="20sp"
+        android:textSize="24sp"
+        android:textColor="#343A40"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -72,10 +73,12 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/notosans_medium"
         android:text="행사이름"
+        android:textSize="20sp"
+        android:textColor="#212529"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cateTitle" />
 
@@ -86,6 +89,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/notosans_medium"
+        android:textSize="20sp"
+        android:textColor="#212529"
         android:text="data"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/cateTitle" />
@@ -94,10 +99,12 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/notosans_medium"
         android:text="행사일"
+        android:textSize="20sp"
+        android:textColor="#212529"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eventName" />
 
@@ -109,6 +116,8 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/notosans_medium"
         android:text="data"
+        android:textSize="20sp"
+        android:textColor="#212529"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/eventName" />
 </androidx.constraintlayout.widget.ConstraintLayout>
