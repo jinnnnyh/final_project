@@ -14,6 +14,7 @@ function EventList() {
   const [itemsPerPage] = useState(3);
   const [approvalFilter, setApprovalFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); // 추가된 상태 변수
 
   const today = new Date();
 
@@ -45,6 +46,8 @@ function EventList() {
       }
 
       if (statusFilter !== '' && recruitmentStatus !== statusFilter) return false;
+
+      if (searchTerm && !item.eventTitle.includes(searchTerm)) return false;
 
       return true;
     })
@@ -85,7 +88,7 @@ function EventList() {
   return (
     <section>
       <Events />
-      <div className={'d-flex justify-content-end mb-5'}>
+      <div className={'d-flex justify-content-end'}>
         <button type={'button'} className={'btn btn-danger'} onClick={moveToEventWrite}>행사 등록</button>
       </div>
       <div className={'d-inline-flex justify-content-end mb-3'}>
@@ -100,7 +103,7 @@ function EventList() {
           <option value='3'>승인거부</option>
         </select>
         <select
-          className={'form-select'}
+          className={'form-select me-2'}
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
         >
@@ -111,6 +114,13 @@ function EventList() {
           <option value='모집대기'>모집대기</option>
           <option value='모집불가'>모집불가</option>
         </select>
+        <input
+          type="text"
+          className={'form-control'}
+          placeholder="행사 이름으로 검색"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
       {
         eventDataItems.map(item => {

@@ -51,7 +51,8 @@ function EventView () {
         console.log(response.data);
         if (response.data) {
           setEventData(response.data);
-          setScheduleList(response.data.scheduleList || []);
+          console.log(response.data)
+          setScheduleList(response.data.eventSchedule || []);
           setUserData(response.data.posterUser || {});
           setApprover(response.data.approver || {});
         } else {
@@ -108,17 +109,17 @@ function EventView () {
 
           <div className={'d-flex py-4 border-bottom justify-content-between'}>
             <div className={'w-50'}>모집시작일 <span className={'ms-3 fw-bold'}>{eventData.visibleDate || '미정'}</span></div>
-            <div className={'w-50'}>인원수 <span className={'ms-3 fw-bold'}>{eventData.maxPeople || 0}명</span></div>
+            <div className={'w-50'}>정원수 <span className={'ms-3 fw-bold'}>{eventData.maxPeople != 0 && eventData.maxPeople + '명' || eventData.maxPeople === 0 && '제한 없음'}</span></div>
           </div>
 
           <div className={'d-flex py-4 border-bottom justify-content-between'}>
-            <div className={'w-50'}>작성일 <span className={'ms-3 fw-bold'}>{eventData.uploadDate || '미정'}</span></div>
-            <div className={'w-50'}>작성자 <span className={'ms-3 me-2'}>{uploader || '알 수 없음'}</span></div>
+            <div className={'w-50'}>작성일 <span className={'ms-3 fw-bold'}>{eventData.uploadDate || ''}</span></div>
+            <div className={'w-50'}>작성자 <span className={'ms-3 me-2'}>{uploader || ''}</span></div>
           </div>
 
           <div className={'d-flex py-4 border-bottom justify-content-between'}>
-            <div className={'w-50'}>승인일자 <span className={'ms-3 fw-bold'}>{eventData.acceptedDate || '미정'}</span></div>
-            <div className={'w-50'}>승인자 <span className={'ms-3 fw-bold'}>{approver?.name || '미정'}</span></div>
+            <div className={'w-50'}>승인일자 <span className={'ms-3 fw-bold'}>{eventData.acceptedDate || '미승인'}</span></div>
+            <div className={'w-50'}>승인자 <span className={'ms-3 fw-bold'}>{approver?.name || '미승인'}</span></div>
           </div>
 
           <div className={'bg-light p-5 border-bottom'}>

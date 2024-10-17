@@ -3,6 +3,7 @@ package bitc.fullstack405.finalprojectspringboot.controller.react;
 import bitc.fullstack405.finalprojectspringboot.database.dto.event.AttendListDTO;
 import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventListDTO;
 import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventUpdateDTO;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventViewDTO;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
@@ -64,12 +65,10 @@ public class EventController {
 
 //  이벤트 상세보기
   @GetMapping("/{eventId}")
-  public ResponseEntity<EventEntity> eventView(@PathVariable Long eventId) {
-    Optional<EventEntity> eventEntity = eventService.eventView(eventId);
+  public ResponseEntity<EventViewDTO> eventView(@PathVariable Long eventId) {
+    EventViewDTO eventViewDTO = eventService.eventView(eventId);
 
-    EventEntity event = eventEntity.orElse(new EventEntity());
-
-    return ResponseEntity.ok(event);
+    return ResponseEntity.ok(eventViewDTO);
   }
 
 //  이벤트리스트 출력

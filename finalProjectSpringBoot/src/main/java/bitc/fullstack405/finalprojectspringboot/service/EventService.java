@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -206,9 +207,59 @@ public class EventService {
   }
 
 //  이벤트 상세보기
-  public Optional<EventEntity> eventView(Long eventId) {
-    return eventRepository.findById(eventId);
+public EventViewDTO eventView(Long eventId) {
+  EventEntity event = eventRepository.findById(eventId)
+      .orElseThrow(() -> new NoSuchElementException("Event not found"));
+
+  UserEntity uploader = event.getPosterUser();
+  ViewUserDTO uploaderDTO = ViewUserDTO.builder()
+      .name(uploader.getName())
+      .userId(uploader.getUserId())
+      .build();
+
+  UserEntity approver = event.getApprover();
+  ViewUserDTO approverDTO = null;
+
+  if (approver != null) {
+    approverDTO = ViewUserDTO.builder()
+        .userId(approver.getUserId())
+        .name(approver.getName())
+        .build();
   }
+
+  List<EventScheduleEntity> eventScheduleList = event.getScheduleList();
+  List<EventScheduleViewDTO> eventScheduleViewDTOList = new ArrayList<>();
+
+  for (EventScheduleEntity eventScheduleEntity : eventScheduleList) {
+    EventScheduleViewDTO eventScheduleViewDTO = EventScheduleViewDTO.builder()
+        .scheduleId(eventScheduleEntity.getScheduleId())
+        .eventDate(eventScheduleEntity.getEventDate())
+        .startTime(eventScheduleEntity.getStartTime())
+        .endTime(eventScheduleEntity.getEndTime())
+        .build();
+
+    eventScheduleViewDTOList.add(eventScheduleViewDTO);
+  }
+
+  EventViewDTO eventViewDTO = EventViewDTO.builder()
+      .eventId(event.getEventId())
+      .eventTitle(event.getEventTitle())
+      .eventContent(event.getEventContent())
+      .eventPoster(event.getEventPoster())
+      .eventAccept(event.getEventAccept())
+      .maxPeople(event.getMaxPeople())
+      .isRegistrationOpen(event.getIsRegistrationOpen())
+      .acceptedDate(event.getAcceptedDate())
+      .visibleDate(event.getVisibleDate())
+      .invisibleDate(event.getInvisibleDate())
+      .uploadDate(event.getUploadDate())
+      .eventSchedule(eventScheduleViewDTOList)
+      .posterUser(uploaderDTO)
+      .approver(approverDTO)
+      .build();
+
+  return eventViewDTO;
+}
 
 //  이벤트 리스트 전체 출력
   public List<EventListDTO> getEventList() {
