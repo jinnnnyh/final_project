@@ -129,7 +129,7 @@ function EventView () {
           {/* 협회장 / 총무 다른 button view */}
           {
             sessionStorage.getItem('permission') === '협회장' && (
-            <PresidentButton/> 
+            <PresidentButton />
           )}
           {
             sessionStorage.getItem('permission') === '총무' && (

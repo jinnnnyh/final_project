@@ -429,8 +429,8 @@ public class EventService {
         .eventAccept(3)
         .isRegistrationOpen(event.getIsRegistrationOpen())
         .uploadDate(event.getUploadDate())
-        .acceptedDate(event.getAcceptedDate())
-        .approver(event.getApprover())
+        .acceptedDate(null) // 승인 한 뒤에도 거부 시 공백이 되므로
+        .approver(null)    // 승인 한 뒤에도 거부 시 공백이 되므로
         .eventAppList(event.getEventAppList())
         .scheduleList(event.getScheduleList())
         .eventPoster(event.getEventPoster())
