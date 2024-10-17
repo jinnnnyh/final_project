@@ -26,6 +26,10 @@ private const val ARG_PARAM2 = "param2"
 class AttendNoneFragment : Fragment() {
     private lateinit var binding: FragmentAttendNoneBinding
     private lateinit var attendAllAdapter: AttendAllAdapter
+    private lateinit var noneList:MutableList<EventAppData>
+
+    var userId = 0L
+    var userName = "none"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,13 +50,23 @@ class AttendNoneFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // activity에서 userId 추출
-        val userId = activity?.intent!!.getLongExtra("userId", 0)
-        val userName = activity?.intent!!.getStringExtra("userName")
+        userId = activity?.intent!!.getLongExtra("userId", 0)
+        userName = activity?.intent!!.getStringExtra("userName")!!
 
         // 미수료 내역 데이터
-        lateinit var noneList:MutableList<EventAppData>
+        noneList = mutableListOf<EventAppData>()
 
-        // db 연결버전
+        // 미수료 리스트 초기 셋팅
+        findMyIncompleteApplicationList()
+
+    }// onViewCreate
+
+    override fun onResume() {
+        super.onResume()
+        findMyIncompleteApplicationList()
+    }
+
+    private fun findMyIncompleteApplicationList(){
         Client.retrofit.findMyIncompleteApplicationList(userId).enqueue(object:retrofit2.Callback<List<EventAppData>>{
             override fun onResponse(call: Call<List<EventAppData>>, response: Response<List<EventAppData>>) {
                 noneList = response.body() as MutableList<EventAppData>
@@ -69,6 +83,5 @@ class AttendNoneFragment : Fragment() {
             }
 
         })
-
     }
 }

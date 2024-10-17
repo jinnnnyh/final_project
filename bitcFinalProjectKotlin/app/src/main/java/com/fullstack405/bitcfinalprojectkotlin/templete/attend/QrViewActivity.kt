@@ -22,40 +22,62 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class QrViewActivity : AppCompatActivity() {
+
+    var userId = 0L
+    var eventId = 0L
+    lateinit var QRlist:List<Map<String,Any>>
+    lateinit var binding: ActivityQrViewBinding
+
+    // 캘린더 사용
+    // 각 변수를 저정할 인스턴스
+    val cal_t = Calendar.getInstance() // 오늘
+    val cal_s = Calendar.getInstance() // 시작-7
+    val cal_sdate = Calendar.getInstance() // 시작일
+    val cal_e = Calendar.getInstance() // 끝
+    var td = "null"
+
+    var url="http://10.100.105.205:8080/qrImg/"
+
+    val dateFormat =SimpleDateFormat("yyyy-MM-dd") // 포맷설정
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-//        setContentView(R.layout.activity_qr_view)
-        val binding = ActivityQrViewBinding.inflate(layoutInflater)
+        binding = ActivityQrViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        var userId = intent.getLongExtra("userId",0)
-        var eventId = intent.getLongExtra("eventId",0)
+        userId = intent.getLongExtra("userId",0)
+        eventId = intent.getLongExtra("eventId",0)
         var eventName = intent.getStringExtra("eventName")
 
         binding.eventName.text =eventName
 
 
-        // 캘린더 사용
-        // 각 변수를 저정할 인스턴스
-        val cal_t = Calendar.getInstance() // 오늘
-        val cal_s = Calendar.getInstance() // 시작-7
-        val cal_sdate = Calendar.getInstance() // 시작일
-        val cal_e = Calendar.getInstance() // 끝
-
-        val dateFormat =SimpleDateFormat("yyyy-MM-dd") // 포맷설정
-
         // 오늘날짜
         cal_t.time = Date()
-        val td = dateFormat.format(cal_t.time) // 오늘 날짜 string 타입
-        var url="http://10.100.105.205:8080/qrImg/"
+        td = dateFormat.format(cal_t.time) // 오늘 날짜 string 타입
+
+
         binding.imgQr.isVisible = false
 
-        lateinit var QRlist:List<Map<String,Any>>
+        // 초기 데이터 셋팅
+        findQRImageList()
+
+        // 뒤로가기
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+    } // onCreate
+    // 액티비티 시작될때마다 새로 붙임
+    override fun onResume() {
+        super.onResume()
+        findQRImageList()
+    }
+
+    private fun findQRImageList(){
         Client.retrofit.findQRImageList(eventId, userId).enqueue(object:retrofit2.Callback<List<Map<String,Any>>>{
             override fun onResponse(call: Call<List<Map<String,Any>>>, response: Response<List<Map<String,Any>>>) {
 //                [{qrImage=39005063789000.png, scheduleId=3.0, eventDate=2024-10-10}, {qrImage=39005239314600.png, scheduleId=4.0, eventDate=2024-10-11}]
@@ -107,13 +129,6 @@ class QrViewActivity : AppCompatActivity() {
                 Log.d("QR list error","${t.message}")
             }
 
-        }) // retrofit
-
-
-
-        // 뒤로가기
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
+        })
     }
 }

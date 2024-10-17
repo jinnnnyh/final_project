@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
@@ -205,8 +206,10 @@ class EventDetailActivity : AppCompatActivity() {
                     show()
                 }
             }
+        }else{
+            binding.btnSubmit.isEnabled = false
+            binding.btnSubmit.setBackgroundColor(Color.parseColor("#D5D5D5"))
         }
-
         // 뒤로가기
         binding.btnBack.setOnClickListener {
             setResult(RESULT_OK)
@@ -214,7 +217,6 @@ class EventDetailActivity : AppCompatActivity() {
         }
 
     }// onCreate
-
 
 
     // 카메라 권한 확인

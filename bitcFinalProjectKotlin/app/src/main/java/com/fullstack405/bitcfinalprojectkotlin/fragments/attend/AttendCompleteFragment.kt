@@ -21,6 +21,12 @@ private const val ARG_PARAM2 = "param2"
 class AttendCompleteFragment : Fragment() {
     private lateinit var binding: FragmentAttendCompleteBinding
     private lateinit var attendAllAdapter: AttendAllAdapter
+
+    private lateinit var compList:MutableList<EventAppData>
+
+    var userId = 0L
+    var userName = "none"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -40,18 +46,28 @@ class AttendCompleteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // activity에서 userId 추출
-        val userId = activity?.intent!!.getLongExtra("userId", 0)
-        val userName = activity?.intent!!.getStringExtra("userName")
+        userId = activity?.intent!!.getLongExtra("userId", 0)
+        userName = activity?.intent!!.getStringExtra("userName")!!
 
         // 수료 내역 데이터
-        lateinit var compList:MutableList<EventAppData>
+        compList= mutableListOf<EventAppData>()
 
-        // db 연결버전
+        // 초기 셋팅
+        findMyCompleteApplicationList()
+
+    }// onViewCreated
+
+    override fun onResume() {
+        super.onResume()
+        findMyCompleteApplicationList()
+    }
+
+    private fun findMyCompleteApplicationList(){
         Client.retrofit.findMyCompleteApplicationList(userId).enqueue(object:retrofit2.Callback<List<EventAppData>>{
             override fun onResponse(call: Call<List<EventAppData>>, response: Response<List<EventAppData>>) {
                 compList = response.body() as MutableList<EventAppData>
 
-                attendAllAdapter = AttendAllAdapter(compList,userId,userName!!)
+                attendAllAdapter = AttendAllAdapter(compList,userId,userName)
                 binding.recyclerViewComp.adapter = attendAllAdapter
                 binding.recyclerViewComp.layoutManager = LinearLayoutManager(requireContext())
 
@@ -63,6 +79,5 @@ class AttendCompleteFragment : Fragment() {
             }
 
         })
-
     }
 }
