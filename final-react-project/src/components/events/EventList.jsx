@@ -71,7 +71,7 @@ function EventList() {
   useEffect(() => {
     axios.get('http://localhost:8080/event/list')
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data) {
           setEventData(res.data);
           setLoading(false);
