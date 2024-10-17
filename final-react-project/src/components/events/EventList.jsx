@@ -39,6 +39,9 @@ function EventList() {
         if (today >= new Date(item.visibleDate) && today <= new Date(item.invisibleDate)) {
           recruitmentStatus = '모집중';
         }
+        else if (today < new Date(item.visibleDate)) {
+          recruitmentStatus = '모집대기';
+        }
         else if (today > new Date(item.invisibleDate) && today < new Date(item.startDate)) {
           recruitmentStatus = '행사대기';
         }
@@ -166,6 +169,9 @@ function EventList() {
             if (today >= visibleDate && today <= invisibleDate) {
               recruitmentStatus = '모집중';
             }
+            else if (today< visibleDate) {
+              recruitmentStatus = '모집대기';
+            }
             else if (today > invisibleDate && today < startDate) {
               recruitmentStatus = '행사대기';
             }
@@ -221,7 +227,7 @@ function EventList() {
                     <li>행사기간 : <span>{item.startDate} ~ {item.endDate}</span></li>
                     <li className={'my-1'}>행사시간 : <span>{item.startTime} ~ {item.endTime}</span></li>
                     <li className={'my-1'}>모집시작일 : <span>{item.visibleDate}</span> | 모집마감일 : <span>{item.invisibleDate}</span></li>
-                    <li className={'my-1'}>신청인원 / 정원 : <span>{item.totalAppliedPeople}명 / {item.maxPeople}명</span></li>
+                    <li className={'my-1'}>신청인원 / 정원 : <span>{item.totalAppliedPeople}명 / {item.maxPeople === 0 && '제한없음' || item.maxPeople != 0 && `${item.maxPeople}명`}</span></li>
                     <li>수료인원 / 참석인원 : <span>{item.completedPeople}명 / {item.totalAppliedPeople}명</span></li>
                   </ul>
                 </div>
