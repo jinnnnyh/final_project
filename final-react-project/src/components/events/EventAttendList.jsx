@@ -197,22 +197,24 @@ function EventAttendList() {
               className="form-select"
             >
               <option value="all">전체보기</option>
-              {Object.keys(dayWiseAttendData).map((day, index) => (
-                <option key={index} value={day}>{day}차</option>
+              {eventSchedules.map((schedule, index) => (
+                <option key={index} value={index + 1}>
+                  {index + 1}차 ({schedule.eventDate})
+                </option>
               ))}
             </select>
           </div>
 
           {/* 전체보기일 때 각 일차별로 EventAttendDay를 렌더링 */}
           {selectedDay === 'all' ? (
-            Object.keys(dayWiseAttendData).map((day, index) => (
+            eventSchedules.map((schedule, index) => (
               <EventAttendDay
                 key={index}
-                day={day}
-                attendData={dayWiseAttendData[day]}
+                day={index + 1}
+                attendData={dayWiseAttendData[index + 1] || []}
                 eventStartTime={eventData.startTime}
                 eventEndTime={eventData.endTime}
-                eventDate={eventSchedules[day - 1]?.eventDate || ''}
+                eventDate={schedule.eventDate}
                 eventSchedules={eventSchedules}
               />
             ))
