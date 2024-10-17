@@ -82,8 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="120dp"
-            android:fontFamily="@font/notosans_medium"
-            android:text="2024.04.27 0000000000"
+            android:text="2024.04.27"
             android:textSize="8sp"
             app:layout_constraintStart_toStartOf="@+id/img_qr"
             app:layout_constraintTop_toBottomOf="@+id/title" />
