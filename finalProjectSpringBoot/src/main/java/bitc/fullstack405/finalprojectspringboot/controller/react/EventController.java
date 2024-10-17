@@ -128,6 +128,13 @@ public class EventController {
     return ResponseEntity.noContent().build();
   }
 
+//  이벤트 승인 후 취소
+  @PutMapping("/acceptCancel/{eventId}")
+  public ResponseEntity<Void> acceptCancel(@PathVariable Long eventId) {
+    eventService.acceptCancel(eventId);
+    return ResponseEntity.noContent().build();
+  }
+
 //  이벤트 거부
   @PutMapping("/denyEvent/{eventId}")
   public ResponseEntity<Void> denyEvent(@PathVariable Long eventId) {

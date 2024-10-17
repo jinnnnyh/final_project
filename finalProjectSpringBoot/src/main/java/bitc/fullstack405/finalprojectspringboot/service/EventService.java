@@ -524,4 +524,29 @@ public List<EventListDTO> getEventList() {
 
     eventRepository.save(endEvent);
   }
+
+//  이벤트 승인 후 취소
+  @Transactional
+  public void acceptCancel(Long eventId) {
+    EventEntity event = eventRepository.findById(eventId).get();
+
+    EventEntity acceptCancelEvent = event.toBuilder()
+        .eventTitle(event.getEventTitle())
+        .eventContent(event.getEventContent())
+        .maxPeople(event.getMaxPeople())
+        .posterUser(event.getPosterUser())
+        .eventAccept(1)
+        .isRegistrationOpen(event.getIsRegistrationOpen())
+        .uploadDate(event.getUploadDate())
+        .acceptedDate(event.getAcceptedDate())
+        .approver(event.getApprover())
+        .eventAppList(event.getEventAppList())
+        .scheduleList(event.getScheduleList())
+        .eventPoster(event.getEventPoster())
+        .visibleDate(event.getVisibleDate())
+        .invisibleDate(event.getInvisibleDate())
+        .build();
+
+    eventRepository.save(acceptCancelEvent);
+  }
 }
