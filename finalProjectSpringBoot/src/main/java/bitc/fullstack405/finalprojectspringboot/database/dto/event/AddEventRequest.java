@@ -22,7 +22,7 @@ public class AddEventRequest {
     private LocalTime startTime;
     private LocalTime endTime;
     private int maxPeople;
-    
+
 
     // DTO 클래스를 입력받은 데이터를 기준으로 Entity 클래스로 변환
 //    public EventEntity toEntity(UserEntity user) {
