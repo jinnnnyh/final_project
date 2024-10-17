@@ -212,7 +212,7 @@ public class EventService {
 
 //  이벤트 리스트 전체 출력
   public List<EventListDTO> getEventList() {
-    List<EventEntity> events = eventRepository.findAll();
+    List<EventEntity> events = eventRepository.findAllByOrderByEventIdDesc();
     List<EventListDTO> eventListDTO = new ArrayList<>();
 
     for (EventEntity event : events) {

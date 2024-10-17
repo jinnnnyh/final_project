@@ -2,6 +2,8 @@ package bitc.fullstack405.finalprojectspringboot.database.repository;
 
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -13,8 +15,6 @@ public interface EventRepository  extends JpaRepository<EventEntity, Long> {
     // eventId 기준 내림차순으로 모든 공지사항을 조회
     List<EventEntity> findAllByOrderByEventIdDesc();
 
-    // 현재 날짜가 visibleDate와 같거나 더 큰 행사 목록을 최신 순으로 가져오기
-    List<EventEntity> findByVisibleDateLessThanEqualOrderByEventIdDesc(LocalDate now);
-
-    List<EventEntity> findByInvisibleDate(LocalDate invisibleDate); // 스케줄러용. 매일자정에 마감여부 확인.
+    @Query("SELECT e FROM EventEntity e WHERE e.invisibleDate <= :date")
+    List<EventEntity> findByInvisibleDateBeforeOrEqual(@Param("date") LocalDate date); // 스케줄러용. 매일자정에 마감여부 확인
 }

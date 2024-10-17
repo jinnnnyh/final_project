@@ -21,7 +21,7 @@ public class Scheduler {
   public void checkDateRegistrationClose() {
     LocalDate today = LocalDate.now();
 
-    List<EventEntity> eventEntities = eventRepository.findByInvisibleDate(today);
+    List<EventEntity> eventEntities = eventRepository.findByInvisibleDateBeforeOrEqual(today);
 
     List<EventEntity> updatedEvents = eventEntities.stream()
         .map(eventEntity -> eventEntity.toBuilder()
