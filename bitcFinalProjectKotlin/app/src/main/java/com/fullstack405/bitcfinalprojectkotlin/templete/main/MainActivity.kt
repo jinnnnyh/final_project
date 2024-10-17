@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity() {
             eventList.add(resList[i])
           }
         }else{
-          for(i in 0..5){
+          for(i in 0..4){
             eventList.add(resList[i])
           }
         }

@@ -36,7 +36,7 @@ class QrViewActivity : AppCompatActivity() {
     val cal_e = Calendar.getInstance() // 끝
     var td = "null"
 
-    var url="http://10.100.105.205:8080/qrImg/"
+    var url="http://10.100.105.168:8080/qrImg/"
 
     val dateFormat =SimpleDateFormat("yyyy-MM-dd") // 포맷설정
     override fun onCreate(savedInstanceState: Bundle?) {

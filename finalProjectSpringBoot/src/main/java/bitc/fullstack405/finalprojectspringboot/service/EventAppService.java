@@ -151,6 +151,24 @@ public class EventAppService {
                 .build();
     }
 
+    // <APP> 행사 신청 취소 - 이미 지난 or 시작한 행사
+    public boolean isEventStarted(Long eventId) {
+        return eventScheduleRepository.findStartedEvent(eventId);
+    }
+
+    // <APP> 행사 신청 취소 - 데이터 삭제
+    // event_app 테이블, attend_info 테이블에 있는 신청 데이터 삭제
+    public void delete(Long eventId, Long userId) {
+        EventAppEntity eventApp = eventAppRepository.findByEvent_EventIdAndUser_UserId(eventId, userId);
+        List<EventScheduleEntity> scheduleList = eventScheduleRepository.findByEvent(eventApp.getEvent());
+
+        for (EventScheduleEntity schedule : scheduleList) {
+            attendInfoRepository.deleteByEventSchedule_ScheduleIdAndUser_UserId(schedule.getScheduleId(), userId);
+        }
+
+        eventAppRepository.delete(eventApp);
+    }
+
 
     ///////////////////////////
     ////////// <WEB> //////////

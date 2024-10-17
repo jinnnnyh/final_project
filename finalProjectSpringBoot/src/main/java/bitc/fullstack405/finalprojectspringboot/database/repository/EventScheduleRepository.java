@@ -32,8 +32,12 @@ public interface EventScheduleRepository extends JpaRepository<EventScheduleEnti
             "CASE " +
             "  WHEN CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime THEN 0 " +
             "  WHEN CURRENT_DATE < s.eventDate THEN 1 " +
-            "END, s.scheduleId ASC")
+            "END, s.startTime ASC")
     List<EventScheduleEntity> findUpcomingEventSchedules();
+
+    // <APP> 이미 지나간 or 시작한 행사가 있는지 확인
+    @Query("")
+    boolean findStartedEvent(@Param("eventId") Long eventId);
 
 
     ///////////////////////////

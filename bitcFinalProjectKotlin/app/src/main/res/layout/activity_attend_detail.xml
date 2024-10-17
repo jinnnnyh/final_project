@@ -79,6 +79,7 @@
                     android:fontFamily="@font/notosans_medium"
                     android:text="게시일"
                     android:textColor="#6C757D"
+                    android:layout_marginRight="10dp"
                     android:textAlignment="textEnd" />
 
                 <TextView
@@ -87,6 +88,7 @@
                     android:layout_height="wrap_content"
                     android:text="작성자"
                     android:textColor="#6C757D"
+                    android:layout_marginRight="10dp"
                     android:textAlignment="textEnd" />
 
 
@@ -95,6 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/notosans_medium"
+                    android:layout_marginTop="20dp"
                     android:text="행사 내용"
                     android:textColor="#212529"/>
 
@@ -103,8 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/testimg" />
+                    android:scaleType="centerCrop" />
 
             </LinearLayout>
         </ScrollView>
