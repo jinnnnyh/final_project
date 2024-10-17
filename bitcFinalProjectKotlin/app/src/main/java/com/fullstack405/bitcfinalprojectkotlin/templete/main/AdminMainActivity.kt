@@ -27,6 +27,8 @@ import retrofit2.Response
 
 class AdminMainActivity : AppCompatActivity() {
     lateinit var binding: ActivityAdminMainBinding
+    lateinit var eventList:MutableList<EventListData>
+    lateinit var mainEventListAdapter:MainEventListAdapter
     var userId = 0L
     var userPermission =""
 
@@ -86,37 +88,9 @@ class AdminMainActivity : AppCompatActivity() {
         }
 
         // 행사 안내
-        val eventList = mutableListOf<EventListData>()
-        lateinit var mainEventListAdapter:MainEventListAdapter
-
-        // db 연결버전
-        Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
-            override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
-                var resList = response.body() as MutableList<EventListData>
-
-                // 목록은 항상 내림차순으로 받아옴, 상위 5개만 메인에 표출
-                if(resList.size-1 < 5){ // 5개 미만일 경우
-                    for(i in 0..resList.size-1){
-                        eventList.add(resList[i])
-                    }
-                }else{
-                    for(i in 0..5){
-                        eventList.add(resList[i])
-                    }
-                }
-
-                mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission)
-
-                binding.eventRecyclerView.adapter = mainEventListAdapter
-                binding.eventRecyclerView.layoutManager = LinearLayoutManager(this@AdminMainActivity)
-
-                mainEventListAdapter.notifyDataSetChanged()
-            }
-
-            override fun onFailure(call: Call<List<EventListData>>, t: Throwable) {
-                Log.d("main eventlsit error", "main eventList load error")
-            }
-        })
+        eventList = mutableListOf<EventListData>()
+        // 행사 목록 데이터 초기 셋팅
+        findEventList()
 
         // 회원정보수정 클릭 이벤트
         binding.userInfoEdit.setOnClickListener {
@@ -134,7 +108,8 @@ class AdminMainActivity : AppCompatActivity() {
     // 액티비티 다시 호출될 때
     override fun onResume() {
         super.onResume()
-        updateAdminUpcomingEvent() // 데이터 갱신
+        updateAdminUpcomingEvent() // 예정 1개
+        findEventList() // 행사 목록
     }
 
     // resultcode를 가지고 왔을 때
@@ -167,7 +142,7 @@ class AdminMainActivity : AppCompatActivity() {
 
                         startActivity(intent_eventDetail)
                     }
-
+                    binding.attendDate.isVisible = true
                     binding.txtAttend.text = data!!.eventTitle
                     binding.attendDate.text = "행사일자 : ${data.eventDate} | ${data.startTime}"
                 }
@@ -180,6 +155,38 @@ class AdminMainActivity : AppCompatActivity() {
 
         })
     } // updateAdminUpcomingEvent
+
+    private fun findEventList(){
+        Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
+            override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
+                eventList.clear()
+
+                var resList = response.body() as MutableList<EventListData>?
+
+                // 목록은 항상 내림차순으로 받아옴, 상위 5개만 메인에 표출
+                if(resList!!.size-1 < 5){ // 5개 미만일 경우
+                    for(i in 0..resList.size-1){
+                        eventList.add(resList[i])
+                    }
+                }else{
+                    for(i in 0..5){
+                        eventList.add(resList[i])
+                    }
+                }
+
+                mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission)
+
+                binding.eventRecyclerView.adapter = mainEventListAdapter
+                binding.eventRecyclerView.layoutManager = LinearLayoutManager(this@AdminMainActivity)
+
+                mainEventListAdapter.notifyDataSetChanged()
+            }
+
+            override fun onFailure(call: Call<List<EventListData>>, t: Throwable) {
+                Log.d("main eventlsit error", "main eventList load error")
+            }
+        })
+    }
 
 
 }

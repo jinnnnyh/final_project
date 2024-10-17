@@ -27,8 +27,12 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
   lateinit var binding:ActivityMainBinding
-  var userId = 0L
 
+  lateinit var eventList:MutableList<EventListData>
+  lateinit var mainEventListAdapter:MainEventListAdapter
+  
+  var userId = 0L
+  var userPermission = "none"
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
@@ -42,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     userId = intent.getLongExtra("userId",0)
     var userName = intent.getStringExtra("userName")
-    var userPermission = intent.getStringExtra("userPermission")
+    userPermission = intent.getStringExtra("userPermission")!!
 
     if(userPermission.equals("ROLE_SECRETARY")){
       userPermission = "총무"
@@ -86,37 +90,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 행사 안내
-    val eventList = mutableListOf<EventListData>()
-    lateinit var mainEventListAdapter:MainEventListAdapter
-
-    // db 연결버전
-    Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
-      override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
-        var resList = response.body() as MutableList<EventListData>
-
-        // 목록은 항상 내림차순으로 받아옴, 상위 5개만 메인에 표출
-        if(resList.size-1 < 5){ // 5개 미만일 경우
-          for(i in 0..resList.size-1){
-            eventList.add(resList[i])
-          }
-        }else{
-          for(i in 0..5){
-            eventList.add(resList[i])
-          }
-        }
-
-        mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission)
-
-        binding.eventRecyclerView.adapter = mainEventListAdapter
-        binding.eventRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
-
-        mainEventListAdapter.notifyDataSetChanged()
-      }
-
-      override fun onFailure(call: Call<List<EventListData>>, t: Throwable) {
-        Log.d("main eventlsit error", "main eventList load error")
-      }
-    })
+    eventList = mutableListOf<EventListData>()
+    // 행사 목록 데이터 초기 셋팅
+    findEventList()
 
 
     // 회원정보수정 클릭 이벤트
@@ -138,7 +114,8 @@ class MainActivity : AppCompatActivity() {
   // 액티비티 다시 호출될 때
   override fun onResume() {
     super.onResume()
-    updateUpcomingEvent() // 데이터 갱신
+    updateUpcomingEvent() // 예정 1개
+    findEventList() // 행사 목록
   }
 
   // resultcode를 가지고 왔을 때
@@ -163,9 +140,9 @@ class MainActivity : AppCompatActivity() {
             intent_attendDetail.putExtra("eventId",data!!.eventId)
             intent_attendDetail.putExtra("userId",userId)
             intent_attendDetail.putExtra("complete",data.eventComp)
-//          intent_eventDetail.putExtra("isRegistrationOpen",data.isRegistrationOpen)
             startActivity(intent_attendDetail)
           }
+          binding.attendDate.isVisible = true
           binding.txtAttend.text = data!!.eventTitle
           binding.attendDate.text = "행사일 : ${data.eventDate}  |  ${data.startTime}"
 
@@ -177,6 +154,38 @@ class MainActivity : AppCompatActivity() {
     })
   } // updateUpcomingEvent
 
+  
+  private fun findEventList(){
+    Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
+      override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
+        eventList.clear()
+
+        var resList = response.body() as MutableList<EventListData>?
+
+        // 목록은 항상 내림차순으로 받아옴, 상위 5개만 메인에 표출
+        if(resList!!.size-1 < 5){ // 5개 미만일 경우
+          for(i in 0..resList.size-1){
+            eventList.add(resList[i])
+          }
+        }else{
+          for(i in 0..5){
+            eventList.add(resList[i])
+          }
+        }
+
+        mainEventListAdapter = MainEventListAdapter(eventList,userId,userPermission)
+
+        binding.eventRecyclerView.adapter = mainEventListAdapter
+        binding.eventRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+
+        mainEventListAdapter.notifyDataSetChanged()
+      }
+
+      override fun onFailure(call: Call<List<EventListData>>, t: Throwable) {
+        Log.d("main eventlsit error", "main eventList load error")
+      }
+    })
+  }
 
 }// main
 

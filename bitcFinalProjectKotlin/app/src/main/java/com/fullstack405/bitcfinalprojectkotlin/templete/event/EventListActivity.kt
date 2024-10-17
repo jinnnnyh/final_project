@@ -16,11 +16,15 @@ import retrofit2.Call
 import retrofit2.Response
 
 class EventListActivity : AppCompatActivity() {
+    
+    lateinit var binding: ActivityEventListBinding
+    var userId = 0L
+    var userPermission = "none"
+    lateinit var eventList:MutableList<EventListData>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-//        setContentView(R.layout.activity_event_list)
-        val binding = ActivityEventListBinding.inflate(layoutInflater)
+        binding = ActivityEventListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -28,18 +32,33 @@ class EventListActivity : AppCompatActivity() {
             insets
         }
 
-        var userId = intent.getLongExtra("userId",0)
-        var userPermission = intent.getStringExtra("userPermission")
+        userId = intent.getLongExtra("userId",0)
+        userPermission = intent.getStringExtra("userPermission")!!
 
         // 데이터 생성
-        var eventList = mutableListOf<EventListData>()
+        eventList = mutableListOf<EventListData>()
 
-        // 이벤트 리스트 불러오기 성공하면 뷰에 어댑터 붙이는걸로,,,?
+        // 이벤트 리스트 데이터 초기 셋팅
+        findEventList()
+        
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+
+    } // onCreate
+
+    // 액티비티 시작될때마다 새로 붙임
+    override fun onResume() {
+        super.onResume()
+        findEventList()
+    }
+    
+    private fun findEventList(){
         Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
             override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
                 Log.d("event List load","${response.body()}")
                 eventList = response.body() as MutableList<EventListData>
-                var eventListAdapter = EventListAdapter(eventList,userId,userPermission!!)
+                var eventListAdapter = EventListAdapter(eventList,userId,userPermission)
                 binding.recyclerView.adapter = eventListAdapter
                 binding.recyclerView.layoutManager = LinearLayoutManager(this@EventListActivity)
 
@@ -51,13 +70,5 @@ class EventListActivity : AppCompatActivity() {
             }
 
         })
-
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-
-
-
-
-    } // onCreate
+    }
 }
