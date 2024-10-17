@@ -83,47 +83,51 @@ class QrViewActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<Map<String,Any>>>, response: Response<List<Map<String,Any>>>) {
 //                [{qrImage=39005063789000.png, scheduleId=3.0, eventDate=2024-10-10}, {qrImage=39005239314600.png, scheduleId=4.0, eventDate=2024-10-11}]
                 QRlist = response.body()!!
-                Log.d("QR list response","${QRlist[0].get("eventDate").toString()}//${QRlist[0].get("qrImage").toString()}")
+                Log.d("QR list response","${QRlist}")
 
                 var sd = QRlist[0].get("eventDate").toString() // 제일 처음 회차의 날짜
-//                var ed = QRlist[QRlist.size-1].get("eventDate").toString() // 마지막 회차의 날짜
 
-//                val start_7: Date? = dateFormat.parse(sd) // 이벤트 날짜 String > Date 변환
                 val startDate: Date? = dateFormat.parse(sd)
-//                val endDate: Date? = dateFormat.parse(ed)
 
                 cal_s.time = startDate // 시작일 - 7일
                 cal_sdate.time = startDate // 시작일
-//                cal_e.time = endDate // 종료일
 
                 cal_s.add(Calendar.DATE,-7) // 시작일 일주일 전 날짜
 
-
-                // 첫번째 일자는 항상 인덱스 0 이고 얘는 1주일전부터 보여야함
-                if (cal_s <= cal_t) {
-                    binding.imgQr.isVisible = true
-                    if (cal_t <= cal_sdate) {
+                // 오늘이 시작일보다 작고
+                if (cal_t < cal_sdate ) {
+                    // 시작 7일전 보다 같거나 클 때
+                    if(cal_t >= cal_s)
+                        binding.imgQr.isVisible = true
                         binding.eventDate.text = QRlist[0].get("eventDate").toString()
                         Glide.with(this@QrViewActivity)
                             .load(url + QRlist[0].get("qrImage"))
                             .into(binding.imgQr)
                     }
-                    // 시작 날짜보다 오늘 날짜가 더 크면 행사일자 = 오늘인 큐알 보임
-                    else if (cal_t > cal_sdate) {
-                        for (i in 0..QRlist.size - 1) {
-                            if (td == QRlist[i].get("eventDate").toString()) {
-                                binding.eventDate.text = "${QRlist[i].get("eventDate").toString()}"
-                                Glide.with(this@QrViewActivity)
-                                    .load(url + QRlist[i].get("qrImage"))
-                                    .into(binding.imgQr)
-                                break;
-                            }
-                            // 오늘 날짜랑 일치하는게 없을 시 invisible, 행사 마지막 날짜
-                            binding.eventDate.text = QRlist[QRlist.size-1].get("eventDate").toString()
-                            binding.imgQr.isVisible = false
-                        }//for
-                    }
+//                // 오늘 == 시작날짜 0번 인덱스 이미지
+//                else if (cal_t == cal_sdate) {
+//                    binding.eventDate.text = QRlist[0].get("eventDate").toString()
+//                    Glide.with(this@QrViewActivity)
+//                        .load(url + QRlist[0].get("qrImage"))
+//                        .into(binding.imgQr)
+//                }
+                // 오늘 날짜가 시작일보다 크거나 같으면 행사일자 = 오늘인 큐알 보임
+                else if (cal_t >= cal_sdate) {
+                    for (i in 0..QRlist.size - 1) {
+                        if (td == QRlist[i].get("eventDate").toString()) {
+                            binding.eventDate.text = "${QRlist[i].get("eventDate").toString()}"
+                            binding.imgQr.isVisible = true
+                            Glide.with(this@QrViewActivity)
+                                .load(url + QRlist[i].get("qrImage"))
+                                .into(binding.imgQr)
+                            break;
+                        }
+                        // 오늘 날짜랑 일치하는게 없을 시 invisible, 행사 마지막 날짜
+                        binding.eventDate.text = QRlist[QRlist.size - 1].get("eventDate").toString()
+                        binding.imgQr.isVisible = false
+                    }//for
                 }
+
             } // onResponse
 
             override fun onFailure(call: Call<List<Map<String,Any>>>, t: Throwable) {
