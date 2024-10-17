@@ -39,6 +39,9 @@ function EventList() {
         if (today >= new Date(item.visibleDate) && today <= new Date(item.invisibleDate)) {
           recruitmentStatus = '모집중';
         }
+        else if (today > new Date(item.invisibleDate) && today < new Date(item.startDate)) {
+          recruitmentStatus = '행사대기';
+        }
         else if (today >= new Date(item.startDate) && today <= new Date(item.endDate)) {
           recruitmentStatus = '행사중';
         }
@@ -71,7 +74,6 @@ function EventList() {
   useEffect(() => {
     axios.get('http://localhost:8080/event/list')
       .then(res => {
-        // console.log(res.data);
         if (res.data) {
           setEventData(res.data);
           setLoading(false);
@@ -114,10 +116,11 @@ function EventList() {
           onChange={(e) => setStatusFilter(e.target.value)}
         >
           <option value=''>상태전체</option>
+          <option value='모집대기'>모집대기</option>
           <option value='모집중'>모집중</option>
+          <option value='행사대기'>행사대기</option>
           <option value='행사중'>행사중</option>
           <option value='행사종료'>행사종료</option>
-          <option value='모집대기'>모집대기</option>
           <option value='모집불가'>모집불가</option>
         </select>
         <input
@@ -163,6 +166,9 @@ function EventList() {
             if (today >= visibleDate && today <= invisibleDate) {
               recruitmentStatus = '모집중';
             }
+            else if (today > invisibleDate && today < startDate) {
+              recruitmentStatus = '행사대기';
+            }
             else if (today >= startDate && today <= endDate) {
               recruitmentStatus = '행사중';
             }
@@ -195,7 +201,13 @@ function EventList() {
                     </div>
                     {recruitmentStatus && (
                       <div className={'markStyle ms-2'}>
-                        <p className={recruitmentStatus === '행사중' ? 'redMark' : 'grayMark'}>
+                        <p className={recruitmentStatus === '행사중' && 'redMark' ||
+                          recruitmentStatus === '행사대기' && 'blueMark' ||
+                          recruitmentStatus === '모집대기' && 'blueMark' ||
+                          recruitmentStatus === '모집중' && 'redMark' ||
+                          recruitmentStatus === '행사종료' && 'grayMark' ||
+                          recruitmentStatus === '모집불가' && 'grayMark'
+                        }>
                           {recruitmentStatus}
                         </p>
                       </div>
