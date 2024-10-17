@@ -16,12 +16,6 @@ public class UserController {
 
   private final UserService userService;
 
-//  @GetMapping("/temp")
-//  public List<TempEntity> temp() {
-//    System.out.println("/temp 접속");
-//    return tempService.findAll();
-//  }
-
   // 로그인 회원정보 찾기
   @PostMapping("/login")
   public ResponseEntity<LoginResponse> findLoginUser(@RequestBody UserEntity user){

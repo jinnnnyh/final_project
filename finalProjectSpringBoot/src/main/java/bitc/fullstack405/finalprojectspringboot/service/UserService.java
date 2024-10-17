@@ -25,6 +25,10 @@ public class UserService {
   private final EventAppRepository eventAppRepository;
   private final EventRepository eventRepository;
 
+  ///////////////////////////
+  ////////// <APP> //////////
+  ///////////////////////////
+
   public LoginResponse findLoginUser(String userAccount, String password) {
     UserEntity user = userRepository.findUserByUserAccount(userAccount);// 아이디가 존재하는 user 정보 가져옴
     if(user!=null && user.getPassword().equals(password)) {
@@ -63,24 +67,9 @@ public class UserService {
     user.deleteAppUser();
   }
 
-//  public EventAppEntity insertApp(EventAppInsertRequest req){
-//
-//    EventAppEntity savedApp = req.toEntity(eventRepository,userRepository);
-//    EventAppEntity app = eventAppRepository.findByUser(savedApp.getUser());
-//    // 신청자 테이블에 유저id 없을 때
-//    if(app==null) {
-//      return eventAppRepository.save(savedApp);
-//    }
-//    // 유저id 있을 떄
-//    else{
-//      // 이미 신청한 이벤트일 경우
-//      if(app.getEvent().getEventId() == req.getEventId()){
-//        return null;
-//      }
-//      // 아닐 경우
-//      return eventAppRepository.save(savedApp);
-//    }
-//  }
 
+  ///////////////////////////
+  ////////// <WEB> //////////
+  ///////////////////////////
 
-} // class
+}

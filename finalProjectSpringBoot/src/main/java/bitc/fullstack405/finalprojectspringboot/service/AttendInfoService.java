@@ -27,6 +27,10 @@ public class AttendInfoService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
 
+    ///////////////////////////
+    ////////// <APP> //////////
+    ///////////////////////////
+
     // <APP> QR 이미지 조회
     // eventId와 userId로 scheduleId, eventDate, qrImage 조회
     public List<Map<String, Object>> findQrImages(Long eventId, Long userId) {
@@ -142,4 +146,9 @@ public class AttendInfoService {
         // AppCertificateResponse 객체를 반환하여 수료증 데이터를 제공
         return new AppCertificateResponse(event, user, presidentName);
     }
+
+
+    ///////////////////////////
+    ////////// <WEB> //////////
+    ///////////////////////////
 }
