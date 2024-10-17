@@ -1,28 +1,54 @@
 import Events from "../../pages/Events.jsx";
-import {NavLink, Link} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { NavLink, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Pagination from "../common/Pagination.jsx";
 
 // 대체 이미지 import
 import replace from '/noimg.png';
 
-
-function EventList () {
-
-  // 리스트 데이터 불러옴
+function EventList() {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(3); // 한 페이지당 항목 수
+  const [itemsPerPage] = useState(3);
+  const [approvalFilter, setApprovalFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
 
-  // 현재 날짜 가져오기
   const today = new Date();
 
-  // 현재 페이지에 표시할 데이터
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const eventDataItems = eventData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const eventDataItems = eventData
+    .filter(item => {
+      if (approvalFilter !== '' && item.eventAccept !== parseInt(approvalFilter)) return false;
+
+      let recruitmentStatus = '';
+
+      if (item.eventAccept === 3) {
+        recruitmentStatus = '모집불가';
+      }
+      else if (item.eventAccept === 1) {
+        recruitmentStatus = '모집대기';
+      }
+      else if (item.eventAccept === 2) {
+        if (today >= new Date(item.visibleDate) && today <= new Date(item.invisibleDate)) {
+          recruitmentStatus = '모집중';
+        }
+        else if (today >= new Date(item.startDate) && today <= new Date(item.endDate)) {
+          recruitmentStatus = '행사중';
+        }
+        else {
+          recruitmentStatus = '행사종료';
+        }
+      }
+
+      if (statusFilter !== '' && recruitmentStatus !== statusFilter) return false;
+
+      return true;
+    })
+    .slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -56,29 +82,59 @@ function EventList () {
     return <div>Loading...</div>;
   }
 
-
   return (
     <section>
-      <Events/>
+      <Events />
       <div className={'d-flex justify-content-end mb-5'}>
         <button type={'button'} className={'btn btn-danger'} onClick={moveToEventWrite}>행사 등록</button>
+      </div>
+      <div className={'d-inline-flex justify-content-end mb-3'}>
+        <select
+          className={'form-select me-2'}
+          value={approvalFilter}
+          onChange={(e) => setApprovalFilter(e.target.value)}
+        >
+          <option value=''>승인전체</option>
+          <option value='1'>승인대기</option>
+          <option value='2'>승인완료</option>
+          <option value='3'>승인거부</option>
+        </select>
+        <select
+          className={'form-select'}
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value=''>상태전체</option>
+          <option value='모집중'>모집중</option>
+          <option value='행사중'>행사중</option>
+          <option value='행사종료'>행사종료</option>
+          <option value='모집대기'>모집대기</option>
+          <option value='모집불가'>모집불가</option>
+        </select>
       </div>
       {
         eventDataItems.map(item => {
           const visibleDate = new Date(item.visibleDate);
+          const invisibleDate = new Date(item.invisibleDate);
+          const startDate = new Date(item.startDate);
+          const endDate = new Date(item.endDate);
           let recruitmentStatus = '';
 
           if (item.eventAccept === 3) {
-            recruitmentStatus = '';
-          } else if (item.eventAccept === 1) {
+            recruitmentStatus = '모집불가';
+          }
+          else if (item.eventAccept === 1) {
             recruitmentStatus = '모집대기';
-          } else if (item.eventAccept === 2) {
-            if (today < visibleDate) {
-              recruitmentStatus = '모집대기';
-            } else if (today >= visibleDate && item.isRegistrationOpen === 'Y') {
+          }
+          else if (item.eventAccept === 2) {
+            if (today >= visibleDate && today <= invisibleDate) {
               recruitmentStatus = '모집중';
-            } else if (today >= visibleDate && item.isRegistrationOpen === 'N') {
-              recruitmentStatus = '모집종료';
+            }
+            else if (today >= startDate && today <= endDate) {
+              recruitmentStatus = '행사중';
+            }
+            else {
+              recruitmentStatus = '행사종료';
             }
           }
 
@@ -106,7 +162,7 @@ function EventList () {
                     </div>
                     {recruitmentStatus && (
                       <div className={'markStyle ms-2'}>
-                        <p className={recruitmentStatus === '모집중' ? 'redMark' : 'grayMark'}>
+                        <p className={recruitmentStatus === '행사중' ? 'redMark' : 'grayMark'}>
                           {recruitmentStatus}
                         </p>
                       </div>
