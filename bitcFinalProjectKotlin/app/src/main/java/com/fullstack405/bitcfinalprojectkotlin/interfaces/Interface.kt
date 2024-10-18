@@ -83,7 +83,7 @@ interface Interface {
 
   // 신청취소
   @DELETE("/app/application-cancel/{eventId}/{userId}")
-  fun deleteApplication(eventId: Long, userId: Long):Call<Int>
+  fun deleteApplication(@Path("eventId")eventId: Long, @Path("userId")userId: Long):Call<Int>
 
   // 해당 유저의 신청 목록
   @POST("/app/application-list/{userId}")

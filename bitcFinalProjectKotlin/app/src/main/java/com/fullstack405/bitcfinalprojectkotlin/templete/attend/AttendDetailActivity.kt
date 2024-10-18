@@ -101,21 +101,22 @@ class AttendDetailActivity : AppCompatActivity() {
         // 신청취소
         binding.btnCancleApp.setOnClickListener {
             AlertDialog.Builder(this).run{
-                setMessage("취소는 행사 하루 전까지 가능합니다. 신청을 취소 하시겠습니까?")
+                setMessage("취소는 행사 하루 전까지 가능합니다.\n신청을 취소 하시겠습니까?")
                 setPositiveButton("확인",object:DialogInterface.OnClickListener{
                     override fun onClick(p0: DialogInterface?, p1: Int) {
                         Client.retrofit.deleteApplication(eventId, userId).enqueue(object:retrofit2.Callback<Int>{
                             override fun onResponse(call: Call<Int>, response: Response<Int>) {
                                 // 취소 성공 2, 실패 1
-                                if(response.body() == 1){
+                                if(response.body() == 2){
                                     Toast.makeText(this@AttendDetailActivity,"취소가 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                                    finish()
                                 }else{
-
+                                    Toast.makeText(this@AttendDetailActivity,"취소 실패. 다시 시도해주세요.",Toast.LENGTH_SHORT).show()
                                 }
                             }
 
                             override fun onFailure(call: Call<Int>, t: Throwable) {
-                                TODO("Not yet implemented")
+                                Toast.makeText(this@AttendDetailActivity,"취소 실패. 다시 시도해주세요.",Toast.LENGTH_SHORT).show()
                             }
 
                         })// retrofit
