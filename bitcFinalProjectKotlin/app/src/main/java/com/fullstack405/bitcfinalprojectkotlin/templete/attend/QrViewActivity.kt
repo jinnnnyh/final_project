@@ -33,7 +33,6 @@ class QrViewActivity : AppCompatActivity() {
     val cal_t = Calendar.getInstance() // 오늘
     val cal_s = Calendar.getInstance() // 시작-7
     val cal_sdate = Calendar.getInstance() // 시작일
-    val cal_e = Calendar.getInstance() // 끝
     var td = "null"
 
     var url="http://10.100.105.205:8080/qrImg/"
@@ -61,8 +60,6 @@ class QrViewActivity : AppCompatActivity() {
         cal_t.time = Date()
         td = dateFormat.format(cal_t.time) // 오늘 날짜 string 타입
 
-
-        binding.imgQr.isVisible = false
 
         // 초기 데이터 셋팅
         findQRImageList()
@@ -98,7 +95,6 @@ class QrViewActivity : AppCompatActivity() {
                 if (cal_t < cal_sdate ) {
                     // 시작 7일전 보다 같거나 클 때
                     if(cal_t >= cal_s){
-                        binding.imgQr.isVisible = true
                         binding.eventDate.text = QRlist[0].get("eventDate").toString()
                         Glide.with(this@QrViewActivity)
                             .load(url + QRlist[0].get("qrImage"))
@@ -110,15 +106,11 @@ class QrViewActivity : AppCompatActivity() {
                     for (i in 0..QRlist.size - 1) {
                         if (td == QRlist[i].get("eventDate").toString()) {
                             binding.eventDate.text = "${QRlist[i].get("eventDate").toString()}"
-                            binding.imgQr.isVisible = true
                             Glide.with(this@QrViewActivity)
                                 .load(url + QRlist[i].get("qrImage"))
                                 .into(binding.imgQr)
                             break;
                         }
-                        // 오늘 날짜랑 일치하는게 없을 시 invisible, 행사 마지막 날짜
-                        binding.eventDate.text = QRlist[QRlist.size - 1].get("eventDate").toString()
-                        binding.imgQr.isVisible = false
                     }//for
                 }
 

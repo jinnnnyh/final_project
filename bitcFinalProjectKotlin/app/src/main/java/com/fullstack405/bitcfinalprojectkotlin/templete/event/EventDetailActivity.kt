@@ -176,7 +176,7 @@ class EventDetailActivity : AppCompatActivity() {
             binding.btnSubmit.setOnClickListener {
                 // 확인 다이얼로그
                 AlertDialog.Builder(this).run{
-                    setMessage("해당 행사에 참석하시겠습니까?")
+                    setMessage("해당 행사를 신청하시겠습니까?")
                     setPositiveButton("확인",object:DialogInterface.OnClickListener{
                         override fun onClick(p0: DialogInterface?, p1: Int) {
                             // db 연결버전

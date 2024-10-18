@@ -24,6 +24,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class AttendDetailActivity : AppCompatActivity() {
+    lateinit var event: EventDetailData
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -36,19 +38,20 @@ class AttendDetailActivity : AppCompatActivity() {
             insets
         }
 
-        var userId = intent.getLongExtra("userId",0)
-        var eventId = intent.getLongExtra("eventId",0)
-        var complete = intent.getCharExtra("complete",'N') // 수료여부
-        var userName = intent.getStringExtra("userName")
+        val userId = intent.getLongExtra("userId",0)
+        val eventId = intent.getLongExtra("eventId",0)
+        val complete = intent.getCharExtra("complete",'N') // 수료여부
+        val userName = intent.getStringExtra("userName")
 
-        var intentComplete =Intent(this,CompleteViewActivity::class.java)
+        val intentComplete =Intent(this,CompleteViewActivity::class.java)
 
-        lateinit var event: EventDetailData
-        var url = "http://10.100.105.205:8080/eventImg/"
+
+        val url = "http://10.100.105.205:8080/eventImg/"
 //        이벤트id로 해당 이벤트 정보만 불러오기
         Client.retrofit.findEventId(eventId).enqueue(object:retrofit2.Callback<EventDetailData>{
             override fun onResponse(call: Call<EventDetailData>, response: Response<EventDetailData>) {
                 event = response.body() as EventDetailData
+                Log.d("findEventId","${event}")
                 binding.dTitle.text = event.eventTitle
                 binding.dContent.text = event.eventContent
                 binding.dCreateDate.text=event.visibleDate
@@ -58,12 +61,66 @@ class AttendDetailActivity : AppCompatActivity() {
                     .load(url+event.eventPoster)
                     .into(binding.dImage)
 
-            }
 
+                ////////////// QR 확인
+                val cal_today = Calendar.getInstance()
+                val cal_s = Calendar.getInstance() // 시작-7
+                val cal_sdate = Calendar.getInstance() // 시작일
+                val cal_e = Calendar.getInstance()
+
+                cal_today.time = Date()
+                val dateFormat =SimpleDateFormat("yyyy-MM-dd")
+                val today = dateFormat.format(cal_today.time) // 오늘 날짜 string 타입
+
+                val sd = event.schedules[0].get("eventDate").toString() // 첫째 날
+                val ed = event.schedules[event.schedules.size-1].get("eventDate").toString() // 마지막 날
+
+                val startDate: Date? = dateFormat.parse(sd)
+                val endDate:Date? = dateFormat.parse(ed)
+
+                cal_s.time = startDate // 시작일 - 7일
+                cal_s.add(Calendar.DATE,-7)
+
+                cal_sdate.time = startDate // 시작일
+                cal_e.time = endDate // 마지막날
+
+                // 7일전~행사 마지막날 활성화
+                // 행사 다음날 비활성화
+                // 기본값 = 비활성화
+                binding.btnQR.isEnabled = false
+                binding.btnQR.setBackgroundColor(Color.parseColor("#D5D5D5"))
+
+                // 대전제를 7일전으로 잡기
+                // 오늘 날짜 > 마지막 날짜
+                if (cal_today >= cal_s) {
+                    // 버튼 활성화 하고
+                    binding.btnQR.isEnabled = true
+                    binding.btnQR.setBackgroundColor(Color.parseColor("#283eae"))
+                    // 클릭 이벤트 활성화
+                    binding.btnQR.setOnClickListener {
+                        // 큐알 페이지로 이동
+                        var intentQR = Intent(this@AttendDetailActivity, QrViewActivity::class.java)
+                        intentQR.putExtra("userId", userId)
+                        intentQR.putExtra("eventId", eventId)
+                        intentQR.putExtra("eventName", event.eventTitle)
+                        startActivity(intentQR)
+                    }
+
+                    if (cal_today > cal_e) {
+                        // 비활성화
+                        binding.btnQR.isEnabled = false
+                        binding.btnQR.setBackgroundColor(Color.parseColor("#D5D5D5"))
+                    }
+                }
+
+
+            }//onResponse
             override fun onFailure(call: Call<EventDetailData>, t: Throwable) {
-                Log.d("eventDetail error","eventDetail load error")
+                Log.d("findEventId","${t.message}")
             }
         }) // retrofit
+
+
 
         // Y 이면 활성화 N이면 비활성화
         // 참석증 확인
@@ -82,21 +139,6 @@ class AttendDetailActivity : AppCompatActivity() {
             binding.btnComplete.setBackgroundColor(Color.parseColor("#D5D5D5"))
         }
 
-
-        // QR 확인
-        // 기본값 = 비활성화
-        // 7일전~행사 마지막날 활성화
-        // 행사 다음날 비활성화
-        // QR 이미지 visible 속성 말고 버튼을 비활성화로 수정하기
-        binding.btnQR.setOnClickListener {
-            // 큐알 페이지로 이동
-            var intentQR = Intent(this, QrViewActivity::class.java)
-            intentQR.putExtra("userId", userId)
-            intentQR.putExtra("eventId", eventId)
-            intentQR.putExtra("eventName",event.eventTitle)
-            startActivity(intentQR)
-        }
-//        } // if
 
         // 신청취소
         binding.btnCancleApp.setOnClickListener {
@@ -117,6 +159,7 @@ class AttendDetailActivity : AppCompatActivity() {
 
                             override fun onFailure(call: Call<Int>, t: Throwable) {
                                 Toast.makeText(this@AttendDetailActivity,"취소 실패. 다시 시도해주세요.",Toast.LENGTH_SHORT).show()
+                                Log.d("deleteApplication","${t.message}")
                             }
 
                         })// retrofit
