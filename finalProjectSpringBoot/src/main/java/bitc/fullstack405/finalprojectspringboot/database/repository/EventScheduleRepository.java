@@ -35,9 +35,16 @@ public interface EventScheduleRepository extends JpaRepository<EventScheduleEnti
             "END, s.startTime ASC")
     List<EventScheduleEntity> findUpcomingEventSchedules();
 
-    // <APP> 이미 지나간 or 시작한 행사가 있는지 확인
-    @Query("")
-    boolean findStartedEvent(@Param("eventId") Long eventId);
+    // <APP> 오늘이 해당 행사의 첫 번째 회차 이후인지 확인
+    @Query("SELECT CASE " +
+            "WHEN CURRENT_DATE < s.eventDate THEN false " +
+            "ELSE true " +
+            "END " +
+            "FROM EventScheduleEntity s " +
+            "WHERE s.event.eventId = :eventId " +
+            "ORDER BY s.scheduleId ASC " +
+            "LIMIT 1")
+    boolean beforeEvent(@Param("eventId") Long eventId);
 
 
     ///////////////////////////

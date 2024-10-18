@@ -90,13 +90,13 @@ public class AppEventAppController {
     }
 
     // 행사 신청 취소
-    // [조건] 행사 일자가 지나지 않은 거만 취소 가능
+    // [조건] 행사 첫 번째 회차의 일자가 지나지 않은 거만 취소 가능
     // [반환] 실패 시 1, 성공 시 2
-    @DeleteMapping("/application/delete/{eventId}/{userId}")
+    @DeleteMapping("/application-cancel/{eventId}/{userId}")
     public ResponseEntity<Integer> deleteApplication(@PathVariable Long eventId, @PathVariable Long userId) {
 
         // 실패(1)
-        if (eventAppService.isEventStarted(eventId)) {
+        if (eventAppService.beforeEvent(eventId)) {
             return ResponseEntity.ok(1);
         }
 
