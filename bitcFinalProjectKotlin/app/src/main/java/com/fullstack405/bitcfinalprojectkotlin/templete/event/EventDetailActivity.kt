@@ -133,11 +133,11 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        var url = "http://10.100.105.205:8080/eventImg/"
+        val url = "http://10.100.105.205:8080/eventImg/"
 //        var posterName = event.eventPoster
         
-//        이벤트id로 해당 이벤트 정보만 불러오기ㅁ
-        Client.retrofit.findEventId(eventId!!).enqueue(object:retrofit2.Callback<EventDetailData>{
+//        이벤트id로 해당 이벤트 정보만 불러오기
+        Client.retrofit.findEventId(eventId).enqueue(object:retrofit2.Callback<EventDetailData>{
             override fun onResponse(call: Call<EventDetailData>, response: Response<EventDetailData>) {
                 Log.d("findEventId","${response.body()}")
                 event = response.body() as EventDetailData
@@ -152,11 +152,14 @@ class EventDetailActivity : AppCompatActivity() {
                     .into(binding.dImage)
 
                 var endDate = event.schedules[event.schedules.size-1].get("eventDate").toString()
-                // 관리자로 접속해서 qr 스캐너가 보인다면 마지막날 다음날 scanner 버튼 비활성화
+                // 관리자로 접속해서 qr 스캐너가 보인다면 마지막날 다음날 scanner 버튼 비활성화 + 추가하기 비활성화
                 if(binding.btnQRscanner.isVisible && !userPermission.equals("정회원")){
                     if(endDate < today){
                         binding.btnQRscanner.isEnabled = false
                         binding.btnQRscanner.setBackgroundColor(Color.parseColor("#D5D5D5"))
+
+                        binding.btnAddAppUser.isEnabled =false
+                        binding.btnAddAppUser.setBackgroundColor(Color.parseColor("#D5D5D5"))
                     }
 
                 }
@@ -253,7 +256,6 @@ class EventDetailActivity : AppCompatActivity() {
     private val barcodeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             val scanResult = result.data?.getStringExtra("SCAN_RESULT")
-            binding.btnSubmit.text = scanResult ?: "스캔 실패"
 //            1-12-1
             val splitData = scanResult!!.split("-")
 
