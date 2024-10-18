@@ -133,7 +133,7 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        var url = "http://10.100.105.168:8080/eventImg/"
+        var url = "http://10.100.105.205:8080/eventImg/"
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기
@@ -156,6 +156,7 @@ class EventDetailActivity : AppCompatActivity() {
                 if(binding.btnQRscanner.isVisible && !userPermission.equals("정회원")){
                     if(endDate < today){
                         binding.btnQRscanner.isEnabled = false
+                        binding.btnQRscanner.setBackgroundColor(Color.parseColor("#D5D5D5"))
                     }
 
                 }
@@ -253,7 +254,7 @@ class EventDetailActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val scanResult = result.data?.getStringExtra("SCAN_RESULT")
             binding.btnSubmit.text = scanResult ?: "스캔 실패"
-
+//            1-12-1
             val splitData = scanResult!!.split("-")
 
             val qr_eventId = splitData[0].toLong()

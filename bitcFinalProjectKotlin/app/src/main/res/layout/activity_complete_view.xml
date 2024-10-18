@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@drawable/img_complete_edit"
+            android:background="@drawable/img_complete_edit2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -60,22 +60,22 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="120dp"
             android:layout_marginTop="218dp"
-            android:text="진영현"
+            android:fontFamily="@font/notosans_medium"
+            android:text="진영현000000000000"
             android:textSize="8sp"
             app:layout_constraintStart_toStartOf="@+id/img_qr"
-            app:layout_constraintTop_toTopOf="parent"
-            android:fontFamily="@font/notosans_medium"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="120dp"
-            android:text="풀스택 개발자 양성반"
+            android:fontFamily="@font/notosans_medium"
+            android:text="풀스택 개발자 양성반ㄴㄴㄴㄴㄴㄴㄴ"
             android:textSize="8sp"
             app:layout_constraintStart_toStartOf="@+id/img_qr"
-            app:layout_constraintTop_toBottomOf="@+id/name"
-            android:fontFamily="@font/notosans_medium"/>
+            app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <TextView
             android:id="@+id/top_date"
@@ -85,22 +85,7 @@
             android:text="2024.04.27"
             android:textSize="8sp"
             app:layout_constraintStart_toStartOf="@+id/img_qr"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            android:fontFamily="@font/notosans_medium"/>
-
-        <TextView
-            android:id="@+id/title2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="217dp"
-            android:fontFamily="@font/notosans_medium"
-            android:text="풀스택 개발자 양성반"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/img_qr"
-            app:layout_constraintHorizontal_bias="0.636"
-            app:layout_constraintStart_toStartOf="@+id/img_qr" />
+            app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <TextView
             android:id="@+id/month"
@@ -108,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="185dp"
             android:layout_marginBottom="147dp"
-            android:text="04"
+            android:text="12"
             android:textSize="8sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/img_qr" />
@@ -119,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="157dp"
             android:layout_marginBottom="147dp"
-            android:text="27"
+            android:text="03"
             android:textSize="8sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/img_qr" />
@@ -128,13 +113,13 @@
             android:id="@+id/president"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="116dp"
-            android:layout_marginBottom="85dp"
+            android:layout_marginStart="215dp"
+            android:layout_marginBottom="84dp"
             android:fontFamily="@font/notosans_bold"
-            android:text="협회장"
+            android:text="협회장이름이길어도"
             android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/img_qr" />
+            app:layout_constraintStart_toStartOf="@+id/img_qr" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
