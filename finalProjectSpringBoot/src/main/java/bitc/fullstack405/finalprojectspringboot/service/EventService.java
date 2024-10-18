@@ -362,6 +362,23 @@ public List<EventListDTO> getEventList() {
             .build())
         .collect(Collectors.toList());
 
+    UserEntity uploader = userRepository.findById(event.getPosterUser().getUserId()).orElse(null);
+
+    UserEntity approver = (event.getApprover() != null)
+        ? userRepository.findById(event.getApprover().getUserId()).orElse(null)
+        : null;
+
+    ViewUserDTO uploaderDTO = ViewUserDTO.builder()
+        .userId(uploader.getUserId())
+        .name(uploader.getName())
+        .build();
+
+    ViewUserDTO approverDTO = (approver != null)
+        ? ViewUserDTO.builder()
+        .userId(approver.getUserId())
+        .name(approver.getName())
+        .build()
+        : null;
 
     return AttendListDTO.builder()
         .eventTitle(event.getEventTitle())
@@ -372,6 +389,11 @@ public List<EventListDTO> getEventList() {
         .maxPeople(event.getMaxPeople())
         .attendUserList(eventAppDTOList)
         .eventScheduleDTOList(eventScheduleDTOList)
+        .acceptedDate(event.getAcceptedDate())
+        .eventAccept(event.getEventAccept())
+        .approver(approverDTO)
+        .uploader(uploaderDTO)
+        .uploadDate(event.getUploadDate())
         .build();
   }
 

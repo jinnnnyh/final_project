@@ -6,6 +6,7 @@ function EventAttendDay({ day, attendData, eventDate, eventStartTime, eventEndTi
   const [selectedRole, setSelectedRole] = useState('');
   const [selectedLate, setSelectedLate] = useState('');
   const [selectedEarlyLeave, setSelectedEarlyLeave] = useState('');
+  const [accountSearch, setAccountSearch] = useState('');
 
   const totalAttendees = attendData.length;
   const attendeesPresent = attendData.filter(item => item.checkOutTime != null).length;
@@ -13,21 +14,22 @@ function EventAttendDay({ day, attendData, eventDate, eventStartTime, eventEndTi
 
   const filteredData = attendData.filter(item => {
     const matchesName = item.name.includes(searchName);
+    const matchesAccount = item.userAccount.includes(accountSearch);
     const matchesRole = selectedRole ? item.role === selectedRole : true;
 
     const matchesLate =
       selectedLate === 'Y' ? (item.checkInTime && isLate(item.checkInTime, eventStartTime)) :
         selectedLate === 'N' ? (item.checkInTime && !isLate(item.checkInTime, eventStartTime)) :
-          selectedLate === '' ? true : // 기본값
-            selectedLate === 'none' ? !item.checkInTime : false; // 해당없음: 미입장
+          selectedLate === '' ? true :
+            selectedLate === 'none' ? !item.checkInTime : false;
 
     const matchesEarlyLeave =
       selectedEarlyLeave === 'Y' ? (item.checkOutTime && isEarlyLeave(item.checkOutTime, eventEndTime)) :
         selectedEarlyLeave === 'N' ? (item.checkOutTime && !isEarlyLeave(item.checkOutTime, eventEndTime)) :
-          selectedEarlyLeave === '' ? true : // 기본값
-            selectedEarlyLeave === 'none' ? !item.checkOutTime : false; // 해당없음: 미퇴장
+          selectedEarlyLeave === '' ? true :
+            selectedEarlyLeave === 'none' ? !item.checkOutTime : false;
 
-    return matchesName && matchesRole && matchesLate && matchesEarlyLeave;
+    return matchesName && matchesAccount && matchesRole && matchesLate && matchesEarlyLeave;
   });
 
   const handleSearchChange = (e) => {
@@ -58,13 +60,21 @@ function EventAttendDay({ day, attendData, eventDate, eventStartTime, eventEndTi
       <div className="d-flex flex-wrap mb-3">
         <input
           type="text"
+          placeholder="아이디 검색"
+          value={accountSearch}
+          onChange={(e) => setAccountSearch(e.target.value)}
+          className="form-control me-2 mb-2"
+          style={{width: '200px'}}
+        />
+        <input
+          type="text"
           placeholder="이름 검색"
           value={searchName}
           onChange={handleSearchChange}
           className="form-control me-2 mb-2"
-          style={{ width: '200px' }}
+          style={{width: '200px'}}
         />
-        <select onChange={handleRoleChange} className="form-select me-2 mb-1" style={{ width: '150px' }}>
+        <select onChange={handleRoleChange} className="form-select me-2 mb-1" style={{width: '150px'}}>
           <option value="">직위</option>
           <option value="ROLE_SECRETARY">총무</option>
           <option value="ROLE_PRESIDENT">협회장</option>
@@ -72,13 +82,13 @@ function EventAttendDay({ day, attendData, eventDate, eventStartTime, eventEndTi
           <option value="ROLE_ASSOCIATE">준회원</option>
           <option value="ROLE_WITHDRAWN">탈퇴회원</option>
         </select>
-        <select onChange={handleLateChange} className="form-select me-2 mb-1" style={{ width: '150px' }}>
+        <select onChange={handleLateChange} className="form-select me-2 mb-1" style={{width: '150px'}}>
           <option value="">지각 여부</option>
           <option value="Y">지각</option>
           <option value="N">정상</option>
           <option value="none">미입장</option>
         </select>
-        <select onChange={handleEarlyLeaveChange} className="form-select me-2 mb-1" style={{ width: '150px' }}>
+        <select onChange={handleEarlyLeaveChange} className="form-select me-2 mb-1" style={{width: '150px'}}>
           <option value="">조퇴 여부</option>
           <option value="Y">조퇴</option>
           <option value="N">정상</option>
@@ -89,15 +99,15 @@ function EventAttendDay({ day, attendData, eventDate, eventStartTime, eventEndTi
       <div className="table-container">
         <table className="table table-custom table-hover">
           <colgroup>
-            <col width="7%" />
-            <col width="10%" />
-            <col width="auto" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
+            <col width="7%"/>
+            <col width="10%"/>
+            <col width="auto"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
           </colgroup>
           <thead className="table-top-fix">
           <tr>

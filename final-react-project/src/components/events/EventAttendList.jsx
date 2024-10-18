@@ -10,6 +10,8 @@ function EventAttendList() {
   const [eventData, setEventData] = useState({});
   const [dayWiseAttendData, setDayWiseAttendData] = useState({});
   const [eventSchedules, setEventSchedules] = useState([]);
+  const [uploader, setUploader] = useState({})
+  const [approver, setApprover] = useState({});
 
   const [activeTab, setActiveTab] = useState('overall');
 
@@ -18,6 +20,7 @@ function EventAttendList() {
 
   const [completionFilter, setCompletionFilter] = useState('all');
   const [roleFilter, setRoleFilter] = useState('all');
+  const [accountSearch, setAccountSearch] = useState('');
   const [nameSearch, setNameSearch] = useState('');
   const [selectedDay, setSelectedDay] = useState('all');
 
@@ -27,6 +30,8 @@ function EventAttendList() {
         const eventInfo = res.data;
         setEventData(eventInfo);
         setEventSchedules(eventInfo.eventScheduleDTOList);
+        setUploader(res.data.uploader);
+        setApprover(res.data.approver);
         const groupedByDay = {};
         let total = 0;
         let completed = 0;
@@ -77,8 +82,9 @@ function EventAttendList() {
       (roleFilter === 'deleted' && user.role === 'ROLE_DELETE');
 
     const isNameMatch = user.name.toLowerCase().includes(nameSearch.toLowerCase());
+    const isIdMatch = user.userAccount.toLowerCase().includes(accountSearch.toLowerCase());
 
-    return isCompletionMatch && isRoleMatch && isNameMatch;
+    return isCompletionMatch && isRoleMatch && isNameMatch && isIdMatch;
   });
 
   const filteredDayWiseData = dayWiseAttendData[selectedDay] || [];
@@ -87,12 +93,30 @@ function EventAttendList() {
     <section>
       <h4 className="mb-5">참석자 현황 리스트</h4>
       <h4>{eventData.eventTitle}</h4>
-      <h5 className="mb-3">정원: <strong>{eventData.maxPeople > 0 ? eventData.maxPeople : '인원수 제한 없음'}</strong></h5>
-      <div className="d-flex py-3 justify-content-between">
+      <div className="w-50">
+        정원 : <span className="ms-3 fw-bold">{eventData.maxPeople > 0 ? eventData.maxPeople : '인원수 제한 없음'}</span>
+      </div>
+      <div className={'d-flex justify-content-between'}>
+        <div className="w-50">
+          담당자 : <span className="ms-3 fw-bold">{uploader.name}</span>
+        </div>
+        <div className="w-50">
+          작성일 : <span className="ms-3 fw-bold">{eventData.uploadDate}</span>
+        </div>
+      </div>
+      <div className={'d-flex justify-content-between'}>
+        <div className="w-50">
+          승인자 : <span className="ms-3 fw-bold">{approver?.name || '미승인'}</span>
+        </div>
+        <div className="w-50">
+          승인일자 : <span className="ms-3 fw-bold">{eventData?.acceptedDate || '미승인'}</span>
+        </div>
+      </div>
+      <div className="d-flex justify-content-between">
         <div className="w-50">
           행사기간 : <span className="ms-3 fw-bold">{eventData.startDate} ~ {eventData.endDate}</span>
         </div>
-        <div className="w-50">
+        <div className="w-50 pb-3">
           행사시간 : <span className="ms-3 fw-bold">{eventData.startTime} ~ {eventData.endTime}</span>
         </div>
       </div>
@@ -122,6 +146,13 @@ function EventAttendList() {
             </div>
           </div>
           <div className="d-flex mb-3">
+            <input
+              type="text"
+              placeholder="아이디 검색"
+              value={accountSearch}
+              onChange={(e) => setAccountSearch(e.target.value)}
+              className="form-control me-2"
+            />
             <input
               type="text"
               placeholder="이름 검색"
