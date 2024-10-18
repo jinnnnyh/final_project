@@ -13,6 +13,7 @@ import com.fullstack405.bitcfinalprojectkotlin.data.UpdateData
 import com.fullstack405.bitcfinalprojectkotlin.data.UserUpcomingEventData
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -81,7 +82,8 @@ interface Interface {
   fun insertEventApp(@Path("eventId") eventId:Long, @Path("userId") userId:Long):Call<Int>
 
   // 신청취소
-
+  @DELETE("/app/application-cancel/{eventId}/{userId}")
+  fun deleteApplication(eventId: Long, userId: Long):Call<Int>
 
   // 해당 유저의 신청 목록
   @POST("/app/application-list/{userId}")

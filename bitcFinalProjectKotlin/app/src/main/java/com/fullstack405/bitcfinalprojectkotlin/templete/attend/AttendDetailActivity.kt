@@ -1,11 +1,14 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.attend
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -81,7 +84,10 @@ class AttendDetailActivity : AppCompatActivity() {
 
 
         // QR 확인
-        // 마지막 날짜가 지나거나, 마지막 날의 입장/퇴장 시간이 다 찍힌 경우= 1 비활성화, 아님 2
+        // 기본값 = 비활성화
+        // 7일전~행사 마지막날 활성화
+        // 행사 다음날 비활성화
+        // QR 이미지 visible 속성 말고 버튼을 비활성화로 수정하기
         binding.btnQR.setOnClickListener {
             // 큐알 페이지로 이동
             var intentQR = Intent(this, QrViewActivity::class.java)
@@ -93,8 +99,33 @@ class AttendDetailActivity : AppCompatActivity() {
 //        } // if
 
         // 신청취소
-        binding.btnCancleApp.setOnClickListener { 
-            
+        binding.btnCancleApp.setOnClickListener {
+            AlertDialog.Builder(this).run{
+                setMessage("취소는 행사 하루 전까지 가능합니다. 신청을 취소 하시겠습니까?")
+                setPositiveButton("확인",object:DialogInterface.OnClickListener{
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        Client.retrofit.deleteApplication(eventId, userId).enqueue(object:retrofit2.Callback<Int>{
+                            override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                                // 취소 성공 2, 실패 1
+                                if(response.body() == 1){
+                                    Toast.makeText(this@AttendDetailActivity,"취소가 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                                }else{
+
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Int>, t: Throwable) {
+                                TODO("Not yet implemented")
+                            }
+
+                        })// retrofit
+                    }
+
+                }) // 확인
+                setNegativeButton("닫기",null)
+                show()
+            }
+
         }
 
         // 뒤로가기
