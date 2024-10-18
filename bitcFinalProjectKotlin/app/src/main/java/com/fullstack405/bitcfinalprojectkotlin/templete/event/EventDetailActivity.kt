@@ -120,11 +120,19 @@ class EventDetailActivity : AppCompatActivity() {
                             }
                         }) // positiveBtn
                         setNegativeButton("취소",null)
-                        show()
-                    } //추가하기 dialog
-                }
 
-            }
+                        // 글자색 바꾸기
+                        val dialog = create()
+                        dialog.setOnShowListener {
+                            val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                            val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                            positiveButton.setTextColor(Color.BLACK) // 원하는 색상으로 변경
+                            negativeButton.setTextColor(Color.BLACK)
+                        }
+                        dialog.show()
+                    } //추가하기 dialog
+                } // 추가하기 클릭 이벤트
+            }//binding
         } // if permission
 
         val cal = Calendar.getInstance()
@@ -195,7 +203,14 @@ class EventDetailActivity : AppCompatActivity() {
                                         }
 
                                         setNegativeButton("닫기",null)
-                                        show()
+
+                                        // 글자색 변경
+                                        val dialog = create()
+                                        dialog.setOnShowListener {
+                                            val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                                            negativeButton.setTextColor(Color.BLACK)
+                                        }
+                                        dialog.show()
                                     }
                                     setResult(RESULT_OK)
                                 }
@@ -207,7 +222,16 @@ class EventDetailActivity : AppCompatActivity() {
                         }// onclick
                     }) // positive
                     setNegativeButton("취소",null)
-                    show()
+
+                    // 글자색 변경
+                    val dialog = create()
+                    dialog.setOnShowListener {
+                        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        positiveButton.setTextColor(Color.BLACK) // 원하는 색상으로 변경
+                        negativeButton.setTextColor(Color.BLACK)
+                    }
+                    dialog.show()
                 }
             }
         }else{

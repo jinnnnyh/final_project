@@ -1,6 +1,7 @@
 package com.fullstack405.bitcfinalprojectkotlin.interfaces
 
 import com.fullstack405.bitcfinalprojectkotlin.data.AdminUpcomingEventData
+import com.fullstack405.bitcfinalprojectkotlin.data.AppDetailData
 import com.fullstack405.bitcfinalprojectkotlin.data.CertificateData
 import com.fullstack405.bitcfinalprojectkotlin.data.CheckedIdData
 import com.fullstack405.bitcfinalprojectkotlin.data.EventAppData
@@ -96,6 +97,10 @@ interface Interface {
   // 유저id, 미수료 목록
   @POST("/app/incomplete-application-list/{userId}")
   fun findMyIncompleteApplicationList(@Path("userId") id:Long):Call<List<EventAppData>>
+
+  // 신청 내역 1개 상세보기
+  fun findAppEvent(eventId: Long, userId: Long):Call<AppDetailData>
+
 
   // 유저 1명 참석증
   @POST("/app/certificate/{eventId}/{userId}")
