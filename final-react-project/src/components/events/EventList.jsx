@@ -30,9 +30,6 @@ function EventList() {
 
       let recruitmentStatus = '';
 
-      console.log(new Date(item.endDate))
-      console.log(new Date(today))
-
       if (item.eventAccept === 3) {
         recruitmentStatus = '모집불가';
       }
@@ -173,7 +170,7 @@ function EventList() {
             if (today >= visibleDate && today <= invisibleDate) {
               recruitmentStatus = '모집중';
             }
-            else if (today < visibleDate) {
+            else if (today< visibleDate) {
               recruitmentStatus = '모집대기';
             }
             else if (today > invisibleDate && today < startDate) {
@@ -192,61 +189,64 @@ function EventList() {
                 <Link to={`/event/${item.eventId}`}>
                   <img
                     src={`http://localhost:8080/eventImg/${item.eventPoster}`}
-                    alt={item.eventTitle}
-                    className={'w-100'}
-                    onError={onErrorImg}
-                  />
-                </Link>
-              </div>
-              <div className={'col-9 ps-5 d-flex align-items-center'}>
-                <div className={'col-10'}>
-                  <div className={'d-flex'}>
-                    <div className={'markStyle'}>
-                      {item.eventAccept === 1 && <p className={'redMark'}>승인대기</p> ||
-                        item.eventAccept === 2 && <p className={'blueMark'}>승인완료</p> ||
-                        item.eventAccept === 3 && <p className={'redMark'}>승인거부</p> ||
-                        item.eventAccept === 'null' && <p className={'grayMark'}>null</p>
-                      }
-                    </div>
-                    {recruitmentStatus && (
-                      <div className={'markStyle ms-2'}>
-                        <p className={recruitmentStatus === '행사중' && 'redMark' ||
-                          recruitmentStatus === '행사대기' && 'blueMark' ||
-                          recruitmentStatus === '모집대기' && 'blueMark' ||
-                          recruitmentStatus === '모집중' && 'redMark' ||
-                          recruitmentStatus === '행사종료' && 'grayMark' ||
-                          recruitmentStatus === '모집불가' && 'grayMark'
-                        }>
-                          {recruitmentStatus}
-                        </p>
+                      alt={item.eventTitle}
+                      className={'w-100'}
+                      onError={onErrorImg}
+                      />
+                      </Link>
                       </div>
-                    )}
-                  </div>
+                      <div className={'col-9 ps-5 d-flex align-items-center'}>
+                    <div className={'col-10'}>
+                      <div className={'d-flex'}>
+                        <div className={'markStyle'}>
+                          {item.eventAccept === 1 && <p className={'redMark'}>승인대기</p> ||
+                            item.eventAccept === 2 && <p className={'blueMark'}>승인완료</p> ||
+                            item.eventAccept === 3 && <p className={'redMark'}>승인거부</p> ||
+                            item.eventAccept === 'null' && <p className={'grayMark'}>null</p>
+                          }
+                        </div>
+                        {recruitmentStatus && (
+                          <div className={'markStyle ms-2'}>
+                            <p className={recruitmentStatus === '행사중' && 'redMark' ||
+                              recruitmentStatus === '행사대기' && 'blueMark' ||
+                              recruitmentStatus === '모집대기' && 'blueMark' ||
+                              recruitmentStatus === '모집중' && 'redMark' ||
+                              recruitmentStatus === '행사종료' && 'grayMark' ||
+                              recruitmentStatus === '모집불가' && 'grayMark'
+                            }>
+                              {recruitmentStatus}
+                            </p>
+                          </div>
+                        )}
+                      </div>
 
-                  <Link to={`/event/${item.eventId}`}>
-                    <h4>{item.eventTitle}</h4>
-                  </Link>
-                  <ul className={'ps-0 mt-3'}>
-                    <li>행사기간 : <span>{item.startDate} ~ {item.endDate}</span></li>
-                    <li className={'my-1'}>행사시간 : <span>{item.startTime} ~ {item.endTime}</span></li>
-                    <li className={'my-1'}>모집시작일 : <span>{item.visibleDate}</span> | 모집마감일
-                      : <span>{item.invisibleDate}</span></li>
-                    <li className={'my-1'}>신청인원 / 정원
-                      : <span>{item.totalAppliedPeople}명 / {item.maxPeople === 0 && '제한없음' || item.maxPeople != 0 && `${item.maxPeople}명`}</span>
-                    </li>
-                    <li>수료인원 / 참석인원 : <span>{item.completedPeople}명 / {item.totalAppliedPeople}명</span></li>
-                  </ul>
-                </div>
+                      <Link to={`/event/${item.eventId}`}>
+                        <h4>{item.eventTitle}</h4>
+                      </Link>
+                      <ul className={'ps-0 mt-3'}>
+                        <li>행사기간 : <span>{item.startDate} ~ {item.endDate}</span></li>
+                        <li className={'my-1'}>행사시간 : <span>{item.startTime} ~ {item.endTime}</span></li>
+                        <li className={'my-1'}>모집시작일 : <span>{item.visibleDate}</span> | 모집마감일 : <span>{item.invisibleDate}</span></li>
+                        <li className={'my-1'}>신청인원 / 정원 : <span>{item.totalAppliedPeople}명 / {item.maxPeople === 0 && '제한없음' || item.maxPeople != 0 && `${item.maxPeople}명`}</span></li>
+                        <li>수료인원 / 참석인원 : <span>{item.completedPeople}명 / {item.totalAppliedPeople}명</span></li>
+                      </ul>
+                    </div>
+                    <div className={'col-2'}>
+                      <NavLink to={`/event/attendList/${item.eventId}`} className={'btn btn-point px-3'}>
+                        참석자현황<br/>자세히 보기 +
+                      </NavLink>
+                    </div>
               </div>
             </div>
           );
         })
       }
+
       <Pagination
-        itemsPerPage={itemsPerPage}
-        totalItems={eventData.length}
         currentPage={currentPage}
-        paginate={handlePageChange}
+        itemsCount={eventData.length}
+        itemsPerPage={itemsPerPage}
+        onPageChange={handlePageChange}
       />
     </section>
   );
