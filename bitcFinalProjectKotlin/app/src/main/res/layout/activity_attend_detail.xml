@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="8dp"
         android:orientation="vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -67,9 +67,9 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/notosans_bold"
                     android:text="제목"
-                    android:textAlignment="center"
+                    android:textSize="20sp"
                     android:textColor="#212529"
-                    android:textSize="20sp" />
+                    android:textAlignment="center" />
 
                 <TextView
                     android:id="@+id/d_create_date"
@@ -77,16 +77,18 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/notosans_medium"
                     android:text="게시일"
-                    android:textAlignment="textEnd"
-                    android:textColor="#6C757D" />
+                    android:textColor="#6C757D"
+                    android:layout_marginRight="10dp"
+                    android:textAlignment="textEnd" />
 
                 <TextView
                     android:id="@+id/d_writer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="작성자"
-                    android:textAlignment="textEnd"
-                    android:textColor="#6C757D" />
+                    android:textColor="#6C757D"
+                    android:layout_marginRight="10dp"
+                    android:textAlignment="textEnd" />
 
 
                 <TextView
@@ -94,20 +96,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/notosans_medium"
+                    android:layout_marginTop="20dp"
                     android:text="행사 내용"
-                    android:textColor="#212529" />
+                    android:textColor="#212529"/>
 
                 <ImageView
                     android:id="@+id/d_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/testimg" />
+                    android:scaleType="centerCrop" />
 
             </LinearLayout>
         </ScrollView>
-
     </LinearLayout>
 
     <Button

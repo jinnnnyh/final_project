@@ -39,6 +39,9 @@ public interface AttendInfoRepository extends JpaRepository<AttendInfoEntity, Lo
             "AND a.attendComp = 'N'")
     boolean isAllCompleted(@Param("eventId") Long eventId, @Param("userId") Long userId);
 
+    // <APP> 행사 신청 취소 - attendInfo 데이터 삭제
+    void deleteByEventSchedule_ScheduleIdAndUser_UserId(Long scheduleId, Long userId);
+
 
     ///////////////////////////
     ////////// <WEB> //////////
