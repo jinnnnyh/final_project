@@ -68,8 +68,8 @@ public class EventEntity {
     private int maxPeople;
 
     // 참여 마감 여부 Y/N
-    @Column(name = "is_registration_open", length = 1, nullable = false)
-    @ColumnDefault("'N'")
+    @Column(name = "is_registration_open", length = 1, nullable = true)
+    @ColumnDefault("'Y'")
     private Character isRegistrationOpen;
 
     // 행사 글 등록자 (fk)
@@ -91,4 +91,22 @@ public class EventEntity {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<EventAppEntity> eventAppList = new ArrayList<>();
+
+
+    public void updateEvent(String eventTitle, String eventContent, String eventPoster) {
+        this.eventTitle = eventTitle;
+        this.eventContent = eventContent;
+        this.eventPoster = eventPoster;
+    }
+
+    public void acceptEvent(UserEntity approver) {
+        this.eventAccept = 2;
+        this.approver = approver;
+    }
+
+    public void rejectEvent() {
+        this.eventAccept = 3;
+        this.approver = null;
+        this.acceptedDate = null;
+    }
 }

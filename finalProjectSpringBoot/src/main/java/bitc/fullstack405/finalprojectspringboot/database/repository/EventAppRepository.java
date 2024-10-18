@@ -1,11 +1,14 @@
 package bitc.fullstack405.finalprojectspringboot.database.repository;
 
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventAppEntity;
+import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface EventAppRepository extends JpaRepository<EventAppEntity, Long> {
 
     ///////////////////////////
@@ -42,4 +45,8 @@ public interface EventAppRepository extends JpaRepository<EventAppEntity, Long> 
     ///////////////////////////
     ////////// <WEB> //////////
     ///////////////////////////
+
+    int countByEventAndEventComp(EventEntity eventEntity, char eventComp);
+
+    List<EventAppEntity> findByEvent(EventEntity event);
 }

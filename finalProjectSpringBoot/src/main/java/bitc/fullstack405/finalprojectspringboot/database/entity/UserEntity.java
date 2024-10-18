@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -14,7 +16,7 @@ import lombok.*;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class UserEntity {
 
-  // user idx
+    // user idx
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false, updatable = false)
@@ -46,6 +48,23 @@ public class UserEntity {
     @Column(name = "user_pw", length = 200, nullable = false)
     private String password;
 
+    @OneToMany(mappedBy = "posterUser", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<EventEntity> postedEventList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "approver", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<EventEntity> approvedEventList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<AttendInfoEntity> attendInfoList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<EventAppEntity> attendAppList = new ArrayList<>();
+
+
     public void updateAppUser(String password, String userPhone, String userDepart) {
         this.password = password;
         this.userPhone = userPhone;
@@ -55,5 +74,4 @@ public class UserEntity {
     public void deleteAppUser() {
         this.role = Role.ROLE_DELETE;
     }
-
 }
