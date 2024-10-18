@@ -19,6 +19,7 @@ function EventList() {
   const [approverSearchTerm, setApproverSearchTerm] = useState('');
 
   const today = new Date();
+  today.setHours(0, 0, 0, 0)
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -28,6 +29,9 @@ function EventList() {
       if (approvalFilter !== '' && item.eventAccept !== parseInt(approvalFilter)) return false;
 
       let recruitmentStatus = '';
+
+      console.log(new Date(item.endDate))
+      console.log(new Date(today))
 
       if (item.eventAccept === 3) {
         recruitmentStatus = '모집불가';
@@ -169,7 +173,7 @@ function EventList() {
             if (today >= visibleDate && today <= invisibleDate) {
               recruitmentStatus = '모집중';
             }
-            else if (today< visibleDate) {
+            else if (today < visibleDate) {
               recruitmentStatus = '모집대기';
             }
             else if (today > invisibleDate && today < startDate) {
@@ -182,7 +186,6 @@ function EventList() {
               recruitmentStatus = '행사종료';
             }
           }
-
           return (
             <div key={item.eventId} className={'d-flex justify-content-between align-items-center pb-5'}>
               <div className={'col-3 thumbnail'}>
@@ -225,28 +228,23 @@ function EventList() {
                   </Link>
                   <ul className={'ps-0 mt-3'}>
                     <li>행사기간 : <span>{item.startDate} ~ {item.endDate}</span></li>
-                    <li className={'my-1'}>행사시간 : <span>{item.startTime} ~ {item.endTime}</span></li>
-                    <li className={'my-1'}>모집시작일 : <span>{item.visibleDate}</span> | 모집마감일 : <span>{item.invisibleDate}</span></li>
-                    <li className={'my-1'}>신청인원 / 정원 : <span>{item.totalAppliedPeople}명 / {item.maxPeople === 0 && '제한없음' || item.maxPeople != 0 && `${item.maxPeople}명`}</span></li>
-                    <li>수료인원 / 참석인원 : <span>{item.completedPeople}명 / {item.totalAppliedPeople}명</span></li>
+                    <li className={'my-1'}>행사 등록일 : <span>{item.uploadDate}</span></li>
+                    <li>최대 인원 : <span>{item.maxPeople}</span></li>
+                    <li>행사 장소 : <span>{item.eventLocation}</span></li>
+                    <li>등록자 : <span>{item.eventUploaderName}</span></li>
+                    <li>승인자 : <span>{item.eventApproverName ? item.eventApproverName : "미승인"}</span></li>
                   </ul>
-                </div>
-                <div className={'col-2'}>
-                  <NavLink to={`/event/attendList/${item.eventId}`} className={'btn btn-point px-3'}>
-                    참석자현황<br/>자세히 보기 +
-                  </NavLink>
                 </div>
               </div>
             </div>
           );
         })
       }
-
       <Pagination
-        currentPage={currentPage}
-        itemsCount={eventData.length}
         itemsPerPage={itemsPerPage}
-        onPageChange={handlePageChange}
+        totalItems={eventData.length}
+        currentPage={currentPage}
+        paginate={handlePageChange}
       />
     </section>
   );
