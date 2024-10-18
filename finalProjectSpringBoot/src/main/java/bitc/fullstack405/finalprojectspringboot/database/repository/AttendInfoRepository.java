@@ -49,7 +49,7 @@ public interface AttendInfoRepository extends JpaRepository<AttendInfoEntity, Lo
     ////////// <WEB> //////////
     ///////////////////////////
 
-    / 유저 ID로 참석 정보 가져오기 (event controller 에서 사용)
+    // 유저 ID로 참석 정보 가져오기 (event controller 에서 사용)
     List<AttendInfoEntity> findByUser_UserId(Long userId);
 
     List<AttendInfoEntity> findByEventSchedule(EventScheduleEntity eventSchedule);

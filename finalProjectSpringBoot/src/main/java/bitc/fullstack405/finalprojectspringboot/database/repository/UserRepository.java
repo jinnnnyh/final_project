@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     ////////// <WEB> //////////
     ///////////////////////////
 
-  UserEntity findByUserAccountAndPassword(String userAccount, String userPw);
+    UserEntity findByUserAccountAndPassword(String userAccount, String userPw);
 
   @Query("SELECT u FROM UserEntity u " +
       "WHERE u.role IN (bitc.fullstack405.finalprojectspringboot.database.entity.Role.ROLE_PRESIDENT, " +

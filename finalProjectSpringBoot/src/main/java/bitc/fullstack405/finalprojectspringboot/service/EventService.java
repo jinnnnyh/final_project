@@ -23,7 +23,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -205,6 +204,12 @@ public class EventService {
 
         for (EventEntity event : events) {
             List<EventScheduleEntity> schedules = eventScheduleRepository.findByEvent(event);
+
+            // schedules가 비어 있는 경우
+            if (schedules.isEmpty()) {
+                continue;
+            }
+
             LocalDate startDate = schedules.get(0).getEventDate();
             LocalDate endDate = schedules.get(schedules.size() - 1).getEventDate();
             LocalTime startTime = schedules.get(0).getStartTime();

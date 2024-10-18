@@ -1,5 +1,9 @@
 package bitc.fullstack405.finalprojectspringboot.service;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.CheckedIdResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.InsertUserRequest;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.LoginResponse;
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.user.UpdateAppUserRequest;
 import bitc.fullstack405.finalprojectspringboot.database.dto.event.LoginDTO;
 import bitc.fullstack405.finalprojectspringboot.database.entity.Role;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
@@ -8,13 +12,10 @@ import bitc.fullstack405.finalprojectspringboot.database.repository.EventReposit
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Check;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.List;
-
-import static bitc.fullstack405.finalprojectspringboot.database.entity.Role.ROLE_DELETE;
 
 @RequiredArgsConstructor
 @Service

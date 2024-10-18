@@ -45,7 +45,5 @@ public interface EventScheduleRepository extends JpaRepository<EventScheduleEnti
     ////////// <WEB> //////////
     ///////////////////////////
 
-    List<EventScheduleEntity> findByEvent(EventEntity eventEntity);
-
     void deleteByEvent(EventEntity eventEntity);
 }
