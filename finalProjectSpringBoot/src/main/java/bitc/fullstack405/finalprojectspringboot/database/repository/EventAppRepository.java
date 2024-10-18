@@ -38,6 +38,7 @@ public interface EventAppRepository extends JpaRepository<EventAppEntity, Long> 
             "END, s.startTime ASC")
     List<Object[]> findUpcomingEventForUser(Long userId);
 
+
     ///////////////////////////
     ////////// <WEB> //////////
     ///////////////////////////

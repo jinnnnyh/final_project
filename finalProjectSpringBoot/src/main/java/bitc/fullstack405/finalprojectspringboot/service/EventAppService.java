@@ -153,7 +153,11 @@ public class EventAppService {
 
     // <APP> 행사 신청 취소 - 오늘이 해당 행사의 첫 번째 회차 이후인지 확인
     public boolean beforeEvent(Long eventId) {
-        return eventScheduleRepository.beforeEvent(eventId);
+        // 가장 첫 번째 회차 일정 가져오기
+        EventScheduleEntity eventSchedule = eventScheduleRepository.findFirstByEvent_EventIdOrderByScheduleIdAsc(eventId);
+
+        // 첫 번째 일정의 날짜가 오늘 이후인지를 확인
+        return eventSchedule != null && !eventSchedule.getEventDate().isAfter(LocalDate.now());
     }
 
     // <APP> 행사 신청 취소 - 데이터 삭제
@@ -174,4 +178,5 @@ public class EventAppService {
     ///////////////////////////
     ////////// <WEB> //////////
     ///////////////////////////
+
 }
