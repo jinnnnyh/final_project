@@ -119,7 +119,6 @@
         android:layout_marginEnd="100dp"
         android:text="QR확인"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#FF5733"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cateTitle" />
 
@@ -132,7 +131,6 @@
         android:text="참석증 확인"
         android:visibility="visible"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#FF5733"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cateTitle" />
 

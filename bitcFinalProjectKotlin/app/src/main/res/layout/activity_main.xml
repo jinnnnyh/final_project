@@ -72,7 +72,7 @@
                 android:layout_marginEnd="16dp"
                 android:text="신청내역 >"
                 android:textSize="18sp"
-                android:textColor="#FF5733"
+                android:textColor="#283eae"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

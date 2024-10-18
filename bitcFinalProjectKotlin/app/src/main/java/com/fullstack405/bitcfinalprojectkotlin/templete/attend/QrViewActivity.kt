@@ -95,7 +95,7 @@ class QrViewActivity : AppCompatActivity() {
                 if (cal_t < cal_sdate ) {
                     // 시작 7일전 보다 같거나 클 때
                     if(cal_t >= cal_s){
-                        binding.eventDate.text = QRlist[0].get("eventDate").toString()
+                        binding.eventDate.text = "행사일 : ${QRlist[0].get("eventDate").toString()}"
                         Glide.with(this@QrViewActivity)
                             .load(url + QRlist[0].get("qrImage"))
                             .into(binding.imgQr)
@@ -105,7 +105,7 @@ class QrViewActivity : AppCompatActivity() {
                 else if (cal_t >= cal_sdate) {
                     for (i in 0..QRlist.size - 1) {
                         if (td == QRlist[i].get("eventDate").toString()) {
-                            binding.eventDate.text = "${QRlist[i].get("eventDate").toString()}"
+                            binding.eventDate.text = "행사일 : ${QRlist[i].get("eventDate").toString()}"
                             Glide.with(this@QrViewActivity)
                                 .load(url + QRlist[i].get("qrImage"))
                                 .into(binding.imgQr)

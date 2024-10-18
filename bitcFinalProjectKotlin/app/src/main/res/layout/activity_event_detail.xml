@@ -114,16 +114,15 @@
     </LinearLayout>
 
 
-
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:fontFamily="@font/notosans_medium"
         android:text="신청하기"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#FF5733"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -134,11 +133,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         android:text="QR스캐너"
-        android:visibility="gone"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#FF5733"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/notosans_medium"/>
 
     <Button
         android:id="@+id/btn_addAppUser"
@@ -146,11 +145,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="추가하기"
-        android:visibility="gone"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#FF5733"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_submit"
-        app:layout_constraintStart_toEndOf="@+id/btn_QRscanner" />
+        app:layout_constraintStart_toEndOf="@+id/btn_QRscanner"
+        android:fontFamily="@font/notosans_medium"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
