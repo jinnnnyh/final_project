@@ -76,22 +76,23 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/notosans_medium"
-        android:text="행사이름"
-        android:textSize="20sp"
+        android:text="행사명"
         android:textColor="#212529"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cateTitle" />
 
     <TextView
         android:id="@+id/eventName"
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/notosans_medium"
-        android:textSize="20sp"
-        android:textColor="#212529"
+        android:maxLines="1"
         android:text="data"
+        android:textColor="#212529"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/cateTitle" />
 

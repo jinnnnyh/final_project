@@ -2,6 +2,7 @@ package com.fullstack405.bitcfinalprojectkotlin.adapter
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -25,9 +26,11 @@ class EventListAdapter(val eventList:MutableList<EventListData>, val userId:Long
         // 모집중 Y, 마감 N
         if(event.isRegistrationOpen == 'Y'){
             holder.binding.state.text = "[모집중]"
+            holder.binding.state.setTextColor(Color.parseColor("#dd0b0b")) // 빨간색
         }
         else{
             holder.binding.state.text = "[마감]"
+            holder.binding.state.setTextColor(Color.parseColor("#666666")) // 회색
         }
 
         holder.binding.title.text = event.eventTitle

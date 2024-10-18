@@ -80,6 +80,9 @@ interface Interface {
   @POST("/app/application/{eventId}/{userId}")
   fun insertEventApp(@Path("eventId") eventId:Long, @Path("userId") userId:Long):Call<Int>
 
+  // 신청취소
+
+
   // 해당 유저의 신청 목록
   @POST("/app/application-list/{userId}")
   fun findAttendList(@Path("userId") userId:Long):Call<List<EventAppData>>
@@ -91,7 +94,6 @@ interface Interface {
   // 유저id, 미수료 목록
   @POST("/app/incomplete-application-list/{userId}")
   fun findMyIncompleteApplicationList(@Path("userId") id:Long):Call<List<EventAppData>>
-
 
   // 유저 1명 참석증
   @POST("/app/certificate/{eventId}/{userId}")

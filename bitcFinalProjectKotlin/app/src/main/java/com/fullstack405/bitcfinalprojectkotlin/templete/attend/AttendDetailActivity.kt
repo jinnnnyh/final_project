@@ -81,6 +81,7 @@ class AttendDetailActivity : AppCompatActivity() {
 
 
         // QR 확인
+        // 마지막 날짜가 지나거나, 마지막 날의 입장/퇴장 시간이 다 찍힌 경우= 1 비활성화, 아님 2
         binding.btnQR.setOnClickListener {
             // 큐알 페이지로 이동
             var intentQR = Intent(this, QrViewActivity::class.java)
@@ -91,6 +92,10 @@ class AttendDetailActivity : AppCompatActivity() {
         }
 //        } // if
 
+        // 신청취소
+        binding.btnCancleApp.setOnClickListener { 
+            
+        }
 
         // 뒤로가기
         binding.btnBack.setOnClickListener {

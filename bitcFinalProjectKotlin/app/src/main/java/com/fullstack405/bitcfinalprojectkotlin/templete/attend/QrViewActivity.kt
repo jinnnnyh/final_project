@@ -97,20 +97,14 @@ class QrViewActivity : AppCompatActivity() {
                 // 오늘이 시작일보다 작고
                 if (cal_t < cal_sdate ) {
                     // 시작 7일전 보다 같거나 클 때
-                    if(cal_t >= cal_s)
+                    if(cal_t >= cal_s){
                         binding.imgQr.isVisible = true
                         binding.eventDate.text = QRlist[0].get("eventDate").toString()
                         Glide.with(this@QrViewActivity)
                             .load(url + QRlist[0].get("qrImage"))
                             .into(binding.imgQr)
                     }
-//                // 오늘 == 시작날짜 0번 인덱스 이미지
-//                else if (cal_t == cal_sdate) {
-//                    binding.eventDate.text = QRlist[0].get("eventDate").toString()
-//                    Glide.with(this@QrViewActivity)
-//                        .load(url + QRlist[0].get("qrImage"))
-//                        .into(binding.imgQr)
-//                }
+                }
                 // 오늘 날짜가 시작일보다 크거나 같으면 행사일자 = 오늘인 큐알 보임
                 else if (cal_t >= cal_sdate) {
                     for (i in 0..QRlist.size - 1) {

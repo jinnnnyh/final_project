@@ -136,7 +136,7 @@ class EventDetailActivity : AppCompatActivity() {
         var url = "http://10.100.105.205:8080/eventImg/"
 //        var posterName = event.eventPoster
         
-//        이벤트id로 해당 이벤트 정보만 불러오기
+//        이벤트id로 해당 이벤트 정보만 불러오기ㅁ
         Client.retrofit.findEventId(eventId!!).enqueue(object:retrofit2.Callback<EventDetailData>{
             override fun onResponse(call: Call<EventDetailData>, response: Response<EventDetailData>) {
                 Log.d("findEventId","${response.body()}")
