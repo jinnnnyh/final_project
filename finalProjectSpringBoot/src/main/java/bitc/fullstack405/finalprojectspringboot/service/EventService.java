@@ -50,12 +50,24 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    // <APP> 회원에게 보일 행사 상세 화면
-    public AppEventDetailResponse findById(Long eventId) {
+    // <APP> 행사 상세 화면 - 행사 안내
+    public AppEventDetailResponse findEventDetail(Long eventId) {
         EventEntity event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + eventId));
 
-        return new AppEventDetailResponse(event);
+        // userId가 없으므로 EventAppEntity는 null로 전달
+        return new AppEventDetailResponse(event, null);
+    }
+
+    // <APP> 행사 상세 화면 - 신청 내역
+    // userId가 있는 경우 이벤트와 관련된 신청 정보까지 포함하여 반환
+    public AppEventDetailResponse findAppEventDetail(Long eventId, Long userId) {
+        EventEntity event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("not found : " + eventId));
+
+        EventAppEntity eventApp = eventAppRepository.findByEvent_EventIdAndUser_UserId(eventId, userId);
+
+        return new AppEventDetailResponse(event, eventApp);
     }
 
     // <APP> 관리자 - 예정 행사 1개

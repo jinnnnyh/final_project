@@ -1,5 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.database.dto.app.event;
 
+import bitc.fullstack405.finalprojectspringboot.database.entity.EventAppEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventScheduleEntity;
 import lombok.Getter;
@@ -12,7 +13,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 // 서버에서 클라이언트로 지정한 행사 게시물 정보를 전달하기 위한 DTO 클래스
-// 게시일, 제목, 내용, 이미지, 작성자(이름만)
 @Getter
 public class AppEventDetailResponse {
 
@@ -23,8 +23,9 @@ public class AppEventDetailResponse {
     private final String posterUserName; // 작성자 이름
     private final String visibleDate; // 게시일
     private final List<Map<String, Object>> schedules; // 행사 세부 일정 리스트 (scheduleId, eventDate)
+    private final Character eventComp; // 행사 수료 여부(userId가 없으면(행사 안내에서 클릭 시) NULL)
 
-    public AppEventDetailResponse(EventEntity event) {
+    public AppEventDetailResponse(EventEntity event, EventAppEntity eventApp) {
         this.eventId = event.getEventId();
         this.eventTitle = event.getEventTitle();
         this.eventContent = event.getEventContent();
@@ -44,5 +45,8 @@ public class AppEventDetailResponse {
                     return scheduleMap;
                 })
                 .collect(Collectors.toList());
+
+        // userId가 없으면 eventApp null
+        this.eventComp = eventApp != null ? eventApp.getEventComp() : null;
     }
 }
