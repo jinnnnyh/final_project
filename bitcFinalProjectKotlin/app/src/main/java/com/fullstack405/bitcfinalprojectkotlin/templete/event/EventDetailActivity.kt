@@ -141,7 +141,7 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        val url = "http://10.100.105.205:8080/eventImg/"
+        val url = "http://192.168.0.8:8080/eventImg/"
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기
@@ -291,7 +291,13 @@ class EventDetailActivity : AppCompatActivity() {
                 AlertDialog.Builder(this@EventDetailActivity).run{
                     setMessage("해당 행사와 일치하지 않는 QR 입니다. 다시 확인해주세요.")
                     setNegativeButton("닫기", null)
-                    show()
+                    // 글자색 변경
+                    val dialog = create()
+                    dialog.setOnShowListener {
+                        val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        negativeButton.setTextColor(Color.BLACK)
+                    }
+                    dialog.show()
                 }
                 return@registerForActivityResult
             }
@@ -315,7 +321,13 @@ class EventDetailActivity : AppCompatActivity() {
                             dialogQr.userOut.text = "퇴장시간 : ${data.checkoutTime}"
                         }
                         setNegativeButton("닫기", null)
-                        show()
+                        // 글자색 변경
+                        val dialog = create()
+                        dialog.setOnShowListener {
+                            val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                            negativeButton.setTextColor(Color.BLACK)
+                        }
+                        dialog.show()
                     }
 
                 } // onResponse
@@ -324,7 +336,13 @@ class EventDetailActivity : AppCompatActivity() {
                     AlertDialog.Builder(this@EventDetailActivity).run {
                         setMessage("이미 처리된 QR입니다. 다시 확인해주세요.")
                         setNegativeButton("닫기", null)
-                        show()
+                        // 글자색 변경
+                        val dialog = create()
+                        dialog.setOnShowListener {
+                            val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                            negativeButton.setTextColor(Color.BLACK)
+                        }
+                        dialog.show()
                     }
                     Log.d("insertQRCheck", "${t.message}")
                 }

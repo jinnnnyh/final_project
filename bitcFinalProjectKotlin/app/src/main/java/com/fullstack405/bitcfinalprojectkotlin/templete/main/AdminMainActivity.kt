@@ -173,14 +173,14 @@ class AdminMainActivity : AppCompatActivity() {
                     binding.attendDate2.isVisible = false
                 }else{
                     val intent_attendDetail = Intent(this@AdminMainActivity, AttendDetailActivity::class.java)
-                    binding.txtAttend.setOnClickListener {
+                    binding.txtAttend2.setOnClickListener {
                         // 회원) 신청 상세 페이지로 이동
                         intent_attendDetail.putExtra("eventId",data!!.eventId)
                         intent_attendDetail.putExtra("userId",userId)
                         intent_attendDetail.putExtra("complete",data.eventComp)
                         startActivity(intent_attendDetail)
                     }
-                    binding.attendDate.isVisible = true
+                    binding.attendDate2.isVisible = true
                     binding.txtAttend2.text = data!!.eventTitle
                     binding.attendDate2.text = "행사일 : ${data.eventDate}  |  ${data.startTime}"
 

@@ -71,6 +71,10 @@ interface Interface {
   @POST("/app/accepted-events/{eventId}")
   fun findEventId(@Path("eventId") eventId:Long):Call<EventDetailData>
 
+  @POST("/app/accepted-events/{eventId}")
+  fun findEventId1(@Path("eventId") eventId:Long):Call<EventDetailData>
+
+
   // 추가 신청 받기
   // 2: 추가 완료, 1: 중복 신청
   @POST("/app/application-direct/{eventId}/{userAccount}")

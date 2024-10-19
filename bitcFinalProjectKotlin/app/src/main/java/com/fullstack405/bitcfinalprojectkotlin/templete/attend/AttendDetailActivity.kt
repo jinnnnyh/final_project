@@ -30,7 +30,7 @@ class AttendDetailActivity : AppCompatActivity() {
     var userId = 0L
     var eventId = 0L
     var complete = 'N' // 데이터 받아올 때 값 변경
-    val url = "http://10.100.105.205:8080/eventImg/"
+    val url = "http://192.168.0.8:8080/eventImg/"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,7 +44,7 @@ class AttendDetailActivity : AppCompatActivity() {
 
         userId = intent.getLongExtra("userId",0)
         eventId = intent.getLongExtra("eventId",0)
-
+        complete = intent.getCharExtra("complete",'N')
         val userName = intent.getStringExtra("userName")
 
         val intentComplete =Intent(this,CompleteViewActivity::class.java)

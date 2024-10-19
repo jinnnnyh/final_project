@@ -34,10 +34,11 @@
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="550dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cateTitle">
 
@@ -59,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="120dp"
-            android:layout_marginTop="218dp"
+            android:layout_marginTop="217dp"
             android:fontFamily="@font/notosans_medium"
             android:text="진영현000000000000"
             android:textSize="8sp"
