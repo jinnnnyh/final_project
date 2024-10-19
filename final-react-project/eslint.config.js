@@ -34,8 +34,9 @@ export default [
         { allowConstantExport: true },
       ],
       'react/prop-types': 'off',
-      "react-hooks/rules-of-hooks": "off",
-      "react-hooks/exhaustive-deps": "warn",
+      'react-hooks/rules-of-hooks': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
+      'no-unused-vars': 'off',
     },
   },
 ]

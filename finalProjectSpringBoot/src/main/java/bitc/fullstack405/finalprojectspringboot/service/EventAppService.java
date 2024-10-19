@@ -173,10 +173,4 @@ public class EventAppService {
 
         eventAppRepository.delete(eventApp);
     }
-
-
-    ///////////////////////////
-    ////////// <WEB> //////////
-    ///////////////////////////
-
 }

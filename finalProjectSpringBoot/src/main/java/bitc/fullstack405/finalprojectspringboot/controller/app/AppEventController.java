@@ -28,11 +28,21 @@ public class AppEventController {
         return ResponseEntity.ok().body(eventList);
     }
 
-    // 행사 상세 화면
-    // 게시일, 제목, 내용, 이미지, 작성자(이름만), 해당 행사의 schedule 정보(schedule_id, event_date) 리스트(schedule id 기준 오름차순)
-    @PostMapping("/accepted-events/{eventId}")
-    public ResponseEntity<AppEventDetailResponse> findAppEventDetail(@PathVariable Long eventId) {
-        AppEventDetailResponse eventDetail = eventService.findById(eventId);
+    // 행사 안내 - 행사 상세 화면
+    // 게시일, 제목, 내용, 이미지, 작성자(이름만), 해당 행사의 schedule 정보(schedule_id, event_date) 리스트(schedule id 기준 오름차순), 행사 수료 여부(userId가 있는 경우)
+    // userId가 없는 경우 ex) http://localhost:8080/app/accepted-events/1
+    // userId가 있는 경우 ex) http://localhost:8080/app/accepted-events/1?userId=3
+    @GetMapping("/accepted-events/{eventId}")
+    public ResponseEntity<AppEventDetailResponse> findAppEventDetail(@PathVariable Long eventId, @RequestParam(required = false) Long userId) {
+
+        AppEventDetailResponse eventDetail;
+
+        if(userId == null) {
+            eventDetail = eventService.findEventDetail(eventId);
+        } else {
+            eventDetail = eventService.findAppEventDetail(eventId, userId);
+        }
+
         return ResponseEntity.ok().body(eventDetail);
     }
 

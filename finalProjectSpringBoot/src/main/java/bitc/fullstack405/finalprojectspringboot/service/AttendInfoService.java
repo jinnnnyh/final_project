@@ -146,10 +146,4 @@ public class AttendInfoService {
         // AppCertificateResponse 객체를 반환하여 수료증 데이터를 제공
         return new AppCertificateResponse(event, user, presidentName);
     }
-
-
-    ///////////////////////////
-    ////////// <WEB> //////////
-    ///////////////////////////
-
 }
