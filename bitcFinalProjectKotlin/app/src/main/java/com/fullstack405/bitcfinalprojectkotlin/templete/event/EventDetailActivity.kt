@@ -145,7 +145,7 @@ class EventDetailActivity : AppCompatActivity() {
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기
-        Client.retrofit.findEventId(eventId).enqueue(object:retrofit2.Callback<EventDetailData>{
+        Client.retrofit.findEventId(eventId,null).enqueue(object:retrofit2.Callback<EventDetailData>{
             override fun onResponse(call: Call<EventDetailData>, response: Response<EventDetailData>) {
                 Log.d("findEventId","${response.body()}")
                 event = response.body() as EventDetailData

@@ -27,9 +27,11 @@ import java.util.Date
 class AttendDetailActivity : AppCompatActivity() {
     lateinit var event: EventDetailData
     lateinit var binding: ActivityAttendDetailBinding
-    var userId = 0L
-    var eventId = 0L
-    var complete = 'N' // 데이터 받아올 때 값 변경
+    private var userId = 0L
+    private var eventId = 0L
+    private var userName = "none"
+    lateinit var intentComplete: Intent
+
     val url = "http://192.168.0.8:8080/eventImg/"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,106 +46,12 @@ class AttendDetailActivity : AppCompatActivity() {
 
         userId = intent.getLongExtra("userId",0)
         eventId = intent.getLongExtra("eventId",0)
-        complete = intent.getCharExtra("complete",'N')
-        val userName = intent.getStringExtra("userName")
+        userName = intent.getStringExtra("userName")!!
 
-        val intentComplete =Intent(this,CompleteViewActivity::class.java)
-
+        intentComplete =Intent(this@AttendDetailActivity,CompleteViewActivity::class.java)
 
         // 데이터 초반 셋팅
-//        findAppEvent()
-
-//        이벤트id, 유저id로 해당 신청 정보만 불러오기
-        Client.retrofit.findEventId(eventId).enqueue(object:retrofit2.Callback<EventDetailData>{
-            override fun onResponse(call: Call<EventDetailData>, response: Response<EventDetailData>) {
-                event = response.body() as EventDetailData
-                Log.d("findEventId","${event}")
-                binding.dTitle.text = event.eventTitle
-                binding.dContent.text = event.eventContent
-                binding.dCreateDate.text=event.visibleDate
-                binding.dWriter.text = event.posterUserName
-
-                Glide.with(this@AttendDetailActivity)
-                    .load(url+event.eventPoster)
-                    .into(binding.dImage)
-
-
-                ////////////// QR 확인
-                val cal_today = Calendar.getInstance()
-                val cal_s = Calendar.getInstance() // 시작-7
-                val cal_sdate = Calendar.getInstance() // 시작일
-                val cal_e = Calendar.getInstance()
-
-                cal_today.time = Date()
-                val dateFormat =SimpleDateFormat("yyyy-MM-dd")
-                val today = dateFormat.format(cal_today.time) // 오늘 날짜 string 타입
-
-                val sd = event.schedules[0].get("eventDate").toString() // 첫째 날
-                val ed = event.schedules[event.schedules.size-1].get("eventDate").toString() // 마지막 날
-
-                val startDate: Date? = dateFormat.parse(sd)
-                val endDate:Date? = dateFormat.parse(ed)
-
-                cal_s.time = startDate // 시작일 - 7일
-                cal_s.add(Calendar.DATE,-7)
-
-                cal_sdate.time = startDate // 시작일
-                cal_e.time = endDate // 마지막날
-
-                // 7일전~행사 마지막날 활성화
-                // 행사 다음날 비활성화
-                // 기본값 = 비활성화
-                binding.btnQR.isEnabled = false
-                binding.btnQR.setBackgroundColor(Color.parseColor("#D5D5D5"))
-
-                // 대전제를 7일전으로 잡기
-                // 오늘 날짜 > 마지막 날짜
-                if (cal_today >= cal_s) {
-                    // 버튼 활성화 하고
-                    binding.btnQR.isEnabled = true
-                    binding.btnQR.setBackgroundColor(Color.parseColor("#283eae"))
-                    // 클릭 이벤트 활성화
-                    binding.btnQR.setOnClickListener {
-                        // 큐알 페이지로 이동
-                        var intentQR = Intent(this@AttendDetailActivity, QrViewActivity::class.java)
-                        intentQR.putExtra("userId", userId)
-                        intentQR.putExtra("eventId", eventId)
-                        intentQR.putExtra("eventName", event.eventTitle)
-                        startActivity(intentQR)
-                    }
-
-                    if (cal_today > cal_e) {
-                        // 비활성화
-                        binding.btnQR.isEnabled = false
-                        binding.btnQR.setBackgroundColor(Color.parseColor("#D5D5D5"))
-                    }
-                }
-
-
-            }//onResponse
-            override fun onFailure(call: Call<EventDetailData>, t: Throwable) {
-                Log.d("findEventId","${t.message}")
-            }
-        }) // retrofit
-
-
-
-        // Y 이면 활성화 N이면 비활성화
-        // 참석증 확인
-        if(complete == 'Y'){
-            binding.btnComplete.isEnabled = true
-            binding.btnComplete.setOnClickListener {
-                // 참석증 페이지로 이동
-                intentComplete.putExtra("userId",userId)
-                intentComplete.putExtra("eventId",eventId)
-                intentComplete.putExtra("userName",userName)
-                startActivity(intentComplete)
-            }
-        }
-        else{
-            binding.btnComplete.isEnabled = false
-            binding.btnComplete.setBackgroundColor(Color.parseColor("#D5D5D5"))
-        }
+        findEventId()
 
 
         // 신청취소
@@ -195,86 +103,101 @@ class AttendDetailActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-//        findAppEvent()
+        findEventId()
     }
 
-//    private fun findAppEvent(){
-//        //        이벤트id, 유저id로 해당 신청 정보만 불러오기
-//        Client.retrofit.findAppEvent(eventId,userId).enqueue(object:retrofit2.Callback<AppDetailData>{
-//            override fun onResponse(call: Call<AppDetailData>, response: Response<AppDetailData>) {
-//                event = response.body() as AppDetailData
-//
-//                complete = event.complete
-//
-//                Log.d("findEventId","${event}")
-//                binding.dTitle.text = event.eventTitle
-//                binding.dContent.text = event.eventContent
-//                binding.dCreateDate.text=event.visibleDate
-//                binding.dWriter.text = event.posterUserName
-//
-//                Glide.with(this@AttendDetailActivity)
-//                    .load(url+event.eventPoster)
-//                    .into(binding.dImage)
-//
-//
-//                ////////////// QR 확인
-//                val cal_today = Calendar.getInstance()
-//                val cal_s = Calendar.getInstance() // 시작-7
-//                val cal_sdate = Calendar.getInstance() // 시작일
-//                val cal_e = Calendar.getInstance()
-//
-//                cal_today.time = Date()
-//                val dateFormat =SimpleDateFormat("yyyy-MM-dd")
-//                val today = dateFormat.format(cal_today.time) // 오늘 날짜 string 타입
-//
-//                val sd = event.schedules[0].get("eventDate").toString() // 첫째 날
-//                val ed = event.schedules[event.schedules.size-1].get("eventDate").toString() // 마지막 날
-//
-//                val startDate: Date? = dateFormat.parse(sd)
-//                val endDate:Date? = dateFormat.parse(ed)
-//
-//                cal_s.time = startDate // 시작일 - 7일
-//                cal_s.add(Calendar.DATE,-7)
-//
-//                cal_sdate.time = startDate // 시작일
-//                cal_e.time = endDate // 마지막날
-//
-//                // 7일전~행사 마지막날 활성화
-//                // 행사 다음날 비활성화
-//                // 기본값 = 비활성화
-//                binding.btnQR.isEnabled = false
-//                binding.btnQR.setBackgroundColor(Color.parseColor("#D5D5D5"))
-//
-//                // 대전제를 7일전으로 잡기
-//                // 오늘 날짜 > 마지막 날짜
-//                if (cal_today >= cal_s) {
-//                    // 버튼 활성화 하고
-//                    binding.btnQR.isEnabled = true
-//                    binding.btnQR.setBackgroundColor(Color.parseColor("#283eae"))
-//                    // 클릭 이벤트 활성화
-//                    binding.btnQR.setOnClickListener {
-//                        // 큐알 페이지로 이동
-//                        var intentQR = Intent(this@AttendDetailActivity, QrViewActivity::class.java)
-//                        intentQR.putExtra("userId", userId)
-//                        intentQR.putExtra("eventId", eventId)
-//                        intentQR.putExtra("eventName", event.eventTitle)
-//                        startActivity(intentQR)
-//                    }
-//
-//                    if (cal_today > cal_e) {
-//                        // 비활성화
-//                        binding.btnQR.isEnabled = false
-//                        binding.btnQR.setBackgroundColor(Color.parseColor("#D5D5D5"))
-//                    }
-//                }
-//
-//
-//            }//onResponse
-//            override fun onFailure(call: Call<AppDetailData>, t: Throwable) {
-//                Log.d("findEventId","${t.message}")
-//            }
-//        }) // retrofit
-//    }
+    private fun findEventId(){
+        //        이벤트id, 유저id로 해당 신청 정보만 불러오기
+        Client.retrofit.findEventId(eventId,userId).enqueue(object:retrofit2.Callback<EventDetailData>{
+            override fun onResponse(call: Call<EventDetailData>, response: Response<EventDetailData>) {
+                event = response.body() as EventDetailData
+
+                Log.d("findEventId","${event}")
+                binding.dTitle.text = event.eventTitle
+                binding.dContent.text = event.eventContent
+                binding.dCreateDate.text=event.visibleDate
+                binding.dWriter.text = event.posterUserName
+
+                Glide.with(this@AttendDetailActivity)
+                    .load(url+event.eventPoster)
+                    .into(binding.dImage)
+
+
+                // Y 이면 활성화 N이면 비활성화
+                // 참석증 확인
+                if(event.eventComp == 'Y'){
+                    // 참석증 활성화
+                    binding.btnComplete.isEnabled = true
+                    binding.btnComplete.setBackgroundColor(Color.parseColor("#283eae"))
+                    binding.btnComplete.setOnClickListener {
+                        // 참석증 페이지로 이동
+                        intentComplete.putExtra("userId",userId)
+                        intentComplete.putExtra("eventId",eventId)
+                        intentComplete.putExtra("userName",userName)
+                        startActivity(intentComplete)
+                    }
+                }
+                else{
+                    binding.btnComplete.isEnabled = false
+                    binding.btnComplete.setBackgroundColor(Color.parseColor("#D5D5D5"))
+                }
+
+
+
+                ////////////// QR 확인
+                val cal_today = Calendar.getInstance()
+                val cal_s = Calendar.getInstance() // 시작-7
+                val cal_e = Calendar.getInstance()
+
+                cal_today.time = Date()
+                val dateFormat =SimpleDateFormat("yyyy-MM-dd")
+                val today = dateFormat.format(cal_today.time) // 오늘 날짜 string 타입
+
+                val sd = event.schedules[0].get("eventDate").toString() // 첫째 날
+                val ed = event.schedules[event.schedules.size-1].get("eventDate").toString() // 마지막 날
+
+                // 7일전 계산하기 위한 데이터 타입 변경
+                val startDate: Date? = dateFormat.parse(sd)
+
+                cal_s.time = startDate // 시작일 - 7일
+                cal_s.add(Calendar.DATE,-7)
+
+                Log.d("findEventId","오늘:${cal_today.time}, 마지막날:${cal_e.time}, 7일전:${cal_s}")
+                // 7일전~행사 마지막날 활성화
+                // 행사 다음날 비활성화
+                // 기본값 = 비활성화
+                binding.btnQR.isEnabled = false
+                binding.btnQR.setBackgroundColor(Color.parseColor("#D5D5D5"))
+
+                // 대전제 = 마지막 날
+                // 오늘이 마지막 날보다 작고 만약 시작 7일 전보다 크거나 같으면 활성화, 오늘이 마지막날 보다 크면 비활성화,
+                if (today <= ed) {
+                    if(cal_today >= cal_s){
+                        binding.btnQR.isEnabled = true
+                        binding.btnQR.setBackgroundColor(Color.parseColor("#283eae"))
+                        // 클릭 이벤트 활성화
+                        binding.btnQR.setOnClickListener {
+                            // 큐알 페이지로 이동
+                            var intentQR = Intent(this@AttendDetailActivity, QrViewActivity::class.java)
+                            intentQR.putExtra("userId", userId)
+                            intentQR.putExtra("eventId", eventId)
+                            intentQR.putExtra("eventName", event.eventTitle)
+                            startActivity(intentQR)
+                        } // btnQR
+                    } // if(cal_today >= cal_s)
+                }
+                else if(today > ed){
+                    binding.btnQR.isEnabled = false
+                    binding.btnQR.setBackgroundColor(Color.parseColor("#D5D5D5"))
+                }
+//                Log.d("findEventId","$today,,${ed},,${today <= ed},,${cal_today >= cal_s} ,,${today > ed}")
+
+            }//onResponse
+            override fun onFailure(call: Call<EventDetailData>, t: Throwable) {
+                Log.d("findEventId","${t.message}")
+            }
+        }) // retrofit
+    }
 
 
 }

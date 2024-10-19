@@ -6,4 +6,5 @@ data class EventDetailData(val eventId:Long,
                            val eventPoster:String?,
                            val posterUserName:String,
                            val visibleDate:String,
-                           val schedules:List<Map<String, Any>> )
+                           val schedules:List<Map<String, Any>>,
+                           val eventComp:Char)

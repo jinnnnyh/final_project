@@ -19,6 +19,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface Interface {
 
@@ -67,13 +68,13 @@ interface Interface {
   @GET("/app/accepted-events")
   fun findEventList():Call<List<EventListData>>
 
-  // 이벤트 항목 1개 불러오기
+  // 이벤트 상세보기 userId = null
+  // userId가 없는 경우 ex) http://localhost:8080/app/accepted-events/1
+  // 신청 상세보기 userId not null
+  // userId가 있는 경우 ex) http://localhost:8080/app/accepted-events/1?userId=3
+  // 이벤트, 신청 항목 1개 불러오기
   @POST("/app/accepted-events/{eventId}")
-  fun findEventId(@Path("eventId") eventId:Long):Call<EventDetailData>
-
-  @POST("/app/accepted-events/{eventId}")
-  fun findEventId1(@Path("eventId") eventId:Long):Call<EventDetailData>
-
+  fun findEventId(@Path("eventId") eventId:Long, @Query("userId") userId: Long?):Call<EventDetailData>
 
   // 추가 신청 받기
   // 2: 추가 완료, 1: 중복 신청
@@ -101,10 +102,6 @@ interface Interface {
   // 유저id, 미수료 목록
   @POST("/app/incomplete-application-list/{userId}")
   fun findMyIncompleteApplicationList(@Path("userId") id:Long):Call<List<EventAppData>>
-
-  // 신청 내역 1개 상세보기
-  fun findAppEvent(eventId: Long, userId: Long):Call<AppDetailData>
-
 
   // 유저 1명 참석증
   @POST("/app/certificate/{eventId}/{userId}")

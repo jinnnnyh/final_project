@@ -34,7 +34,7 @@ class AttendAllAdapter(val attendList:MutableList<EventAppData>,val userId:Long,
             var intent = Intent(holder.binding.root.context,AttendDetailActivity::class.java)
             intent.putExtra("userId",userId)
             intent.putExtra("eventId",a.eventId)
-            intent.putExtra("complete",a.eventComp)
+//            intent.putExtra("complete",a.eventComp)
             intent.putExtra("userName",userName)
             (holder.binding.root.context as Activity).startActivity(intent)
         }

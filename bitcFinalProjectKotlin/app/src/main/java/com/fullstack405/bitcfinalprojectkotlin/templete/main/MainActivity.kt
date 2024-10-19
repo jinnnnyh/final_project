@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
   
   var userId = 0L
   var userPermission = "none"
+  var userName = "none"
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     userId = intent.getLongExtra("userId",0)
-    var userName = intent.getStringExtra("userName")
+    userName = intent.getStringExtra("userName")!!
     userPermission = intent.getStringExtra("userPermission")!!
 
     if(userPermission.equals("ROLE_SECRETARY")){
@@ -59,15 +60,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     binding.userName.text = "${userPermission} ${userName}님"
+
+    // 행사 안내 모곡
     var intent_event = Intent(this, EventListActivity::class.java)
     intent_event.putExtra("userId",userId)
     intent_event.putExtra("userPermission",userPermission)
 
 
+    // 회원정보수정
     var intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
     intent_userInfoEdit.putExtra("userId",userId)
 
-
+    // 신청 내역 목록
     var intentAttendList = Intent(this,AttendListActivity::class.java)
     intentAttendList.putExtra("userId",userId)
     intentAttendList.putExtra("userName",userName)
@@ -134,12 +138,16 @@ class MainActivity : AppCompatActivity() {
           binding.txtAttend.text = "예정된 행사가 없습니다."
           binding.attendDate.isVisible = false
         }else{
+
+          // 신청 상세
           val intent_attendDetail = Intent(this@MainActivity, AttendDetailActivity::class.java)
+
           binding.txtAttend.setOnClickListener {
             // 회원) 신청 상세 페이지로 이동
             intent_attendDetail.putExtra("eventId",data!!.eventId)
             intent_attendDetail.putExtra("userId",userId)
-            intent_attendDetail.putExtra("complete",data.eventComp)
+            intent_attendDetail.putExtra("userName",userName)
+//            intent_attendDetail.putExtra("complete",data.eventComp)
             startActivity(intent_attendDetail)
           }
           binding.attendDate.isVisible = true

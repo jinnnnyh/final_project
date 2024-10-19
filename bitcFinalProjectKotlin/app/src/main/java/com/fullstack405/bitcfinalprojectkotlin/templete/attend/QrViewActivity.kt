@@ -114,10 +114,11 @@ class QrViewActivity : AppCompatActivity() {
                     }//for
                 }
 
+                Log.d("findQRImageList","")
             } // onResponse
 
             override fun onFailure(call: Call<List<Map<String,Any>>>, t: Throwable) {
-                Log.d("QR list error","${t.message}")
+                Log.d("findQRImageList","${t.message}")
             }
 
         })
