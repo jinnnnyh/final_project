@@ -399,6 +399,17 @@ public class EventService {
 
         EventEntity event = eventRepository.findById(eventId).get();
 
+        eventScheduleRepository.deleteByEvent(event);
+
+        LocalDate startDate = LocalDate.parse(eventUpdateDTO.getEventStartDate());
+        LocalDate endDate = LocalDate.parse(eventUpdateDTO.getEventEndDate());
+        LocalTime startTime = LocalTime.parse(eventUpdateDTO.getStartTime());
+        LocalTime endTime = LocalTime.parse(eventUpdateDTO.getEndTime());
+
+        LocalDate invisDate = startDate.minusWeeks(1);
+        LocalDate visDate = startDate.minusWeeks(2);
+
+
         EventEntity updatedEvent = event.toBuilder()
                 .eventTitle(eventUpdateDTO.getEventTitle())
                 .eventContent(eventUpdateDTO.getEventContent())
@@ -409,6 +420,8 @@ public class EventService {
                 .uploadDate(event.getUploadDate()) // 수정일로 바꿀지? 아니면 최초업로드일자 유지할지?
                 .acceptedDate(null) // 승인했더라도 승인대기상태가 되므로 승인일자 공백
                 .approver(null)    // 승인했더라도 승인대기상태가 되므로 승인자 공백
+                .visibleDate(visDate)
+                .invisibleDate(invisDate)
                 .build();
 
         FileUtils fileUtil = new FileUtils();
@@ -422,21 +435,6 @@ public class EventService {
                     .eventPoster(fileName)
                     .build();
         }
-
-        eventScheduleRepository.deleteByEvent(event);
-
-        LocalDate startDate = LocalDate.parse(eventUpdateDTO.getEventStartDate());
-        LocalDate endDate = LocalDate.parse(eventUpdateDTO.getEventEndDate());
-        LocalTime startTime = LocalTime.parse(eventUpdateDTO.getStartTime());
-        LocalTime endTime = LocalTime.parse(eventUpdateDTO.getEndTime());
-
-        LocalDate invisDate = startDate.minusWeeks(1);
-        LocalDate visDate = startDate.minusWeeks(2);
-
-        event.toBuilder()
-                .visibleDate(visDate)
-                .invisibleDate(invisDate)
-                .build();
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             EventScheduleEntity newSchedule = EventScheduleEntity.builder()
