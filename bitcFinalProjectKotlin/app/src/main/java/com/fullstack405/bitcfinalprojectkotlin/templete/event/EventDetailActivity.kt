@@ -29,7 +29,6 @@ import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBi
 import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogAdduserBinding
 import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogQrInfoBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.QR.CustomCaptureActivity
-import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat

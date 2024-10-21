@@ -20,7 +20,7 @@ public class AppAttendInfoController {
     // QR 이미지 보기
     // schedule_id, 여러 회차의 행사 일자, QR 코드 리스트 반환(schedule_id 기준 오름차순)
     // 일주일 전 QR 코드 보기 버튼 활성화 => 앱에서 처리
-    @PostMapping("/qr-image/{eventId}/{userId}")
+    @GetMapping("/qr-image/{eventId}/{userId}")
     public ResponseEntity<List<Map<String, Object>>> findQRImages(@PathVariable Long eventId, @PathVariable Long userId) {
         List<Map<String, Object>> qrImages = attendInfoService.findQrImages(eventId, userId);
         return ResponseEntity.ok(qrImages);
@@ -71,7 +71,7 @@ public class AppAttendInfoController {
 
     // 수료증 발급
     // [반환] 행사 제목, 유저 이름, 협회장 이름, QR 이미지 저장(행사 신청)처럼 schedule id, 이벤트 날짜
-    @PostMapping("/certificate/{eventId}/{userId}")
+    @GetMapping("/certificate/{eventId}/{userId}")
     public ResponseEntity<AppCertificateResponse> certificate(@PathVariable Long eventId, @PathVariable Long userId) {
         AppCertificateResponse certificateData = attendInfoService.generateCertificate(eventId, userId);
         return ResponseEntity.ok(certificateData);

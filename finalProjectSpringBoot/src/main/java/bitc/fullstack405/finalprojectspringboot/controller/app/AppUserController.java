@@ -33,7 +33,7 @@ public class AppUserController {
   }
 
   // 아이디 중복확인
-  @PostMapping("/signup/{userAccount}")
+  @GetMapping("/signup/{userAccount}")
   public ResponseEntity<CheckedIdResponse> checkUserAccount(@PathVariable("userAccount") String userAccount){
     CheckedIdResponse user = userService.findUserAccount(userAccount);
 
@@ -44,7 +44,7 @@ public class AppUserController {
   }
 
   // 회원 1명 정보
-  @PostMapping("/app/user/{userId}")
+  @GetMapping("/app/user/{userId}")
   public ResponseEntity<LoginResponse> findByUserId(@PathVariable("userId") Long userId){
     LoginResponse user = userService.findByUserId(userId);
     return ResponseEntity.ok(user);

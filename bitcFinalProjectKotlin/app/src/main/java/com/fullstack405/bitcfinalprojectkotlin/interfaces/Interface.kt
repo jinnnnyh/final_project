@@ -24,8 +24,6 @@ import retrofit2.http.Query
 interface Interface {
 
   ///////////// user
-  // 유저 리스트
-  fun findUserList():Call<List<UserData>>
 
   // 로그인 유저 정보 확인
   // 로그인 아이디, 비번 넣어서 보내기
@@ -33,7 +31,7 @@ interface Interface {
   fun loginUser(@Body data: UserData):Call<UserData>
 
   // 유저 1명 정보
-  @POST("/app/user/{userId}")
+  @GET("/app/user/{userId}")
   fun findUserId(@Path("userId") userId:Long):Call<UserData>
 
   // 회원가입
@@ -45,7 +43,7 @@ interface Interface {
   fun updateUser(@Path("userId")id: Long, @Body data: UpdateData):Call<Void>
 
   // ID중복 여부/ 중복 있으면 null
-  @POST("/signup/{userAccount}")
+  @GET("/signup/{userAccount}")
   fun CheckedId(@Path("userAccount") userAccount:String):Call<CheckedIdData>
 
   // 회원 탈퇴
@@ -73,7 +71,7 @@ interface Interface {
   // 신청 상세보기 userId not null
   // userId가 있는 경우 ex) http://localhost:8080/app/accepted-events/1?userId=3
   // 이벤트, 신청 항목 1개 불러오기
-  @POST("/app/accepted-events/{eventId}")
+  @GET("/app/accepted-events/{eventId}")
   fun findEventId(@Path("eventId") eventId:Long, @Query("userId") userId: Long?):Call<EventDetailData>
 
   // 추가 신청 받기
@@ -92,19 +90,19 @@ interface Interface {
   fun deleteApplication(@Path("eventId")eventId: Long, @Path("userId")userId: Long):Call<Int>
 
   // 해당 유저의 신청 목록
-  @POST("/app/application-list/{userId}")
+  @GET("/app/application-list/{userId}")
   fun findAttendList(@Path("userId") userId:Long):Call<List<EventAppData>>
 
   // 유저id, 수료 목록
-  @POST("/app/complete-application-list/{userId}")
+  @GET("/app/complete-application-list/{userId}")
   fun findMyCompleteApplicationList(@Path("userId") id:Long):Call<List<EventAppData>>
 
   // 유저id, 미수료 목록
-  @POST("/app/incomplete-application-list/{userId}")
+  @GET("/app/incomplete-application-list/{userId}")
   fun findMyIncompleteApplicationList(@Path("userId") id:Long):Call<List<EventAppData>>
 
   // 유저 1명 참석증
-  @POST("/app/certificate/{eventId}/{userId}")
+  @GET("/app/certificate/{eventId}/{userId}")
   fun findCertificateData(@Path("eventId")eventId: Long, @Path("userId")userId: Long):Call<CertificateData>
 
   // QR 스캔 후 성공:data, 실패:null
@@ -113,6 +111,6 @@ interface Interface {
 
   // qr 이미지
   // 이벤트id, 회원id >  스케쥴id, QR 이미지 주소, 행사날짜
-  @POST("/app/qr-image/{eventId}/{userId}")
+  @GET("/app/qr-image/{eventId}/{userId}")
   fun findQRImageList(@Path("eventId")eventId:Long, @Path("userId")userId:Long):Call<List<Map<String, Any>>>
 }
