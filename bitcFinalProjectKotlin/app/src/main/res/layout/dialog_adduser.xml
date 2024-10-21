@@ -70,5 +70,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_search"
         android:background="?attr/selectableItemBackground"
-        app:tint="#FF5733" />
+        app:tint="#283eae" />
 </androidx.constraintlayout.widget.ConstraintLayout>

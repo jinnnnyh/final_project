@@ -4,6 +4,7 @@ import bitc.fullstack405.finalprojectspringboot.database.dto.app.eventApp.AppEve
 import bitc.fullstack405.finalprojectspringboot.database.dto.app.eventApp.AppUserUpcomingEventResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.*;
+import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
 import bitc.fullstack405.finalprojectspringboot.utils.QRCodeGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -163,12 +165,19 @@ public class EventAppService {
     // <APP> 행사 신청 취소 - 데이터 삭제
     // event_app 테이블, attend_info 테이블에 있는 신청 데이터 삭제
     @Transactional
-    public void delete(Long eventId, Long userId) {
+    public void delete(Long eventId, Long userId) throws Exception {
         EventAppEntity eventApp = eventAppRepository.findByEvent_EventIdAndUser_UserId(eventId, userId);
         List<EventScheduleEntity> scheduleList = eventScheduleRepository.findByEvent(eventApp.getEvent());
 
         for (EventScheduleEntity schedule : scheduleList) {
-            attendInfoRepository.deleteByEventSchedule_ScheduleIdAndUser_UserId(schedule.getScheduleId(), userId);
+            Optional<AttendInfoEntity> attendInfo = attendInfoRepository.findByEventSchedule_ScheduleIdAndUser_UserId(schedule.getScheduleId(), userId);
+            if (attendInfo.isPresent()) {
+                FileUtils fileUtils = new FileUtils();
+
+                fileUtils.deleteFile("../qrImg/", attendInfo.get().getQrImage());
+
+                attendInfoRepository.deleteById(attendInfo.get().getAttendId());
+            }
         }
 
         eventAppRepository.delete(eventApp);
