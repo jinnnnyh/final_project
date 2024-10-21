@@ -109,4 +109,5 @@ public class EventEntity {
         this.approver = null;
         this.acceptedDate = null;
     }
+
 }

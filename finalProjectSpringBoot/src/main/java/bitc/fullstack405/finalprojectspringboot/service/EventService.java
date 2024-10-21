@@ -11,6 +11,7 @@ import bitc.fullstack405.finalprojectspringboot.database.dto.event.*;
 import bitc.fullstack405.finalprojectspringboot.database.entity.*;
 import bitc.fullstack405.finalprojectspringboot.database.repository.*;
 import bitc.fullstack405.finalprojectspringboot.utils.FileUtils;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -525,4 +526,29 @@ public class EventService {
 
         eventRepository.save(acceptCancelEvent);
     }
+
+//    이벤트 수정 View
+  public EventUpdateViewDTO eventUpdateView(Long eventId) {
+    EventEntity eventEntity = eventRepository.findById(eventId)
+        .orElseThrow(() -> new EntityNotFoundException("해당 이벤트를 찾을 수 없습니다."));
+
+    List<EventScheduleEntity> eventScheduleList = eventScheduleRepository.findByEvent(eventEntity);
+
+    LocalDate startDate = eventScheduleList.get(0).getEventDate();
+    LocalDate endDate = eventScheduleList.get(eventScheduleList.size() - 1).getEventDate();
+    LocalTime startTime = eventScheduleList.get(0).getStartTime();
+    LocalTime endTime = eventScheduleList.get(0).getEndTime();
+
+
+    return EventUpdateViewDTO.builder()
+        .eventId(eventEntity.getEventId())
+        .eventTitle(eventEntity.getEventTitle())
+        .startDate(startDate)
+        .endDate(endDate)
+        .startTime(startTime)
+        .endTime(endTime)
+        .maxPeople(eventEntity.getMaxPeople())
+        .eventContent(eventEntity.getEventContent())
+        .build();
+  }
 }

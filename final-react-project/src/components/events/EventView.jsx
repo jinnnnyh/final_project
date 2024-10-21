@@ -128,7 +128,7 @@ function EventView () {
           )}
           {
             sessionStorage.getItem('permission') === '총무' && (
-            <SecretaryButton/>
+            <SecretaryButton eventId={eventId}/>
           )}
         </div>
       ) : (

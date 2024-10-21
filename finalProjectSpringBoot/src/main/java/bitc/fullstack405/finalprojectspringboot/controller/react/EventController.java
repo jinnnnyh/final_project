@@ -1,9 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.controller.react;
 
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.AttendListDTO;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventListDTO;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventUpdateDTO;
-import bitc.fullstack405.finalprojectspringboot.database.dto.event.EventViewDTO;
+import bitc.fullstack405.finalprojectspringboot.database.dto.event.*;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import bitc.fullstack405.finalprojectspringboot.database.entity.UserEntity;
 import bitc.fullstack405.finalprojectspringboot.database.repository.UserRepository;
@@ -90,6 +87,14 @@ public class EventController {
   public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId) throws Exception {
     eventService.deleteEvent(eventId);
     return ResponseEntity.noContent().build();
+  }
+
+//  이벤트 수정 View
+  @GetMapping("/updateEvent/{eventId}")
+  public ResponseEntity<EventUpdateViewDTO> updateEventView(@PathVariable Long eventId) {
+    EventUpdateViewDTO event = eventService.eventUpdateView(eventId);
+
+    return ResponseEntity.ok(event);
   }
 
 //  이벤트 수정

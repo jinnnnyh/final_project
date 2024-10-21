@@ -1,8 +1,13 @@
 import Events from "../../pages/Events.jsx";
-import {useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { useLocation, useParams } from "react-router-dom";
 
-function EventWrite () {
+function EventWrite() {
+  const { eventId } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const mode = queryParams.get('mode');
 
   const cancelBtn = () => window.location.href = "/";
 
@@ -14,41 +19,30 @@ function EventWrite () {
   let [maxPeople, setMaxPeople] = useState('');
   const [eventContent, setEventContent] = useState('');
 
-  // const writingHandler = (e) => {
-  //   e.preventDefault();
-  //
-  //   if (eventEndDate < eventStartDate) {
-  //     alert('종료일이 시작일보다 빠를 수 없습니다.');
-  //   }
-  //   if (endTime < startTime) {
-  //     alert('종료시간이 시작시간보다 빠를 수 없습니다.');
-  //   }
-  //
-  //   if (maxPeople == '') {
-  //     maxPeople = 0;
-  //   }
-  //   if (eventEndDate >= eventStartDate && endTime >= startTime) {
-  //     axios.post('http://localhost:8080/event/write', {
-  //       eventTitle: eventTitle,
-  //       eventContent: eventContent,
-  //       eventStartDate: eventStartDate,
-  //       eventEndDate: eventEndDate,
-  //       startTime: startTime,
-  //       endTime: endTime,
-  //       maxPeople: maxPeople,
-  //       userId: sessionStorage.getItem("userId"),
-  //       eventAccept: 1,
-  //     }).then(() => {
-  //       alert('등록에 성공했습니다. 협회장 승인을 기다려주세요.');
-  //       window.location.href = '/';
-  //     })
-  //       .catch(e => {
-  //         alert('등록 실패!\n'+ e.message + '\n관리자에게 문의하세요.');
-  //       });
-  //   }
-  // }
+  useEffect(() => {
+    if (mode === 'update') {
+      axios.get(`http://localhost:8080/event/updateEvent/${eventId}`)
+        .then((res) => {
+          const data = res.data;
+          setEventTitle(data.eventTitle);
+          setEventStartDate(data.startDate);
+          setEventEndDate(data.endDate);
+          setStartTime(data.startTime);
+          setEndTime(data.endTime);
+          setMaxPeople(data.maxPeople);
+          setEventContent(data.eventContent);
+          console.log('Fetched event data:', data);
+        })
+        .catch(error => {
+          console.error('Error fetching event data: ', error);
+        });
+    }
+  }, [eventId, mode]);
+
 
   const writingHandler = (e) => {
+
+
     e.preventDefault();
 
     if (eventEndDate < eventStartDate) {
@@ -81,18 +75,34 @@ function EventWrite () {
         formData.append('file', fileInput.files[0]);
       }
 
-      axios.post('http://localhost:8080/event/write', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-        .then(() => {
-          alert('등록에 성공했습니다. 협회장 승인을 기다려주세요.');
-          window.location.href = '/';
+      if (mode === 'update') {
+        axios.put(`http://localhost:8080/event/updateEvent/${eventId}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         })
-        .catch(e => {
-          alert('등록 실패!\n'+ e.message + '\n관리자에게 문의하세요.');
-        });
+          .then(() => {
+            alert('등록에 성공했습니다. 협회장 승인을 기다려주세요.');
+            window.location.href = '/';
+          })
+          .catch(e => {
+            alert('등록 실패!\n'+ e.message + '\n관리자에게 문의하세요.');
+          });
+      }
+      else {
+        axios.post('http://localhost:8080/event/write', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+          .then(() => {
+            alert('등록에 성공했습니다. 협회장 승인을 기다려주세요.');
+            window.location.href = '/';
+          })
+          .catch(e => {
+            alert('등록 실패!\n'+ e.message + '\n관리자에게 문의하세요.');
+          });
+      }
     }
   }
 
@@ -105,8 +115,6 @@ function EventWrite () {
   }
 
   const todayDate =  getTodayDate();
-
-
 
   return (
     <section>
