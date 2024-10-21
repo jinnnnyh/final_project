@@ -34,7 +34,11 @@ public interface EventScheduleRepository extends JpaRepository<EventScheduleEnti
             "CASE " +
             "  WHEN CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime THEN 0 " +
             "  WHEN CURRENT_DATE < s.eventDate THEN 1 " +
-            "END, s.scheduleId ASC")
+            "END ASC, " +  // CASE 결과에 따라 우선 정렬
+            "CASE " +
+            "  WHEN CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime THEN s.startTime " +  // 0인 경우 start_time으로 정렬
+            "  WHEN CURRENT_DATE < s.eventDate THEN s.scheduleId " +  // 1인 경우 scheduleId로 정렬
+            "END ASC")
     List<EventScheduleEntity> findUpcomingEventSchedules();
 
     // <APP> 해당 행사의 첫 번째 회차 일정만 가져오기 (가장 첫 번째 회차)
