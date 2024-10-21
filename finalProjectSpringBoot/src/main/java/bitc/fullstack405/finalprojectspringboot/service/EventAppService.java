@@ -143,8 +143,7 @@ public class EventAppService {
         List<Object[]> results = eventAppRepository.findUpcomingEventForUser(userId);
 
         if (results.isEmpty()) {
-            // 결과가 없을 경우 null 반환 또는 예외 처리
-            return null; // 또는 throw new NoSuchElementException("Upcoming event not found for user " + userId);
+            return null;
         }
 
         Object[] result = results.get(0);
