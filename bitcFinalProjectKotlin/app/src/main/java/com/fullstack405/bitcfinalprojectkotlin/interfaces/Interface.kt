@@ -117,4 +117,8 @@ interface Interface {
   fun findQRImageList(@Path("eventId")eventId:Long, @Path("userId")userId:Long):Call<List<Map<String, Any>>>
 
 
+//  // 신청자 별 firebase 토큰 저장
+//  @POST("/app/application/{eventId}/{userId}/{token}")
+//  fun insertEventAppToken(@Path("eventId")eventId:Long, @Path("userId")userId:Long,@Path("token")token:String):Call<Int>
+
 }

@@ -1,6 +1,7 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -47,6 +48,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
   implementation(libs.play.services.mlkit.barcode.scanning)
     implementation(libs.cronet.embedded)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
@@ -70,5 +72,8 @@ dependencies {
 // qr
   implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
   implementation("com.google.zxing:core:3.3.3")
+
+  // firebase
+  implementation("com.google.firebase:firebase-messaging-ktx:24.0.2")
 
 }

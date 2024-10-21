@@ -29,6 +29,7 @@ import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBi
 import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogAdduserBinding
 import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogQrInfoBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.QR.CustomCaptureActivity
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -51,11 +52,11 @@ class EventDetailActivity : AppCompatActivity() {
         }
 
         eventId = intent.getLongExtra("eventId",0)
-        var isRegistrationOpen = intent?.getCharExtra("isRegistrationOpen",'N') // 행사신청 마감 Y : 진행중 , N:마감
-        var userId = intent?.getLongExtra("userId",0) // 접속자Id
+        val isRegistrationOpen = intent?.getCharExtra("isRegistrationOpen",'N') // 행사신청 마감 Y : 진행중 , N:마감
+        val userId = intent?.getLongExtra("userId",0) // 접속자Id
 
         // 회원인지 아닌지만 판단
-        var userPermission = intent?.getStringExtra("userPermission")
+        val userPermission = intent?.getStringExtra("userPermission")
 
         binding.btnQRscanner.isVisible = false
         binding.btnAddAppUser.isVisible = false
@@ -141,7 +142,7 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        val url = "http://192.168.0.8:8080/eventImg/"
+        val url = "http://10.100.105.205:8080/eventImg/"
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기
@@ -190,7 +191,49 @@ class EventDetailActivity : AppCompatActivity() {
                     setMessage("해당 행사를 신청하시겠습니까?")
                     setPositiveButton("확인",object:DialogInterface.OnClickListener{
                         override fun onClick(p0: DialogInterface?, p1: Int) {
-                            // db 연결버전
+
+//                        // 토큰 포함 버전
+//                            val token = FirebaseMessaging.getInstance().token // 생성된 토큰 저장하고
+//                            Log.d("token","$token")
+//                            // 토큰이 제대로 저장됐으면 신청 저장 진행
+//                            token.addOnCompleteListener {task->
+//                                if(task.isSuccessful){
+//                                    Client.retrofit.insertEventAppToken(eventId, userId!!,token.toString()).enqueue(object:retrofit2.Callback<Int>{
+//                                        override fun onResponse(call: Call<Int>,response: Response<Int>) {
+//                                            Log.d("insert num","${response.body()}")
+//                                            AlertDialog.Builder(this@EventDetailActivity).run {
+//                                                if(response.body() == 2){
+//                                                    setMessage("신청 완료되었습니다.")
+//                                                }
+//                                                else{
+//                                                    setMessage("이미 신청한 행사입니다.")
+//                                                }
+//
+//                                                setNegativeButton("닫기",null)
+//
+//                                                // 글자색 변경
+//                                                val dialog = create()
+//                                                dialog.setOnShowListener {
+//                                                    val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+//                                                    negativeButton.setTextColor(Color.BLACK)
+//                                                }
+//                                                dialog.show()
+//                                            }
+//                                            setResult(RESULT_OK)
+//                                        }
+//
+//                                        override fun onFailure(call: Call<Int>, t: Throwable) {
+//                                            Log.d("insert error","${t.message}")
+//                                        }
+//                                    })
+//                                } //if
+//                                else{
+//                                    Log.d("insert error","${error(this@run)}, 토큰 저장 에러")
+//                                }
+//                            }// addOnComplete
+
+
+                        // 기존 db 연결버전
                             Client.retrofit.insertEventApp(eventId, userId!!).enqueue(object:retrofit2.Callback<Int>{
                                 override fun onResponse(call: Call<Int>, response: Response<Int>) {
                                     Log.d("insert num","${response.body()}")
@@ -219,6 +262,7 @@ class EventDetailActivity : AppCompatActivity() {
                                     Log.d("insert error","${t.message}")
                                 }
                             }) // retrofit
+
                         }// onclick
                     }) // positive
                     setNegativeButton("취소",null)

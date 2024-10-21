@@ -24,6 +24,8 @@ public class AppEventAppController {
     // app 테이블에 데이터 한 개 저장
     // 스케줄 테이블에 해당 행사 id에 해당하는 스케줄 아이디 뽑아오기
     // 스케줄 아이디 그 개수만큼 attend_info 에 저장 & 그 정보(eventId, scheduleId, userId) 이용해서 큐알 이미지 생성 후 저장
+
+    // 토큰도 같이 저장되나
     @PostMapping("/application/{eventId}/{userId}")
     public ResponseEntity<Integer> addApplication(@PathVariable Long eventId, @PathVariable Long userId) throws Exception {
 
