@@ -92,22 +92,4 @@ public class EventEntity {
     @ToString.Exclude
     private List<EventAppEntity> eventAppList = new ArrayList<>();
 
-
-    public void updateEvent(String eventTitle, String eventContent, String eventPoster) {
-        this.eventTitle = eventTitle;
-        this.eventContent = eventContent;
-        this.eventPoster = eventPoster;
-    }
-
-    public void acceptEvent(UserEntity approver) {
-        this.eventAccept = 2;
-        this.approver = approver;
-    }
-
-    public void rejectEvent() {
-        this.eventAccept = 3;
-        this.approver = null;
-        this.acceptedDate = null;
-    }
-
 }
