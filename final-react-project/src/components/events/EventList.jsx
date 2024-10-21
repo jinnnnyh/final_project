@@ -100,9 +100,12 @@ function EventList() {
   return (
     <section>
       <Events />
-      <div className={'d-flex justify-content-end'}>
-        <button type={'button'} className={'btn btn-danger'} onClick={moveToEventWrite}>행사 등록</button>
-      </div>
+      {
+        sessionStorage.getItem('permission') === '총무' && (
+          <div className={'d-flex justify-content-end'}>
+            <button type={'button'} className={'btn btn-danger'} onClick={moveToEventWrite}>행사 등록</button>
+          </div>
+        )}
       <div className={'d-inline-flex justify-content-end mb-3'}>
         <select
           className={'form-select me-2'}
@@ -155,9 +158,13 @@ function EventList() {
       {
         eventDataItems.map(item => {
           const visibleDate = new Date(item.visibleDate);
+          visibleDate.setHours(0, 0, 0, 0)
           const invisibleDate = new Date(item.invisibleDate);
+          invisibleDate.setHours(0,0,0,0)
           const startDate = new Date(item.startDate);
+          startDate.setHours(0,0,0,0)
           const endDate = new Date(item.endDate);
+          endDate.setHours(0,0,0,0)
           let recruitmentStatus = '';
 
           if (item.eventAccept === 3) {

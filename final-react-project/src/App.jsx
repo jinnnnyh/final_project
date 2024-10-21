@@ -38,6 +38,7 @@ function App() {
                 <Route path="/event/attendList/:eventId" element={<EventAttendList/>}/>
                 <Route path="/member" element={<MemberList/>}/>
                 <Route path="/errorPage" element={<ErrorPage/>}/>
+                <Route path="/event/updateEvent/:eventId" element={<EventWrite/>} />
               </Routes>
             </MainPages>
           </div>

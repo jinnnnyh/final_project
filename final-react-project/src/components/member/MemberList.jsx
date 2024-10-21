@@ -7,17 +7,17 @@ import {useParams} from "react-router-dom";
 
 function MemberList () {
 
-  const [memberList, setMemberList] = useState([]);
   const [memberListData, setMemberListData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(8); // 한 페이지당 항목 수
-  const [selectedOption, setSelectedOption] = useState('all'); // 기본값 'all'
+  const [itemsPerPage] = useState(10); // 한 페이지당 항목 수
   const { userId } = useParams();
+  const [roleFilter, setRoleFilter] = useState('all');
+  const [accountSearch, setAccountSearch] = useState('');
+  const [nameSearch, setNameSearch] = useState('');
 
   useEffect(() => {
     axios.get('http://localhost:8080/user/userManage')
       .then(res => {
-        setMemberList(res.data);
         setMemberListData(res.data);
         //console.log(memberList);
       })
@@ -27,47 +27,63 @@ function MemberList () {
   }, []);
 
 
-  useEffect(() => {
-    // 선택된 옵션에 따라 데이터 필터링
-    if (selectedOption === 'all') {
-      setMemberListData(memberList);
-    } else {
-      setMemberListData(memberList.filter(item => item.role === selectedOption));
-    }
-  }, [selectedOption, memberList]);
+
+  const memberListFilter = memberListData.filter(user => {
+
+    const isRoleMatch = (roleFilter === 'all') ||
+      (roleFilter === 'president' && user.role === 'ROLE_PRESIDENT') ||
+      (roleFilter === 'secretary' && user.role === 'ROLE_SECRETARY') ||
+      (roleFilter === 'regular' && user.role === 'ROLE_REGULAR') ||
+      (roleFilter === 'associate' && user.role === 'ROLE_ASSOCIATE') ||
+      (roleFilter === 'deleted' && user.role === 'ROLE_DELETE');
+
+    const isNameMatch = user.name.toLowerCase().includes(nameSearch.toLowerCase());
+    const isIdMatch = user.userAccount.toLowerCase().includes(accountSearch.toLowerCase());
+
+    return isRoleMatch && isNameMatch && isIdMatch;
+  });
 
 
   // 페이징 현재 페이지에 표시할 데이터
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const memberItems = memberListData.slice(indexOfFirstItem, indexOfLastItem);
-
-  // 페이지 번호 계산
-  const getPostNumber = (index) => index + 1 + (currentPage - 1) * postsPerPage;
+  const memberItems = memberListFilter.slice(indexOfFirstItem, indexOfLastItem);
 
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const handleSelectChange = (event) => {
-    setSelectedOption(event.target.value);
-    setCurrentPage(1);// 옵션 변경 시 페이지를 1로 리셋
+  const handleRoleFilterChange = (e) => {
+    setRoleFilter(e.target.value);
+    setCurrentPage(1); // 필터링 시 페이지를 1로 초기화
+  };
+
+  const handleAccountSearchChange = (e) => {
+    setAccountSearch(e.target.value);
+    setCurrentPage(1); // 필터링 시 페이지를 1로 초기화
+  };
+
+  const handleNameSearchChange = (e) => {
+    setNameSearch(e.target.value);
+    setCurrentPage(1); // 필터링 시 페이지를 1로 초기화
   };
 
 
   // 회원탈퇴
-  const handleDelete = async (userId) => {
+  const handleDelete = async(userId) => {
     const confirmed = window.confirm('회원을 탈퇴처리 하시겠습니까?');
-    try {
+
+    if (confirmed) {
       await axios.delete(`http://localhost:8080/user/signOut/${userId}`);
       setMemberListData(memberListData.filter(item => item.userId !== userId));
       alert("회원이 삭제되었습니다.");
-    } catch (error) {
-      alert("삭제 중 오류가 발생했습니다.");
+    } else {
       // console.error("삭제 중 오류 발생:", error);
     }
   };
+
+
 
   // 승인여부
   const handleApproval = async(userId) => {
@@ -75,18 +91,16 @@ function MemberList () {
     //   return  alert("승인권한이 없습니다.")
     // }
 
-    const confirmed = window.confirm('승인 하시겠습니까?');
-    try {
+    const confirmed = window.confirm("승인 하시겠습니까?");
+
+    if (confirmed) {
       await axios.put(`http://localhost:8080/user/signAccept/${userId}`);
       setMemberListData(memberListData.filter(item => item.userId !== userId));
       alert("승인되었습니다.");
-    } catch (error) {
-      alert("승인 중 오류가 발생했습니다.");
+    } else {
       // console.error("승인 중 오류 발생:", error);
     }
   };
-
-
 
 
 // 역할 변환
@@ -108,25 +122,40 @@ function MemberList () {
   };
 
 
-
-
+  
   return (
     <section>
       <Member/>
-      <div className={'d-flex justify-content-end mb-3'}>
-        <p className={'text-danger mt-1 me-3'}>※ 직위별 구분 가능</p>
-        <form action="">
-          <select value={selectedOption} onChange={handleSelectChange} className={'px-2 py-1'}>
-            <option value="all">전체</option>
-            <option value="ROLE_PRESIDENT">협회장</option>
-            <option value="ROLE_SECRETARY">총무</option>
-            <option value="ROLE_REGULAR">정회원</option>
-            <option value="ROLE_ASSOCIATE">준회원</option>
-            <option value="ROLE_DELETE">탈퇴회원</option>
-          </select>
-        </form>
-      </div>
 
+      <div className="d-flex mb-3">
+        <input
+          type="text"
+          placeholder="아이디 검색"
+          value={accountSearch}
+          onChange={handleAccountSearchChange}
+          className="form-control me-2"
+        />
+        <input
+          type="text"
+          placeholder="이름 검색"
+          value={nameSearch}
+          onChange={handleNameSearchChange}
+          className="form-control me-2"
+        />
+        <select
+          id="roleFilter"
+          className="form-select form-select-sm"
+          value={roleFilter}
+          onChange={handleRoleFilterChange}
+        >
+          <option value="all">직위 : 전체</option>
+          <option value="president">협회장</option>
+          <option value="secretary">총무</option>
+          <option value="regular">정회원</option>
+          <option value="associate">준회원</option>
+          <option value="deleted">탈퇴회원</option>
+        </select>
+      </div>
       <div>
         <table className={'table table-custom'}>
           <colgroup>
@@ -166,14 +195,16 @@ function MemberList () {
 
                 {/* 승인대기 버튼은 준회원만 표출 */}
                 {item.role === 'ROLE_ASSOCIATE' ?
-                  <button type={'button'} className={'btn btn-outline-point py-1'} onClick={() => handleApproval(item.userId)}>승인</button>
+                  <button type={'button'} className={'btn btn-outline-point py-1'}
+                          onClick={() => handleApproval(item.userId)}>승인</button>
                   : <p></p>
                 }
               </td>
               <td>
                 {/* 탈퇴회원은 탈퇴버튼 없음 */}
                 {item.role === 'ROLE_DELETE' ? <p></p>
-                  : <button type={'button'} className={'btn btn-outline-danger py-1'} onClick={() => handleDelete(item.userId)}>회원탈퇴</button>
+                  : <button type={'button'} className={'btn btn-outline-danger py-1'}
+                            onClick={() => handleDelete(item.userId)}>회원탈퇴</button>
                 }
               </td>
             </tr>

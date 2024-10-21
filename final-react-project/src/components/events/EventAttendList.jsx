@@ -22,6 +22,8 @@ function EventAttendList() {
   const [roleFilter, setRoleFilter] = useState('all');
   const [accountSearch, setAccountSearch] = useState('');
   const [nameSearch, setNameSearch] = useState('');
+
+
   const [selectedDay, setSelectedDay] = useState('all');
 
   useEffect(() => {
