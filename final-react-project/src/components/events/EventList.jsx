@@ -100,9 +100,12 @@ function EventList() {
   return (
     <section>
       <Events />
-      <div className={'d-flex justify-content-end'}>
-        <button type={'button'} className={'btn btn-danger'} onClick={moveToEventWrite}>행사 등록</button>
-      </div>
+      {
+        sessionStorage.getItem('permission') === '총무' && (
+          <div className={'d-flex justify-content-end'}>
+            <button type={'button'} className={'btn btn-danger'} onClick={moveToEventWrite}>행사 등록</button>
+          </div>
+        )}
       <div className={'d-inline-flex justify-content-end mb-3'}>
         <select
           className={'form-select me-2'}

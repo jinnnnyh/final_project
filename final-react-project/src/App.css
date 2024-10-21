@@ -14,8 +14,8 @@
 }
 
 .table-custom th {
-  background-color: #283eae;
-  color: white;
+  background-color: #eeeff7;
+  /*color: white;*/
 }
 
 .table-custom td {
@@ -36,7 +36,7 @@
 }
 
 .btn {
-  border: 1px solid #ccc;
+  /*border: 1px solid #ccc;*/
   margin-right: 5px;
 }
 
@@ -207,7 +207,7 @@
 /* 썸네일 이미지 */
 .thumbnail {
   width: 350px;
-  height: 240px;
+  height: 230px;
   border:1px solid #ddd;
 }
 
