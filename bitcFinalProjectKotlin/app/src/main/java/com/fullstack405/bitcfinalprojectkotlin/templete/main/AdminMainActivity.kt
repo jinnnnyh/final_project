@@ -31,6 +31,7 @@ class AdminMainActivity : AppCompatActivity() {
     lateinit var mainEventListAdapter:MainEventListAdapter
     var userId = 0L
     var userPermission =""
+    var userName = "none"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +44,7 @@ class AdminMainActivity : AppCompatActivity() {
             insets
         }
         userId = intent.getLongExtra("userId",0)
-        val userName = intent.getStringExtra("userName")
+        userName = intent.getStringExtra("userName")!!
         userPermission = intent.getStringExtra("userPermission")!!
 
         if(userPermission.equals("ROLE_SECRETARY")){
@@ -57,14 +58,17 @@ class AdminMainActivity : AppCompatActivity() {
         }
         binding.userName.text ="${userPermission} ${userName}님"
 
+        // 행사 안내 목록
         val intent_event = Intent(this, EventListActivity::class.java)
         intent_event.putExtra("userId",userId)
         intent_event.putExtra("userPermission",userPermission)
 
+        // 신청 내역 목록
         val intentAttendList = Intent(this, AttendListActivity::class.java)
         intentAttendList.putExtra("userId",userId)
         intentAttendList.putExtra("userName",userName)
 
+        // 회원정보수정
         val intent_userInfoEdit = Intent(this,EditUserInfoActivity::class.java)
         intent_userInfoEdit.putExtra("userId",userId)
 
@@ -172,15 +176,16 @@ class AdminMainActivity : AppCompatActivity() {
                     binding.txtAttend2.text = "예정된 행사가 없습니다."
                     binding.attendDate2.isVisible = false
                 }else{
+                    // 신청 상세
                     val intent_attendDetail = Intent(this@AdminMainActivity, AttendDetailActivity::class.java)
-                    binding.txtAttend.setOnClickListener {
+                    binding.txtAttend2.setOnClickListener {
                         // 회원) 신청 상세 페이지로 이동
                         intent_attendDetail.putExtra("eventId",data!!.eventId)
                         intent_attendDetail.putExtra("userId",userId)
-                        intent_attendDetail.putExtra("complete",data.eventComp)
+                        intent_attendDetail.putExtra("userName",userName)
                         startActivity(intent_attendDetail)
                     }
-                    binding.attendDate.isVisible = true
+                    binding.attendDate2.isVisible = true
                     binding.txtAttend2.text = data!!.eventTitle
                     binding.attendDate2.text = "행사일 : ${data.eventDate}  |  ${data.startTime}"
 

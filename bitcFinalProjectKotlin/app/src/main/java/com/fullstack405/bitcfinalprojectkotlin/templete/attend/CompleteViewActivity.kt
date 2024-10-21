@@ -48,8 +48,6 @@ class CompleteViewActivity : AppCompatActivity() {
                     binding.topDate.text = "${data.schedules[0].get("eventDate").toString()}~${data.schedules[data.schedules.size-1].get("eventDate").toString()}"
                 }
 
-                binding.title.text = data.eventTitle // 내용 속 제목
-
                 // 수료증 날짜 = 마지막 날의 날짜
                 binding.month.text =data.schedules[data.schedules.size-1].get("eventDate").toString().substring(5, 7)
                 binding.date.text=data.schedules[data.schedules.size-1].get("eventDate").toString().substring(8, 10)

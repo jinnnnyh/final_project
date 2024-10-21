@@ -120,11 +120,19 @@ class EventDetailActivity : AppCompatActivity() {
                             }
                         }) // positiveBtn
                         setNegativeButton("취소",null)
-                        show()
-                    } //추가하기 dialog
-                }
 
-            }
+                        // 글자색 바꾸기
+                        val dialog = create()
+                        dialog.setOnShowListener {
+                            val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                            val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                            positiveButton.setTextColor(Color.BLACK) // 원하는 색상으로 변경
+                            negativeButton.setTextColor(Color.BLACK)
+                        }
+                        dialog.show()
+                    } //추가하기 dialog
+                } // 추가하기 클릭 이벤트
+            }//binding
         } // if permission
 
         val cal = Calendar.getInstance()
@@ -133,11 +141,11 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        var url = "http://10.100.105.168:8080/eventImg/"
+        val url = "http://10.100.105.168:8080/eventImg/"
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기
-        Client.retrofit.findEventId(eventId!!).enqueue(object:retrofit2.Callback<EventDetailData>{
+        Client.retrofit.findEventId(eventId,null).enqueue(object:retrofit2.Callback<EventDetailData>{
             override fun onResponse(call: Call<EventDetailData>, response: Response<EventDetailData>) {
                 Log.d("findEventId","${response.body()}")
                 event = response.body() as EventDetailData
@@ -152,11 +160,14 @@ class EventDetailActivity : AppCompatActivity() {
                     .into(binding.dImage)
 
                 var endDate = event.schedules[event.schedules.size-1].get("eventDate").toString()
-                // 관리자로 접속해서 qr 스캐너가 보인다면 마지막날 다음날 scanner 버튼 비활성화
+                // 관리자로 접속해서 qr 스캐너가 보인다면 마지막날 다음날 scanner 버튼 비활성화 + 추가하기 비활성화
                 if(binding.btnQRscanner.isVisible && !userPermission.equals("정회원")){
                     if(endDate < today){
                         binding.btnQRscanner.isEnabled = false
                         binding.btnQRscanner.setBackgroundColor(Color.parseColor("#D5D5D5"))
+
+                        binding.btnAddAppUser.isEnabled =false
+                        binding.btnAddAppUser.setBackgroundColor(Color.parseColor("#D5D5D5"))
                     }
 
                 }
@@ -176,7 +187,7 @@ class EventDetailActivity : AppCompatActivity() {
             binding.btnSubmit.setOnClickListener {
                 // 확인 다이얼로그
                 AlertDialog.Builder(this).run{
-                    setMessage("해당 행사에 참석하시겠습니까?")
+                    setMessage("해당 행사를 신청하시겠습니까?")
                     setPositiveButton("확인",object:DialogInterface.OnClickListener{
                         override fun onClick(p0: DialogInterface?, p1: Int) {
                             // db 연결버전
@@ -192,7 +203,14 @@ class EventDetailActivity : AppCompatActivity() {
                                         }
 
                                         setNegativeButton("닫기",null)
-                                        show()
+
+                                        // 글자색 변경
+                                        val dialog = create()
+                                        dialog.setOnShowListener {
+                                            val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                                            negativeButton.setTextColor(Color.BLACK)
+                                        }
+                                        dialog.show()
                                     }
                                     setResult(RESULT_OK)
                                 }
@@ -204,7 +222,16 @@ class EventDetailActivity : AppCompatActivity() {
                         }// onclick
                     }) // positive
                     setNegativeButton("취소",null)
-                    show()
+
+                    // 글자색 변경
+                    val dialog = create()
+                    dialog.setOnShowListener {
+                        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        positiveButton.setTextColor(Color.BLACK) // 원하는 색상으로 변경
+                        negativeButton.setTextColor(Color.BLACK)
+                    }
+                    dialog.show()
                 }
             }
         }else{
@@ -253,7 +280,6 @@ class EventDetailActivity : AppCompatActivity() {
     private val barcodeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             val scanResult = result.data?.getStringExtra("SCAN_RESULT")
-            binding.btnSubmit.text = scanResult ?: "스캔 실패"
 //            1-12-1
             val splitData = scanResult!!.split("-")
 
@@ -265,7 +291,13 @@ class EventDetailActivity : AppCompatActivity() {
                 AlertDialog.Builder(this@EventDetailActivity).run{
                     setMessage("해당 행사와 일치하지 않는 QR 입니다. 다시 확인해주세요.")
                     setNegativeButton("닫기", null)
-                    show()
+                    // 글자색 변경
+                    val dialog = create()
+                    dialog.setOnShowListener {
+                        val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        negativeButton.setTextColor(Color.BLACK)
+                    }
+                    dialog.show()
                 }
                 return@registerForActivityResult
             }
@@ -289,7 +321,13 @@ class EventDetailActivity : AppCompatActivity() {
                             dialogQr.userOut.text = "퇴장시간 : ${data.checkoutTime}"
                         }
                         setNegativeButton("닫기", null)
-                        show()
+                        // 글자색 변경
+                        val dialog = create()
+                        dialog.setOnShowListener {
+                            val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                            negativeButton.setTextColor(Color.BLACK)
+                        }
+                        dialog.show()
                     }
 
                 } // onResponse
@@ -298,7 +336,13 @@ class EventDetailActivity : AppCompatActivity() {
                     AlertDialog.Builder(this@EventDetailActivity).run {
                         setMessage("이미 처리된 QR입니다. 다시 확인해주세요.")
                         setNegativeButton("닫기", null)
-                        show()
+                        // 글자색 변경
+                        val dialog = create()
+                        dialog.setOnShowListener {
+                            val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                            negativeButton.setTextColor(Color.BLACK)
+                        }
+                        dialog.show()
                     }
                     Log.d("insertQRCheck", "${t.message}")
                 }

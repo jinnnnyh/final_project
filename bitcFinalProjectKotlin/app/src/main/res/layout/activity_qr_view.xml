@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".templete.attend.QrViewActivity">
+
     <TextView
         android:id="@+id/cateTitle"
         android:layout_width="wrap_content"
@@ -13,8 +14,8 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/notosans_bold"
         android:text="신청내역"
-        android:textSize="24sp"
         android:textColor="#343A40"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,10 +35,10 @@
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +54,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -76,48 +78,36 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/notosans_medium"
-        android:text="행사이름"
-        android:textSize="20sp"
+        android:text="행사명"
         android:textColor="#212529"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cateTitle" />
 
     <TextView
         android:id="@+id/eventName"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/notosans_medium"
-        android:textSize="20sp"
-        android:textColor="#212529"
         android:text="data"
+        android:textColor="#212529"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/cateTitle" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/notosans_medium"
-        android:text="행사일"
-        android:textSize="20sp"
-        android:textColor="#212529"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventName" />
 
     <TextView
         android:id="@+id/eventDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/notosans_medium"
-        android:text="data"
-        android:textSize="20sp"
+        android:text="행사일"
         android:textColor="#212529"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eventName" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

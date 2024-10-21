@@ -11,5 +11,5 @@ object Client {
   .build()
   .create(Interface::class.java)
 
-  // EventDetailActivity 이미지 url, QrViewActivity 이미지 url ip 주소 수정하기
+  // EventDetailActivity 이미지 url, QrViewActivity 이미지 url, AttendDetailActivity 이미지 url ip 주소 수정하기
 }

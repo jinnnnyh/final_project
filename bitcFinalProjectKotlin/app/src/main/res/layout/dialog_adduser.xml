@@ -53,10 +53,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
-        android:text="폰번호"
-        android:textSize="16sp"
-        android:textColor="#333333"
         android:fontFamily="@font/notosans_bold"
+        android:text="휴대폰 번호"
+        android:textColor="#333333"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_name" />
 
