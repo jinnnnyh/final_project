@@ -29,6 +29,7 @@ import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventDetailBi
 import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogAdduserBinding
 import com.fullstack405.bitcfinalprojectkotlin.databinding.DialogQrInfoBinding
 import com.fullstack405.bitcfinalprojectkotlin.templete.QR.CustomCaptureActivity
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -51,11 +52,11 @@ class EventDetailActivity : AppCompatActivity() {
         }
 
         eventId = intent.getLongExtra("eventId",0)
-        var isRegistrationOpen = intent?.getCharExtra("isRegistrationOpen",'N') // 행사신청 마감 Y : 진행중 , N:마감
-        var userId = intent?.getLongExtra("userId",0) // 접속자Id
+        val isRegistrationOpen = intent?.getCharExtra("isRegistrationOpen",'N') // 행사신청 마감 Y : 진행중 , N:마감
+        val userId = intent?.getLongExtra("userId",0) // 접속자Id
 
         // 회원인지 아닌지만 판단
-        var userPermission = intent?.getStringExtra("userPermission")
+        val userPermission = intent?.getStringExtra("userPermission")
 
         binding.btnQRscanner.isVisible = false
         binding.btnAddAppUser.isVisible = false
@@ -190,7 +191,8 @@ class EventDetailActivity : AppCompatActivity() {
                     setMessage("해당 행사를 신청하시겠습니까?")
                     setPositiveButton("확인",object:DialogInterface.OnClickListener{
                         override fun onClick(p0: DialogInterface?, p1: Int) {
-                            // db 연결버전
+
+                        // 기존 db 연결버전
                             Client.retrofit.insertEventApp(eventId, userId!!).enqueue(object:retrofit2.Callback<Int>{
                                 override fun onResponse(call: Call<Int>, response: Response<Int>) {
                                     Log.d("insert num","${response.body()}")
@@ -219,6 +221,7 @@ class EventDetailActivity : AppCompatActivity() {
                                     Log.d("insert error","${t.message}")
                                 }
                             }) // retrofit
+
                         }// onclick
                     }) // positive
                     setNegativeButton("취소",null)

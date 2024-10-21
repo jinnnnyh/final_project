@@ -47,6 +47,10 @@ public class EventAppEntity {
     @ToString.Exclude
     private EventEntity event;
 
+    // 푸시알림용 토큰
+    @Column(name="token")
+    private String token;
+
 
     public void updateEventComp() {
         this.eventComp = 'Y';

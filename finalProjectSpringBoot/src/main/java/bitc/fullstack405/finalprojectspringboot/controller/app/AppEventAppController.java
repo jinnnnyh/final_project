@@ -24,6 +24,8 @@ public class AppEventAppController {
     // app 테이블에 데이터 한 개 저장
     // 스케줄 테이블에 해당 행사 id에 해당하는 스케줄 아이디 뽑아오기
     // 스케줄 아이디 그 개수만큼 attend_info 에 저장 & 그 정보(eventId, scheduleId, userId) 이용해서 큐알 이미지 생성 후 저장
+
+    // 토큰도 같이 저장되나
     @PostMapping("/application/{eventId}/{userId}")
     public ResponseEntity<Integer> addApplication(@PathVariable Long eventId, @PathVariable Long userId) throws Exception {
 
@@ -83,7 +85,7 @@ public class AppEventAppController {
     // 예정 행사 없으면 error, 앱에서 예정 행사 없음 처리
     // [조건] 신청 행사 중 오늘 기준으로 가장 가까운 날짜, 시간 체크((현재 시각 <= end_time), 해당 회차의 행사가 종료할 때까지 보이게)
     // [반환] event id, event title, 조건에 맞는 행사 날짜(eventDate), 수료 여부(eventComp), 해당 회차의 시작(start_time)/종료(end_time) 시간(HH:MM)
-    @GetMapping("/upcoming-event/{userId}")
+    @PostMapping("/upcoming-event/{userId}")
     public ResponseEntity<AppUserUpcomingEventResponse> findUpcomingEventForUser(@PathVariable Long userId) {
         AppUserUpcomingEventResponse upcomingEvent = eventAppService.findUpcomingEventForUser(userId);
         return ResponseEntity.ok().body(upcomingEvent);
