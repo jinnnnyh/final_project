@@ -1,5 +1,6 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.event
 
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +15,8 @@ import com.fullstack405.bitcfinalprojectkotlin.data.EventListData
 import com.fullstack405.bitcfinalprojectkotlin.databinding.ActivityEventListBinding
 import retrofit2.Call
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class EventListActivity : AppCompatActivity() {
     
@@ -57,7 +60,20 @@ class EventListActivity : AppCompatActivity() {
         Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
             override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
                 Log.d("event List load","${response.body()}")
-                eventList = response.body() as MutableList<EventListData>
+
+                val cal = Calendar.getInstance()
+                cal.time = Date() // 오늘 날짜
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+                val today = dateFormat.format(cal.time)
+
+
+                val resList = response.body() as MutableList<EventListData>
+                // visibleDate <= 오늘
+                for(item in resList){
+                    if(item.visibleDate <= today ){
+                        eventList.add(item)
+                    }
+                }
                 var eventListAdapter = EventListAdapter(eventList,userId,userPermission)
                 binding.recyclerView.adapter = eventListAdapter
                 binding.recyclerView.layoutManager = LinearLayoutManager(this@EventListActivity)

@@ -1,6 +1,7 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.main
 
 import android.content.Intent
+import android.icu.util.Calendar
 import android.media.metrics.Event
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,8 @@ import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
 import retrofit2.Call
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
   lateinit var binding:ActivityMainBinding
@@ -170,16 +173,29 @@ class MainActivity : AppCompatActivity() {
       override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
         eventList.clear()
 
-        var resList = response.body() as MutableList<EventListData>?
+        val resList = response.body() as MutableList<EventListData>? // 전체 리스트 저장
+        val resList2 = mutableListOf<EventListData>() // visible 행사만 저장할 데이터 초기화
 
+        val cal = Calendar.getInstance()
+        cal.time = Date() // 오늘 날짜
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val today = dateFormat.format(cal.time)
+
+        if (resList != null) {
+          for(item in resList){
+            if(item.visibleDate <= today){
+              resList2.add(item) // visible 행사만 저장
+            }
+          }
+        }
         // 목록은 항상 내림차순으로 받아옴, 상위 5개만 메인에 표출
-        if(resList!!.size-1 < 5){ // 5개 미만일 경우
-          for(i in 0..resList.size-1){
-            eventList.add(resList[i])
+        if(resList2!!.size-1 < 5){ // 5개 미만일 경우
+          for(i in 0..resList2.size-1){
+            eventList.add(resList2[i])
           }
         }else{
           for(i in 0..4){
-            eventList.add(resList[i])
+            eventList.add(resList2[i])
           }
         }
 
