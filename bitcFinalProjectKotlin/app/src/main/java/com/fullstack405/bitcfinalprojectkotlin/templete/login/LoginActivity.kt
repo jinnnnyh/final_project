@@ -1,5 +1,6 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -29,12 +30,43 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        
+        // 자동로그인 데이터
+        val sharedPreferences = getSharedPreferences("app_pref",Context.MODE_PRIVATE)
+        val checkedUserId = sharedPreferences.getLong("userId",0)
+        val checkedRole = sharedPreferences.getString("userRole",null)
+        val checkedName = sharedPreferences.getString("userName",null)
+        
 
-        var intent = Intent(this@LoginActivity, MainActivity::class.java)
-        var intentAdmin = Intent(this@LoginActivity, AdminMainActivity::class.java)
-        var fail = 0
+        // 인텐트 데이터
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        val intentAdmin = Intent(this@LoginActivity, AdminMainActivity::class.java)
 
 
+        // 자동로그인 로직
+        if (checkedName != null) {
+            // 자동로그인 시 권한 확인 후 메인화면 이동
+            if(checkedRole == "ROLE_REGULAR"){
+                // 정회원
+                intent.putExtra("userId", checkedUserId)
+                intent.putExtra("userName",checkedName)
+                intent.putExtra("userPermission", checkedRole)
+                startActivity(intent)
+                finish() // 현재 액티비티 종료
+            }
+            else{
+                // 정회원 외 관리자들
+                intentAdmin.putExtra("userId", checkedUserId)
+                intentAdmin.putExtra("userName",checkedName)
+                intentAdmin.putExtra("userPermission", checkedRole)
+                startActivity(intentAdmin)
+                finish() // 현재 액티비티 종료
+            }
+        }
+
+
+        
+        // 로그인 버튼
         binding.btnLogin.setOnClickListener {
 
             // 유저 account , pw 받아서 디비에 확인 요청
@@ -49,16 +81,19 @@ class LoginActivity : AppCompatActivity() {
                         intent.putExtra("userId", user.userId)
                         intent.putExtra("userName", user.name)
                         intent.putExtra("userPermission", user.role)
+                        saveUserData(user.userId,user.role,user.name)
                         startActivity(intent)
                     } else if (user.role == "ROLE_SECRETARY") { // 총무
                         intentAdmin.putExtra("userId", user.userId)
                         intentAdmin.putExtra("userName", user.name)
                         intentAdmin.putExtra("userPermission", user.role)
+                        saveUserData(user.userId,user.role,user.name)
                         startActivity(intentAdmin)
                     } else if (user.role == "ROLE_PRESIDENT") { // 협회장
                         intentAdmin.putExtra("userId", user.userId)
                         intentAdmin.putExtra("userName", user.name)
                         intentAdmin.putExtra("userPermission", user.role)
+                        saveUserData(user.userId,user.role,user.name)
                         startActivity(intentAdmin)
                     } else {
                         Toast.makeText(
@@ -76,15 +111,27 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, "로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요.",Toast.LENGTH_SHORT).show()
                     binding.inputId.setText("")
                     binding.inputPw.setText("")
-                    fail++
                 }
 
             })
-        }
+
+        } // btn login
 
         binding.btnSignup.setOnClickListener {
             var intentSignup = Intent(this,SignupActivity::class.java)
             startActivity(intentSignup)
         }
+    } //onCreate
+
+    // 앱에 정보 저장
+    fun saveUserData(userId:Long, userRole: String,userName:String){
+        val sharedPreferences = getSharedPreferences("app_pref", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()){
+            putLong("userId",userId)
+            putString("userRole",userRole)
+            putString("userName",userName)
+            apply()
+        }
+        Log.d("savaUserData","$sharedPreferences")
     }
 }

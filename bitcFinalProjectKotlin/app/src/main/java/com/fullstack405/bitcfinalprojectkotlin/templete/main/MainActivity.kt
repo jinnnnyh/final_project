@@ -1,5 +1,6 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.main
 
+import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
 import android.media.metrics.Event
@@ -113,8 +114,7 @@ class MainActivity : AppCompatActivity() {
 
     // 로그아웃
     binding.logout.setOnClickListener {
-      var intentLogin = Intent(this,LoginActivity::class.java)
-      startActivity(intentLogin)
+      logoutUser()
     }
 
 
@@ -226,6 +226,19 @@ class MainActivity : AppCompatActivity() {
         }
         Log.d("FCM", msg)
       }
+  }
+
+  private fun logoutUser(){
+    val sharedPreferences = getSharedPreferences("app_pref", Context.MODE_PRIVATE)
+    with(sharedPreferences.edit()) {
+      remove("userId") // 사용자 ID 삭제
+      remove("userRole")
+      remove("userName")
+      apply()
+    }
+    val intent = Intent(this,LoginActivity::class.java)
+    startActivity(intent)
+    finish()
   }
 
 }// main
