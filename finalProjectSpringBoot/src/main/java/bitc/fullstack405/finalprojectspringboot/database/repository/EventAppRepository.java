@@ -38,7 +38,7 @@ public interface EventAppRepository extends JpaRepository<EventAppEntity, Long> 
             "CASE " +
             "  WHEN CURRENT_DATE = s.eventDate AND CURRENT_TIME <= s.endTime THEN 0 " +
             "  WHEN CURRENT_DATE < s.eventDate THEN 1 " +
-            "END, s.startTime ASC")
+            "END, s.scheduleId ASC")
     List<Object[]> findUpcomingEventForUser(Long userId);
 
 
