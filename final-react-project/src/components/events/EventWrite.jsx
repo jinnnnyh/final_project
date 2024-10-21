@@ -31,10 +31,9 @@ function EventWrite() {
           setEndTime(data.endTime);
           setMaxPeople(data.maxPeople);
           setEventContent(data.eventContent);
-          console.log('Fetched event data:', data);
         })
         .catch(error => {
-          console.error('Error fetching event data: ', error);
+          console.error('이벤트 정보를 불러오는데 실패했습니다. : ', error);
         });
     }
   }, [eventId, mode]);
