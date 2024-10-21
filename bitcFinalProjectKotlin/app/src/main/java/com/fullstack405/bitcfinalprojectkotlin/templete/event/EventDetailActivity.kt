@@ -192,47 +192,6 @@ class EventDetailActivity : AppCompatActivity() {
                     setPositiveButton("확인",object:DialogInterface.OnClickListener{
                         override fun onClick(p0: DialogInterface?, p1: Int) {
 
-//                        // 토큰 포함 버전
-//                            val token = FirebaseMessaging.getInstance().token // 생성된 토큰 저장하고
-//                            Log.d("token","$token")
-//                            // 토큰이 제대로 저장됐으면 신청 저장 진행
-//                            token.addOnCompleteListener {task->
-//                                if(task.isSuccessful){
-//                                    Client.retrofit.insertEventAppToken(eventId, userId!!,token.toString()).enqueue(object:retrofit2.Callback<Int>{
-//                                        override fun onResponse(call: Call<Int>,response: Response<Int>) {
-//                                            Log.d("insert num","${response.body()}")
-//                                            AlertDialog.Builder(this@EventDetailActivity).run {
-//                                                if(response.body() == 2){
-//                                                    setMessage("신청 완료되었습니다.")
-//                                                }
-//                                                else{
-//                                                    setMessage("이미 신청한 행사입니다.")
-//                                                }
-//
-//                                                setNegativeButton("닫기",null)
-//
-//                                                // 글자색 변경
-//                                                val dialog = create()
-//                                                dialog.setOnShowListener {
-//                                                    val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-//                                                    negativeButton.setTextColor(Color.BLACK)
-//                                                }
-//                                                dialog.show()
-//                                            }
-//                                            setResult(RESULT_OK)
-//                                        }
-//
-//                                        override fun onFailure(call: Call<Int>, t: Throwable) {
-//                                            Log.d("insert error","${t.message}")
-//                                        }
-//                                    })
-//                                } //if
-//                                else{
-//                                    Log.d("insert error","${error(this@run)}, 토큰 저장 에러")
-//                                }
-//                            }// addOnComplete
-
-
                         // 기존 db 연결버전
                             Client.retrofit.insertEventApp(eventId, userId!!).enqueue(object:retrofit2.Callback<Int>{
                                 override fun onResponse(call: Call<Int>, response: Response<Int>) {

@@ -85,7 +85,7 @@ public class AppEventAppController {
     // 예정 행사 없으면 error, 앱에서 예정 행사 없음 처리
     // [조건] 신청 행사 중 오늘 기준으로 가장 가까운 날짜, 시간 체크((현재 시각 <= end_time), 해당 회차의 행사가 종료할 때까지 보이게)
     // [반환] event id, event title, 조건에 맞는 행사 날짜(eventDate), 수료 여부(eventComp), 해당 회차의 시작(start_time)/종료(end_time) 시간(HH:MM)
-    @GetMapping("/upcoming-event/{userId}")
+    @PostMapping("/upcoming-event/{userId}")
     public ResponseEntity<AppUserUpcomingEventResponse> findUpcomingEventForUser(@PathVariable Long userId) {
         AppUserUpcomingEventResponse upcomingEvent = eventAppService.findUpcomingEventForUser(userId);
         return ResponseEntity.ok().body(upcomingEvent);
