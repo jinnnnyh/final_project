@@ -155,9 +155,13 @@ function EventList() {
       {
         eventDataItems.map(item => {
           const visibleDate = new Date(item.visibleDate);
+          visibleDate.setHours(0, 0, 0, 0)
           const invisibleDate = new Date(item.invisibleDate);
+          invisibleDate.setHours(0,0,0,0)
           const startDate = new Date(item.startDate);
+          startDate.setHours(0,0,0,0)
           const endDate = new Date(item.endDate);
+          endDate.setHours(0,0,0,0)
           let recruitmentStatus = '';
 
           if (item.eventAccept === 3) {
