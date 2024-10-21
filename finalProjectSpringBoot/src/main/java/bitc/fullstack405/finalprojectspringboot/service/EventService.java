@@ -357,7 +357,7 @@ public class EventService {
 
         FileUtils fileUtils = new FileUtils();
 
-        fileUtils.deleteFile(event.getEventPoster());
+        fileUtils.deleteFile("../eventImg/", event.getEventPoster());
 
         eventRepository.deleteById(eventId);
     }
@@ -414,7 +414,7 @@ public class EventService {
 
         if (file != null && !file.isEmpty()) {
             if (event.getEventPoster() != null) {
-                fileUtil.deleteFile(event.getEventPoster());
+                fileUtil.deleteFile("../eventImg/", event.getEventPoster());
             }
             String fileName = fileUtil.parseFileInfo(file);
             updatedEvent = updatedEvent.toBuilder()
