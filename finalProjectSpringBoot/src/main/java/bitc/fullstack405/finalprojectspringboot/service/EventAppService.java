@@ -36,6 +36,13 @@ public class EventAppService {
         return eventAppRepository.existsByEvent_EventIdAndUser_UserId(eventId, userId);
     }
 
+    // <APP> 신청하기 - 인원수 제한 확인
+    public boolean maxPeople(Long eventId) {
+        EventEntity event = eventRepository.findById(eventId).orElseThrow(() -> new IllegalArgumentException("not found : " + eventId));
+
+        return eventRepository.checkMaxPeople(eventId);
+    }
+
     // <APP> 신청하기 - event_app 테이블 데이터 저장
     @Transactional
     public void registerEventApplication(Long eventId, Long userId) throws Exception {
@@ -134,6 +141,11 @@ public class EventAppService {
     // event id, event title, 조건에 맞는 행사 날짜(eventDate), 수료 여부(eventComp), 해당 회차의 시작(start_time)/종료(end_time) 시간(HH:MM)
     public AppUserUpcomingEventResponse findUpcomingEventForUser(Long userId) {
         List<Object[]> results = eventAppRepository.findUpcomingEventForUser(userId);
+
+        if (results.isEmpty()) {
+            // 결과가 없을 경우 null 반환 또는 예외 처리
+            return null; // 또는 throw new NoSuchElementException("Upcoming event not found for user " + userId);
+        }
 
         Object[] result = results.get(0);
         EventAppEntity eventApp = (EventAppEntity) result[0];

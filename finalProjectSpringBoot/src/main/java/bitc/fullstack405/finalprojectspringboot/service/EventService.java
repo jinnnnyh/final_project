@@ -78,6 +78,11 @@ public class EventService {
     public AppAdminUpcomingEventResponse findUpcomingEventForAdmin() {
         List<EventScheduleEntity> eventSchedules = eventScheduleRepository.findUpcomingEventSchedules();
 
+        if (eventSchedules.isEmpty()) {
+            // 결과가 없을 경우 null 반환 또는 예외 처리
+            return null; // 또는 throw new NoSuchElementException("Upcoming event not found for user " + userId);
+        }
+
         EventScheduleEntity eventSchedule = eventSchedules.get(0); // 첫 번째 결과 선택
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 10/14 날짜 포맷 수정
