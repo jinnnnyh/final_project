@@ -23,6 +23,7 @@ import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendDetailActiv
 import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -47,6 +48,8 @@ class MainActivity : AppCompatActivity() {
       v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
       insets
     }
+
+    subToTopic("notice") // 알람 구독
 
     userId = intent.getLongExtra("userId",0)
     userName = intent.getStringExtra("userName")!!
@@ -211,6 +214,18 @@ class MainActivity : AppCompatActivity() {
         Log.d("main eventlsit error", "main eventList load error")
       }
     })
+  }
+
+  // 알람 구독
+  private fun subToTopic(topic:String){
+    FirebaseMessaging.getInstance().subscribeToTopic(topic)
+      .addOnCompleteListener { task ->
+        var msg = "Subscribed to topic"
+        if (!task.isSuccessful) {
+          msg = "Subscription failed"
+        }
+        Log.d("FCM", msg)
+      }
   }
 
 }// main

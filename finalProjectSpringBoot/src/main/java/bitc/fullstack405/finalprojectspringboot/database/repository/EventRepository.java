@@ -1,5 +1,6 @@
 package bitc.fullstack405.finalprojectspringboot.database.repository;
 
+import bitc.fullstack405.finalprojectspringboot.database.dto.app.event.AppEventListResponse;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,4 +35,5 @@ public interface EventRepository  extends JpaRepository<EventEntity, Long> {
 
     @Query("SELECT e FROM EventEntity e WHERE e.invisibleDate <= :date")
     List<EventEntity> findByInvisibleDateBeforeOrEqual(@Param("date") LocalDate date); // 스케줄러용. 매일자정에 마감여부 확인
+
 }
