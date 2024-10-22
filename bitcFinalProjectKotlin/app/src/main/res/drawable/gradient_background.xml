@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#f1f3ff"
+        android:centerColor="#C7E5FA"
+        android:endColor="#2040E2"
+        android:angle="270" /> <!-- 각도 설정 -->
+</shape>
