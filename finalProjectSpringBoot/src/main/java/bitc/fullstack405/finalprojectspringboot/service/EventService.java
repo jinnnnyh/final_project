@@ -278,6 +278,7 @@ public class EventService {
                     .invisibleDate(event.getInvisibleDate())
                     .eventApproverName(eventApproverName) // approver name 추가
                     .eventUploaderName(eventUploaderName) // uploader name 추가
+                    .isRegistrationOpen(event.getIsRegistrationOpen())
                     .build();
 
             eventListDTO.add(eventListDTO2);
