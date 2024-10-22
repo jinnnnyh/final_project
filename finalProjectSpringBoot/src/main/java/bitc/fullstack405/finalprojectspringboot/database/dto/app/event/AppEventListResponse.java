@@ -14,10 +14,10 @@ public class AppEventListResponse {
     private final String visibleDate; // 게시일
     private final Character isRegistrationOpen; // 신청 마감 여부
 
-    public AppEventListResponse(EventEntity event) {
+    public AppEventListResponse(EventEntity event, Character isRegistrationOpen) {
         this.eventId = event.getEventId();
         this.eventTitle = event.getEventTitle();
-        this.isRegistrationOpen = event.getIsRegistrationOpen();
+        this.isRegistrationOpen = isRegistrationOpen;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 10/14 날짜 포맷 수정
         this.visibleDate = event.getVisibleDate().format(formatter);

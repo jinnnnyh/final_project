@@ -49,8 +49,18 @@ public class EventService {
     // <APP> 회원에게 보일 행사 목록
     public List<AppEventListResponse> findAcceptedEvents() {
         List<EventEntity> events = eventRepository.findAcceptedEventsWithCapacity();
+
         return events.stream()
-                .map(AppEventListResponse::new)
+                .map(event -> {
+                    Long eventId = event.getEventId(); // EventEntity에서 eventId 가져오기
+
+                    char isRegistrationOpen = 'Y';
+                    if (event.getIsRegistrationOpen() == 'N' || eventRepository.listCheckMaxPeople(eventId)) {
+                        isRegistrationOpen = 'N';
+                    }
+
+                    return new AppEventListResponse(event, isRegistrationOpen);
+                })
                 .collect(Collectors.toList());
     }
 
