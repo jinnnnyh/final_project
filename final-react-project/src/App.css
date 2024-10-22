@@ -35,6 +35,8 @@
   z-index: 10;
 }
 
+
+/* 버튼 */
 .btn {
   /*border: 1px solid #ccc;*/
   margin-right: 5px;
@@ -50,6 +52,22 @@
   background-color: white;
   color: #283eae;
 }
+
+/* 글쓰기 버튼 */
+.btn-write:before {content: ""; display:block; clear:both; width:24px; height:24px; background:url("/src/assets/images/ico_write_w.svg") no-repeat; position: absolute; left:25px}
+.btn-write {width:150px; padding:12px 10px; background-color: #283eae; color:#fff; border:none; border-radius: 10px; position: relative; padding-left: 32px;}
+.btn-write:hover {box-shadow:#aaa 3px 3px 10px;}
+
+/* 참석자 현황 리스트 자세히 보기 버튼 */
+.btn-attendList {border:3px solid #ddd; padding:12px 20px; font-weight: bold; text-align:center; border-radius: 10px;}
+.btn-attendList:hover {background:#f5f5f5;}
+.btn-more {font-size: 0.85rem; color:#888; font-weight:lighter; position: relative; margin-left:-15px;}
+.btn-more:after {content: ""; display:block; clear:both; width:18px; height:18px; background:url("/src/assets/images/ico_open.svg") no-repeat; position: absolute; top:1px; right:-20px;}
+
+@media screen and (max-width:1500px) {
+  .btn-attendList {padding:12px}
+}
+
 
 .tabs {
   display: flex;
@@ -206,8 +224,8 @@
 
 /* 썸네일 이미지 */
 .thumbnail {
-  width: 350px;
-  height: 230px;
+  max-width: 350px;
+  max-height: 230px;
   border:1px solid #ddd;
 }
 
