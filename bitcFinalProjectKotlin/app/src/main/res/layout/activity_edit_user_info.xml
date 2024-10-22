@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".templete.main.EditUserInfoActivity">
+    tools:context=".templete.main.EditUserInfoActivity"
+    android:background="#F5F5F5">
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_back"
@@ -26,7 +27,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/notosans_bold"
         android:text="회원정보수정"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

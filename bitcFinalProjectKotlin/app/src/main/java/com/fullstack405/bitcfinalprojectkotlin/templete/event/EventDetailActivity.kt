@@ -109,6 +109,7 @@ class EventDetailActivity : AppCompatActivity() {
                                                 Toast.makeText(this@EventDetailActivity,"이미 신청한 회원입니다. 다시 확인해주세요.",Toast.LENGTH_SHORT).show()
                                             }
                                             else if(response.body() == 3){
+                                                // 추가 신청에서만 신청 인원 초과 알림
                                                 Toast.makeText(this@EventDetailActivity,"신청 인원이 초과했습니다.",Toast.LENGTH_SHORT).show()
                                             }
                                         }
@@ -203,11 +204,8 @@ class EventDetailActivity : AppCompatActivity() {
                                         if(response.body() == 2){
                                             setMessage("신청 완료되었습니다.")
                                         }
-                                        else if(response.body() == 1){
+                                        else{
                                             setMessage("이미 신청한 행사입니다.")
-                                        }
-                                        else if(response.body() == 3){
-                                            setMessage("신청 인원이 초과되었습니다.")
                                         }
 
                                         setNegativeButton("닫기",null)

@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".templete.attend.AttendListActivity">
+    tools:context=".templete.attend.AttendListActivity"
+    android:background="#F5F5F5">
 
     <TextView
         android:id="@+id/cateTitle"
@@ -38,7 +39,8 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cateTitle">
+        app:layout_constraintTop_toBottomOf="@+id/cateTitle"
+        android:background="#F5F5F5">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
