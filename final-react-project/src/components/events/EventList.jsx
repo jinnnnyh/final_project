@@ -57,7 +57,7 @@ function EventList() {
         if (today < new Date(item.visibleDate)) {
           recruitmentStatus = '모집대기';
         }
-        else if (today > new Date(item.invisibleDate) && today < new Date(item.startDate)) {
+        else if (today < new Date(item.startDate)) {
           recruitmentStatus = '행사대기';
         }
         else if (today >= new Date(item.startDate) && today <= new Date(item.endDate)) {
@@ -208,7 +208,7 @@ function EventList() {
             if (today< visibleDate) {
               recruitmentStatus = '모집대기';
             }
-            else if (today > invisibleDate && today < startDate) {
+            else if (today < startDate) {
               recruitmentStatus = '행사대기';
             }
             else if (today >= startDate && today <= endDate) {
