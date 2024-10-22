@@ -212,28 +212,15 @@ class AdminMainActivity : AppCompatActivity() {
                 eventList.clear()
 
                 val resList = response.body() as MutableList<EventListData>? // 전체 리스트 저장
-                val resList2 = mutableListOf<EventListData>() // visible 행사만 저장할 데이터 초기화
 
-                val cal = Calendar.getInstance()
-                cal.time = Date() // 오늘 날짜
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-                val today = dateFormat.format(cal.time)
-
-                if (resList != null) {
-                    for(item in resList){
-                        if(item.visibleDate <= today){
-                            resList2.add(item) // visible 행사만 저장
-                        }
-                    }
-                }
                 // 목록은 항상 내림차순으로 받아옴, 상위 3개만 메인에 표출
-                if(resList2!!.size-1 < 3){ // 3개 미만일 경우
-                    for(i in 0..resList2.size-1){
-                        eventList.add(resList2[i])
+                if(resList!!.size-1 < 3){ // 3개 미만일 경우
+                    for(i in 0..resList.size-1){
+                        eventList.add(resList[i])
                     }
                 }else{
                     for(i in 0..2){
-                        eventList.add(resList2[i])
+                        eventList.add(resList[i])
                     }
                 }
 

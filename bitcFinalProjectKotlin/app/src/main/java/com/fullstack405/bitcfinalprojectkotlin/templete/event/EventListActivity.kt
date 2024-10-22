@@ -55,25 +55,13 @@ class EventListActivity : AppCompatActivity() {
         super.onResume()
         findEventList()
     }
-    
+
     private fun findEventList(){
         Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
             override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
                 Log.d("event List load","${response.body()}")
-                eventList.clear()
-                val cal = Calendar.getInstance()
-                cal.time = Date() // 오늘 날짜
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-                val today = dateFormat.format(cal.time)
+                eventList = response.body() as MutableList<EventListData>
 
-
-                val resList = response.body() as MutableList<EventListData>
-                // visibleDate <= 오늘
-                for(item in resList){
-                    if(item.visibleDate <= today ){
-                        eventList.add(item)
-                    }
-                }
                 var eventListAdapter = EventListAdapter(eventList,userId,userPermission)
                 binding.recyclerView.adapter = eventListAdapter
                 binding.recyclerView.layoutManager = LinearLayoutManager(this@EventListActivity)
