@@ -26,6 +26,21 @@ function EventAttendList() {
 
   const [selectedDay, setSelectedDay] = useState('all');
 
+  const uploadDate = new Date();
+
+  const formatDate = (uploadDate) => {
+    const year = uploadDate.getFullYear();
+    const month = String(uploadDate.getMonth() + 1).padStart(2, '0'); // 0부터 시작하므로 +1
+    const day = String(uploadDate.getDate()).padStart(2, '0');
+    // const hours = String(uploadDate.getHours()).padStart(2, '0');
+    // const minutes = String(uploadDate.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+    // return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
+
+
+
+
   useEffect(() => {
     axios.get(`http://localhost:8080/event/attendList/${eventId}`)
       .then(res => {
@@ -93,7 +108,7 @@ function EventAttendList() {
 
   return (
     <section>
-      <h4 className="mb-5">참석자 현황 리스트</h4>
+      <h2 className="mb-5">참석자 현황 리스트</h2>
       <h4>{eventData.eventTitle}</h4>
       <div className="w-50">
         정원 : <span className="ms-3 fw-bold">{eventData.maxPeople > 0 ? eventData.maxPeople : '인원수 제한 없음'}</span>
@@ -103,7 +118,7 @@ function EventAttendList() {
           담당자 : <span className="ms-3 fw-bold">{uploader.name}</span>
         </div>
         <div className="w-50">
-          작성일 : <span className="ms-3 fw-bold">{eventData.uploadDate}</span>
+          작성일 : <span className="ms-3 fw-bold">{formatDate(uploadDate).toLocaleString() || '미정'}</span>
         </div>
       </div>
       <div className={'d-flex justify-content-between'}>
