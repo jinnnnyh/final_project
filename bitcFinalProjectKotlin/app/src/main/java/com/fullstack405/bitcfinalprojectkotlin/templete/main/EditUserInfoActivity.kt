@@ -2,6 +2,7 @@ package com.fullstack405.bitcfinalprojectkotlin.templete.main
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -110,7 +111,14 @@ class EditUserInfoActivity : AppCompatActivity() {
                     }
                 }) // positive btn
                 setNegativeButton("취소",null)
-                show()
+                val dialog = create()
+                dialog.setOnShowListener {
+                    val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    positiveButton.setTextColor(Color.BLACK)
+                    negativeButton.setTextColor(Color.BLACK)
+                }
+                dialog.show()
             } // dialog
         } // deleteUser
 
