@@ -75,13 +75,13 @@ interface Interface {
   fun findEventId(@Path("eventId") eventId:Long, @Query("userId") userId: Long?):Call<EventDetailData>
 
   // 추가 신청 받기
-  // 2: 추가 완료, 1: 중복 신청
+  //  1: 중복 신청, 2: 추가 완료, 3:초과
   @POST("/app/application-direct/{eventId}/{userAccount}")
   fun adminAppDirect(@Path("eventId")eventId: Long, @Path("userAccount")userAccount: String):Call<Int>
 
   /////////// attend
   // 신청
-  // 2: 신청 완료, 1: 중복 신청
+  // 1: 중복 신청, 2: 신청 완료,  3: 초과
   @POST("/app/application/{eventId}/{userId}")
   fun insertEventApp(@Path("eventId") eventId:Long, @Path("userId") userId:Long):Call<Int>
 

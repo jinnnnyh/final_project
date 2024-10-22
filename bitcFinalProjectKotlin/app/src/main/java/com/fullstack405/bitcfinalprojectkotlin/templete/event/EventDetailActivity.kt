@@ -105,8 +105,11 @@ class EventDetailActivity : AppCompatActivity() {
                                             if(response.body() == 2){
                                                 Toast.makeText(this@EventDetailActivity,"추가 신청이 완료되었습니다. QR을 확인해주세요.",Toast.LENGTH_SHORT).show()
                                             }
-                                            else{
+                                            else if(response.body() == 1){
                                                 Toast.makeText(this@EventDetailActivity,"이미 신청한 회원입니다. 다시 확인해주세요.",Toast.LENGTH_SHORT).show()
+                                            }
+                                            else if(response.body() == 3){
+                                                Toast.makeText(this@EventDetailActivity,"신청 인원이 초과했습니다.",Toast.LENGTH_SHORT).show()
                                             }
                                         }
 
@@ -141,7 +144,7 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        val url = "http://10.100.105.168:8080/eventImg/"
+        val url = "http://10.100.105.205:8080/eventImg/"
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기
@@ -196,11 +199,15 @@ class EventDetailActivity : AppCompatActivity() {
                                 override fun onResponse(call: Call<Int>, response: Response<Int>) {
                                     Log.d("insert num","${response.body()}")
                                     AlertDialog.Builder(this@EventDetailActivity).run {
+                                        // 1번 중복신청, 2번 신청완료, 3번 인원수 초과
                                         if(response.body() == 2){
                                             setMessage("신청 완료되었습니다.")
                                         }
-                                        else{
+                                        else if(response.body() == 1){
                                             setMessage("이미 신청한 행사입니다.")
+                                        }
+                                        else if(response.body() == 3){
+                                            setMessage("신청 인원이 초과되었습니다.")
                                         }
 
                                         setNegativeButton("닫기",null)
