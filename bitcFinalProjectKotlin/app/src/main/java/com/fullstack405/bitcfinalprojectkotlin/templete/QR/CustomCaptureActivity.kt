@@ -17,7 +17,7 @@ class CustomCaptureActivity : CaptureActivity() {
 
     private val callback = BarcodeCallback { result ->
         val scanResult = result.text
-        Toast.makeText(this, "스캔된 QR 코드: $scanResult", Toast.LENGTH_LONG).show()
+//        Toast.makeText(this, "스캔된 QR 코드: $scanResult", Toast.LENGTH_LONG).show()
 
         // 결과를 반환하고 액티비티 종료
         val resultIntent = Intent()
