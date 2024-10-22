@@ -154,7 +154,7 @@ function EventWrite() {
             {/*  <input type={'date'} className={'form-control'} placeholder={'게시일'} id={'visible-date'}/>*/}
             {/*</div>*/}
             <div className="w-100">
-              <label htmlFor={'max-people'} className={'form-label'}>인원수(선택사항)</label>
+              <label htmlFor={'max-people'} className={'form-label'}>정원수(선택사항)</label>
               <input type={'number'} className={'form-control'} placeholder={'정원을 입력해주세요.(미입력 시 정원 초과로 인한 조기 모집 마감이 되지 않습니다.)'} id={'max-people'} name={'maxPeople'} value={maxPeople} onChange={e => setMaxPeople(e.target.value)}/>
             </div>
           </div>
