@@ -14,7 +14,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/notosans_bold"
         android:text="신청내역"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textColor="#343A40"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
