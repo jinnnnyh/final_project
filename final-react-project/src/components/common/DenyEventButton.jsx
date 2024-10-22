@@ -23,8 +23,8 @@ function DenyEventButton() {
       return;
     }
 
-    // 행사승인 버튼
-    const confirmed = window.confirm("행사 승인하시겠습니까?");
+    // 행사승인 거부 버튼
+    const confirmed = window.confirm("행사 승인을 거부하시겠습니까?");
     if (confirmed) {
       try {
         const dataToSave = { id: eventId, key: "eventAccept" };
