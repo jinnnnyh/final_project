@@ -30,7 +30,7 @@ function EndEventButton() {
     if (confirmed) {
       try {
         const dataToSave = { id: eventId, key: "isRegistrationOpen" };
-        await axios.put(`http://localhost:8080/event/denyEvent/${eventId}`, dataToSave);
+        await axios.put(`http://localhost:8080/event/endEvent/${eventId}`, dataToSave);
         setEventData(eventData.filter(eventData => eventData.eventId !== eventId));
         setIsButtonDisabled(true);
         localStorage.setItem('isButtonDisabled', 'true'); // 상태를 로컬 스토리지에 저장
