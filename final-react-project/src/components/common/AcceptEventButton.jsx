@@ -30,7 +30,7 @@ function AcceptEventButton() {
 
   // 행사 승인 버튼 (승인대기 / 승인완료)
   const handleAcceptEvent = async() => {
-    if(eventData.eventAccept  === 1) {
+    if(eventData.eventAccept  === 1 || eventData.eventAccept  === 3) {
       const confirmed = window.confirm('행사 승인하시겠습니까?');
       window.location.href = `/event/${eventId}`
       if (confirmed) {
@@ -67,9 +67,11 @@ function AcceptEventButton() {
 
 
   return (
-    <button type={'button'} className={'btn btn-outline-secondary me-2'}
-            onClick={() => handleAcceptEvent()}>
-      {eventData.eventAccept === 1 ? '승인대기' : '승인완료'}
+    <button type={'button'} style={{border:'none', background:'none'}}  onClick={() => handleAcceptEvent()}>
+      {eventData.eventAccept === 1 && <span className={'btn btn-outline-point'} >승인대기</span> ||
+        eventData.eventAccept === 2 && <span className={'btn btn-point'} >승인완료</span> ||
+        eventData.eventAccept === 3 && <span className={'btn btn-outline-point'} >승인대기</span>
+      }
     </button>
   )
 }
