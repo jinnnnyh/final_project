@@ -60,7 +60,7 @@ class EventListActivity : AppCompatActivity() {
         Client.retrofit.findEventList().enqueue(object:retrofit2.Callback<List<EventListData>>{
             override fun onResponse(call: Call<List<EventListData>>, response: Response<List<EventListData>>) {
                 Log.d("event List load","${response.body()}")
-
+                eventList.clear()
                 val cal = Calendar.getInstance()
                 cal.time = Date() // 오늘 날짜
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd")
