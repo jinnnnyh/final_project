@@ -45,6 +45,9 @@ dependencies {
 
     implementation 'com.google.zxing:core:3.5.2'  // ZXing core 라이브러리
     implementation 'com.google.zxing:javase:3.5.2'  // QR 코드 생성과 이미지 파일 저장을 위한 Java SE 지원 라이브
+
+    // firebase 라이브러리
+    implementation 'com.google.firebase:firebase-admin:8.1.0'
 }
 
 //tasks.named('test') {

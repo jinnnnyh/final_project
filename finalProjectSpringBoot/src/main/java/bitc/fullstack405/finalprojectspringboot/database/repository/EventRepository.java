@@ -3,7 +3,6 @@ package bitc.fullstack405.finalprojectspringboot.database.repository;
 import bitc.fullstack405.finalprojectspringboot.database.entity.EventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -17,12 +16,21 @@ public interface EventRepository  extends JpaRepository<EventEntity, Long> {
     ////////// <APP> //////////
     ///////////////////////////
 
-    // <APP>
-    // 승인 완료(2)
+    // <APP> 승인 완료(2)
     @Query("SELECT e FROM EventEntity e " +
             "WHERE e.eventAccept = 2 " +
             "ORDER BY e.eventId DESC")
     List<EventEntity> findAcceptedEventsWithCapacity();
+
+    // <APP> 행사 신청 시 최대 인원과 같은지 확인
+    @Query("SELECT CASE " +
+            "WHEN e.maxPeople = 0 THEN false " +  // maxPeople 이 0일 때는 제한이 없으므로 false 반환
+            "WHEN COUNT(ea) + 1 > e.maxPeople THEN true " +  // 제한된 인원 초과 시 true 반환
+            "ELSE false END " +
+            "FROM EventAppEntity ea " +
+            "JOIN ea.event e " +
+            "WHERE e.eventId = :eventId")
+    boolean checkMaxPeople(@Param("eventId") Long eventId);
 
 
     ///////////////////////////

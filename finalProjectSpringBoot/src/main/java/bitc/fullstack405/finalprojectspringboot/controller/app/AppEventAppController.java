@@ -32,14 +32,19 @@ public class AppEventAppController {
             return ResponseEntity.ok(1);
         }
 
+        // 최대 인원 제한 확인(3)
+        if(eventAppService.maxPeople(eventId)) {
+            return ResponseEntity.ok(3);
+        }
+
         // app 테이블에 데이터 한 개 저장, attend_info 테이블에 해당 행사 회차만큼 데이터 저장(2)
         eventAppService.registerEventApplication(eventId, userId);
+
         return ResponseEntity.ok(2);
     }
 
     // 행사 당일 관리자가 신청자 직접 추가
     // 매개변수 : event, userAccount
-    // 회원인지 아닌지는 내가 할 영역 X, 그냥 매개 변수 받아온 거로 addApplication 처럼 똑같이 만들면 됨
     @PostMapping("/application-direct/{eventId}/{userAccount}")
     public ResponseEntity<Integer> addApplication(@PathVariable Long eventId, @PathVariable String userAccount) throws Exception {
 
@@ -50,6 +55,11 @@ public class AppEventAppController {
             return ResponseEntity.ok(1);
         }
 
+        // 최대 인원 제한 확인(3)
+        if(eventAppService.maxPeople(eventId)) {
+            return ResponseEntity.ok(3);
+        }
+
         // app 테이블에 데이터 한 개 저장, attend_info 테이블에 해당 행사 회차만큼 데이터 저장(2)
         eventAppService.registerEventApplication(eventId, user.getUserId());
         return ResponseEntity.ok(2);
@@ -57,7 +67,7 @@ public class AppEventAppController {
 
     // 특정 유저의 행사 신청 전체 내역 (행사 id 기준 내림차순)
     // event id, app id, 제목, 신청일, 수료/미수료(Y/N)
-    @PostMapping("/application-list/{userId}")
+    @GetMapping("/application-list/{userId}")
     public ResponseEntity<List<AppEventAppListResponse>> findMyApplication(@PathVariable Long userId) {
         List<AppEventAppListResponse> eventAppList = eventAppService.findMyEvents(userId);
         return ResponseEntity.ok().body(eventAppList);
@@ -65,7 +75,7 @@ public class AppEventAppController {
 
     // 특정 유저의 행사 수료 내역 (행사 id 기준 내림차순)
     // event id, app id, 제목, 신청일, 행사 수료(Y)
-    @PostMapping("/complete-application-list/{userId}")
+    @GetMapping("/complete-application-list/{userId}")
     public ResponseEntity<List<AppEventAppListResponse>> findMyCompleteApplication(@PathVariable Long userId) {
         List<AppEventAppListResponse> eventAppList = eventAppService.findMyCompleteEvents(userId);
         return ResponseEntity.ok().body(eventAppList);
@@ -73,7 +83,7 @@ public class AppEventAppController {
 
     // 특정 유저의 행사 미수료 내역 (행사 id 기준 내림차순)
     // event id, app id, 제목, 신청일, 행사 미수료(N)
-    @PostMapping("/incomplete-application-list/{userId}")
+    @GetMapping("/incomplete-application-list/{userId}")
     public ResponseEntity<List<AppEventAppListResponse>> findMyIncompleteApplication(@PathVariable Long userId) {
         List<AppEventAppListResponse> eventAppList = eventAppService.findMyIncompleteEvents(userId);
         return ResponseEntity.ok().body(eventAppList);

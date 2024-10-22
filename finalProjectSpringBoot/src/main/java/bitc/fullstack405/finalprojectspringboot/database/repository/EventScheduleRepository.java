@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -43,6 +44,7 @@ public interface EventScheduleRepository extends JpaRepository<EventScheduleEnti
 
     // <APP> 해당 행사의 첫 번째 회차 일정만 가져오기 (가장 첫 번째 회차)
     EventScheduleEntity findFirstByEvent_EventIdOrderByScheduleIdAsc(Long eventId);
+
 
 
     ///////////////////////////

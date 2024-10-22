@@ -17,6 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -75,6 +78,10 @@ public class EventService {
     public AppAdminUpcomingEventResponse findUpcomingEventForAdmin() {
         List<EventScheduleEntity> eventSchedules = eventScheduleRepository.findUpcomingEventSchedules();
 
+        if (eventSchedules.isEmpty()) {
+            return null;
+        }
+
         EventScheduleEntity eventSchedule = eventSchedules.get(0); // 첫 번째 결과 선택
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 10/14 날짜 포맷 수정
@@ -90,6 +97,24 @@ public class EventService {
                 .build();
     }
 
+    public List<EventScheduleEntity> findEventsOneWeekBefore() {
+        LocalDateTime oneWeekFromNow = LocalDateTime.now().plusWeeks(1); // 오늘 기준 일주일 후의 날짜
+        System.out.println(oneWeekFromNow);
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        List<EventScheduleEntity> upcomingEvents = new ArrayList<>();
+        
+        List<EventScheduleEntity> events = eventScheduleRepository.findAll(); // 스케쥴리스트 전부 불러와서
+        
+        for (EventScheduleEntity event : events) {
+            // 행사 날짜 && 오늘 기준 일주일 후의 날짜인 것만 넣음
+            if (event.getEventDate().format(dateFormatter).equals(ChronoLocalDate.from(oneWeekFromNow).format(dateFormatter))) {
+                upcomingEvents.add(event);
+            }
+        }
+        return upcomingEvents;
+    }
 
     ///////////////////////////
     ////////// <WEB> //////////

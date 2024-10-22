@@ -1,5 +1,6 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.main
 
+import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -23,6 +24,7 @@ import com.fullstack405.bitcfinalprojectkotlin.templete.attend.AttendListActivit
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventDetailActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.event.EventListActivity
 import com.fullstack405.bitcfinalprojectkotlin.templete.login.LoginActivity
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -46,6 +48,9 @@ class AdminMainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        subToTopic("notice") // 알람 구독
+
         userId = intent.getLongExtra("userId",0)
         userName = intent.getStringExtra("userName")!!
         userPermission = intent.getStringExtra("userPermission")!!
@@ -112,8 +117,7 @@ class AdminMainActivity : AppCompatActivity() {
 
         // 로그아웃
         binding.logout.setOnClickListener {
-            var intentLogin = Intent(this, LoginActivity::class.java)
-            startActivity(intentLogin)
+            logoutUser()
         }
     }//onCreate
 
@@ -246,6 +250,29 @@ class AdminMainActivity : AppCompatActivity() {
             }
         })
     }//findEventList
+    // 알람 구독
+    private fun subToTopic(topic:String){
+        FirebaseMessaging.getInstance().subscribeToTopic(topic)
+            .addOnCompleteListener { task ->
+                var msg = "Subscribed to topic"
+                if (!task.isSuccessful) {
+                    msg = "Subscription failed"
+                }
+                Log.d("FCM", msg)
+            }
+    }
 
+    private fun logoutUser(){
+        val sharedPreferences = getSharedPreferences("app_pref", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            remove("userId") // 사용자 ID 삭제
+            remove("userRole")
+            remove("userName")
+            apply()
+        }
+        val intent = Intent(this,LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 
-}
+} //main
