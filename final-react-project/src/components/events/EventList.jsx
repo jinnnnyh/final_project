@@ -104,7 +104,10 @@ function EventList() {
         <select
           className={'form-select me-2'}
           value={approvalFilter}
-          onChange={(e) => setApprovalFilter(e.target.value)}
+          onChange={(e) => {
+            setApprovalFilter(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value=''>승인전체</option>
           <option value='1'>승인대기</option>
@@ -114,7 +117,10 @@ function EventList() {
         <select
           className={'form-select me-2'}
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          onChange={(e) => {
+            setStatusFilter(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value=''>상태전체</option>
           <option value='모집대기'>모집대기</option>
@@ -129,7 +135,10 @@ function EventList() {
           className={'form-control me-2'}
           placeholder="행사 검색"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
           style={{ width: '250px' }}
         />
         <input
@@ -137,7 +146,10 @@ function EventList() {
           className={'form-control me-2'}
           placeholder="등록자 검색"
           value={uploaderSearchTerm}
-          onChange={(e) => setUploaderSearchTerm(e.target.value)}
+          onChange={(e) => {
+            setUploaderSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
           style={{ width: '250px' }}
         />
         <input
