@@ -1,11 +1,11 @@
 import ReactPaginate from 'react-js-pagination';
 
-const Pagination = ({ activePage, itemsCountPerPage, totalItemsCount, onPageChange }) => {
+const Pagination = ({ currentPage, itemsCount, itemsPerPage, onPageChange }) => {
   return (
     <ReactPaginate
-      activePage={activePage}
-      itemsCountPerPage={itemsCountPerPage}
-      totalItemsCount={totalItemsCount}
+      activePage={currentPage}
+      itemsCountPerPage={itemsPerPage}
+      totalItemsCount={itemsCount}
       pageRangeDisplayed={5}
       onChange={onPageChange}
       innerClass="pagination" // 원하는 클래스명으로 스타일링 가능

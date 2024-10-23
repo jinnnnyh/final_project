@@ -11,132 +11,79 @@ function EventList() {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(3);
-  const [filteredData, setFilteredData] = useState([]);
+  const [itemsPerPage] = useState(3); // 한 페이지당 보여줄 아이템 수
   const [approvalFilter, setApprovalFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
-  const [eventTitleSearch, setEventTitleSearch] = useState(''); // 행사 검색
-  const [uploaderSearchTerm, setUploaderSearchTerm] = useState('');  // 등록자 검색
-  const [approverSearchTerm, setApproverSearchTerm] = useState('');  // 승인자 검색
+  const [searchTerm, setSearchTerm] = useState('');
+  const [uploaderSearchTerm, setUploaderSearchTerm] = useState('');
+  const [approverSearchTerm, setApproverSearchTerm] = useState('');
 
   const today = new Date();
-  today.setHours(0, 0, 0, 0)
-
-
-  useEffect(() => {
-    const eventListData = async () => {
-      const response = await axios.get('http://localhost:8080/event/list');
-      if (response.data) {
-        setEventData(response.data);
-        setFilteredData(response.data);
-        setLoading(false);
-      } else {
-        alert("데이터를 찾을 수 없습니다.");
-        setLoading(false);
-      }
-    };
-    eventListData();
-  }, []);
-
-
-  useEffect(() => {
-    const result = eventData.filter(item =>
-
-      item.eventTitle.toLowerCase().includes(eventTitleSearch.toLowerCase()) &&
-      item.eventUploaderName.toLowerCase().includes(uploaderSearchTerm.toLowerCase()) &&
-      item.eventApproverName.toLowerCase().includes(approverSearchTerm.toLowerCase()) &&
-
-      (approvalFilter ? item.eventAccept === approvalFilter : true) ||
-      (approvalFilter === '1' && item.eventAccept === '승인대기') ||
-      (approvalFilter === '2' && item.eventAccept === '승인완료') ||
-      (approvalFilter === '3' && item.eventAccept === '승인거부') &&
-
-      (statusFilter ? item.isRegistrationOpen === statusFilter : true) ||
-      (statusFilter === '모집대기' && item.isRegistrationOpen === '모집대기') ||
-      (statusFilter === '모집중' && item.isRegistrationOpen === '모집중') ||
-      (statusFilter === '행사대기' && item.isRegistrationOpen === '행사대기') ||
-      (statusFilter === '행사중' && item.isRegistrationOpen === '행사중') ||
-      (statusFilter === '행사종료' && item.isRegistrationOpen === '행사종료') ||
-      (statusFilter === '모집불가' && item.isRegistrationOpen === '모집불가')
-
-    );
-    setFilteredData(result);
-  }, [approvalFilter, statusFilter, eventTitleSearch, uploaderSearchTerm, approverSearchTerm, eventData]);
-
-
-
-  // const eventDataItems = eventData
-  //   .filter(item => {
-  //     if (approvalFilter !== '' && item.eventAccept !== parseInt(approvalFilter)) return false;
-  //
-  //     let recruitmentStatus = '';
-  //
-  //     if (item.eventAccept === 3) {
-  //       recruitmentStatus = '모집불가';
-  //     }
-  //     else if (item.eventAccept === 1) {
-  //       recruitmentStatus = '모집대기';
-  //     }
-  //     else if (item.eventAccept === 2) {
-  //       if (today >= new Date(item.visibleDate) && today <= new Date(item.invisibleDate)) {
-  //         recruitmentStatus = '모집중';
-  //       }
-  //       else if (today < new Date(item.visibleDate)) {
-  //         recruitmentStatus = '모집대기';
-  //       }
-  //       else if (today > new Date(item.invisibleDate) && today < new Date(item.startDate)) {
-  //         recruitmentStatus = '행사대기';
-  //       }
-  //       else if (today >= new Date(item.startDate) && today <= new Date(item.endDate)) {
-  //         recruitmentStatus = '행사중';
-  //       }
-  //       else {
-  //         recruitmentStatus = '행사종료';
-  //       }
-  //     }
-  //     else if (item.eventAccept === 2 && item.isRegistrationOpen === 'N') {
-  //       if (today < new Date(item.visibleDate)) {
-  //         recruitmentStatus = '모집대기';
-  //       }
-  //       else if (today < new Date(item.startDate)) {
-  //         recruitmentStatus = '행사대기';
-  //       }
-  //       else if (today >= new Date(item.startDate) && today <= new Date(item.endDate)) {
-  //         recruitmentStatus = '행사중';
-  //       }
-  //       else {
-  //         recruitmentStatus = '행사종료';
-  //       }
-  //     }
-  //
-  //     if (statusFilter !== '' && recruitmentStatus !== statusFilter) return false;
-  //
-  //     if (searchTerm && !item.eventTitle.includes(searchTerm)) return false;
-  //
-  //     if (uploaderSearchTerm && !item.eventUploaderName.includes(uploaderSearchTerm)) return false;
-  //
-  //     if (approverSearchTerm && item.eventApproverName && !item.eventApproverName.includes(approverSearchTerm)) return false;
-  //
-  //     return true;
-  //   })
-  //   .slice(indexOfFirstItem, indexOfLastItem);
-  //
+  today.setHours(0, 0, 0, 0);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const eventDataItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
+  const filteredData = eventData
+    .filter(item => {
+      if (approvalFilter !== '' && item.eventAccept !== parseInt(approvalFilter)) return false;
+
+      let recruitmentStatus = '';
+
+      if (item.eventAccept === 3) {
+        recruitmentStatus = '모집불가';
+      }
+      else if (item.eventAccept === 1) {
+        recruitmentStatus = '모집대기';
+      }
+      else if (item.eventAccept === 2) {
+        if (today >= new Date(item.visibleDate) && today <= new Date(item.invisibleDate)) {
+          recruitmentStatus = '모집중';
+        } else if (today < new Date(item.visibleDate)) {
+          recruitmentStatus = '모집대기';
+        } else if (today > new Date(item.invisibleDate) && today < new Date(item.startDate)) {
+          recruitmentStatus = '행사대기';
+        } else if (today >= new Date(item.startDate) && today <= new Date(item.endDate)) {
+          recruitmentStatus = '행사중';
+        } else {
+          recruitmentStatus = '행사종료';
+        }
+      }
+
+      if (statusFilter !== '' && recruitmentStatus !== statusFilter) return false;
+      if (searchTerm && !item.eventTitle.includes(searchTerm)) return false;
+      if (uploaderSearchTerm && !item.eventUploaderName.includes(uploaderSearchTerm)) return false;
+      if (approverSearchTerm && item.eventApproverName && !item.eventApproverName.includes(approverSearchTerm)) return false;
+
+      return true;
+    });
+
+  const eventDataItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
 
   // error 발생 시 대체 이미지로 이미지 설정
   const onErrorImg = (e) => {
     e.target.src = replace;
   };
 
+  useEffect(() => {
+    axios.get('http://localhost:8080/event/list')
+      .then(res => {
+        if (res.data) {
+          setEventData(res.data);
+          setLoading(false);
+        } else {
+          alert("데이터를 찾을 수 없습니다.");
+          setLoading(false);
+        }
+      })
+      .catch(err => {
+        alert("서버 오류가 발생했습니다." + err);
+      });
+  }, []);
 
   const moveToEventWrite = () => window.location.href = '/event/write';
 
@@ -157,7 +104,10 @@ function EventList() {
         <select
           className={'form-select me-2'}
           value={approvalFilter}
-          onChange={(e) => setApprovalFilter(e.target.value)}
+          onChange={(e) => {
+            setApprovalFilter(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value=''>승인전체</option>
           <option value='1'>승인대기</option>
@@ -167,7 +117,10 @@ function EventList() {
         <select
           className={'form-select me-2'}
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          onChange={(e) => {
+            setStatusFilter(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value=''>상태전체</option>
           <option value='모집대기'>모집대기</option>
@@ -181,27 +134,37 @@ function EventList() {
           type="text"
           className={'form-control me-2'}
           placeholder="행사 검색"
-          value={eventTitleSearch}
-          onChange={(e) => setEventTitleSearch(e.target.value)}
-          style={{width: '250px'}}
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
+          style={{ width: '250px' }}
         />
         <input
           type="text"
           className={'form-control me-2'}
           placeholder="등록자 검색"
           value={uploaderSearchTerm}
-          onChange={(e) => setUploaderSearchTerm(e.target.value)}
-          style={{width: '250px'}}
+          onChange={(e) => {
+            setUploaderSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
+          style={{ width: '250px' }}
         />
         <input
           type="text"
           className={'form-control me-2'}
           placeholder="승인자 검색 (승인자 없음: 미승인)"
           value={approverSearchTerm}
-          onChange={(e) => setApproverSearchTerm(e.target.value)}
-          style={{width: '250px'}}
+          onChange={(e) => {
+            setApproverSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
+          style={{ width: '250px' }}
         />
       </div>
+
       {
         eventDataItems.map(item => {
           const visibleDate = new Date(item.visibleDate);
@@ -224,7 +187,7 @@ function EventList() {
             if (today >= visibleDate && today <= invisibleDate) {
               recruitmentStatus = '모집중';
             }
-            else if (today< visibleDate) {
+            else if (today < visibleDate) {
               recruitmentStatus = '모집대기';
             }
             else if (today > invisibleDate && today < startDate) {
@@ -280,7 +243,7 @@ function EventList() {
                     <li>행사기간 : <span>{item.startDate} ~ {item.endDate}</span></li>
                     <li className={'my-1'}>행사시간 : <span>{item.startTime} ~ {item.endTime}</span></li>
                     <li className={'my-1'}>모집시작일 : <span>{item.visibleDate}</span> | 모집마감일 : <span>{item.invisibleDate}</span></li>
-                    <li className={'my-1'}>신청인원 / 정원 : <span>{item.totalAppliedPeople}명 / {item.maxPeople === 0 && '제한없음' || item.maxPeople != 0 && `${item.maxPeople}명`}</span></li>
+                    <li className={'my-1'}>신청인원 / 정원 : <span>{item.totalAppliedPeople}명 / {item.maxPeople === 0 && '제한없음' || item.maxPeople !== 0 && `${item.maxPeople}명`}</span></li>
                     <li>수료인원 / 참석인원 : <span>{item.completedPeople}명 / {item.totalAppliedPeople}명</span></li>
                   </ul>
                 </div>
@@ -295,9 +258,9 @@ function EventList() {
       }
 
       <Pagination
-        activePage={currentPage}
-        itemsCountPerPage={itemsPerPage}
-        totalItemsCount={filteredData.length}
+        currentPage={currentPage}
+        itemsCount={filteredData.length}
+        itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
       />
     </section>
