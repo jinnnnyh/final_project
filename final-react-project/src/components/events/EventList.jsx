@@ -213,7 +213,7 @@ function EventList() {
                         else if (today >= startDate && today <= endDate) {
                             recruitmentStatus = '행사중';
                         }
-                        else {
+                        else if (today > endDate) {
                             recruitmentStatus = '행사종료';
                         }
                     }
@@ -227,7 +227,7 @@ function EventList() {
                         else if (today >= startDate && today <= endDate) {
                             recruitmentStatus = '행사중';
                         }
-                        else {
+                        else if (today > endDate) {
                             recruitmentStatus = '행사종료';
                         }
                     }
@@ -271,11 +271,11 @@ function EventList() {
                                         <Link to={`/event/${item.eventId}`}>{item.eventTitle}</Link>
                                     </h4>
                                     <ul className={'ps-0 mt-3'}>
-                                        <li>행사기간 : <span>{item.startDate} ~ {item.endDate}</span></li>
-                                        <li className={'my-1'}>행사시간 : <span>{item.startTime} ~ {item.endTime}</span></li>
-                                        <li className={'my-1'}>모집시작일 : <span>{item.visibleDate}</span> | 모집마감일 : <span>{item.invisibleDate}</span></li>
-                                        <li className={'my-1'}>신청인원 / 정원 : <span>{item.totalAppliedPeople}명 / {item.maxPeople === 0 && '제한없음' || item.maxPeople !== 0 && `${item.maxPeople}명`}</span></li>
-                                        <li>수료인원 / 참석인원 : <span>{item.completedPeople}명 / {item.totalAppliedPeople}명</span></li>
+                                        <li>행사기간 : <span className={'fw-bold'}>{item.startDate} ~ {item.endDate}</span></li>
+                                        <li className={'my-1'}>행사시간 : <span className={'fw-bold'}>{item.startTime} ~ {item.endTime}</span></li>
+                                        <li className={'my-1'}>모집시작일 : <span className={'fw-bold'}>{item.visibleDate}</span> | 모집마감일 : <span className={'fw-bold'}>{item.invisibleDate}</span></li>
+                                        <li className={'my-1'}>신청인원 / 정원 : <span className={'fw-bold'}>{item.totalAppliedPeople}명 / {item.maxPeople === 0 && '제한없음' || item.maxPeople !== 0 && `${item.maxPeople}명`}</span></li>
+                                        <li>수료인원 / 참석인원 : <span className={'fw-bold'}>{item.completedPeople}명 / {item.totalAppliedPeople}명</span></li>
                                     </ul>
                                 </div>
                                 <NavLink to={`/event/attendList/${item.eventId}`} className={'btn-attendList'}>

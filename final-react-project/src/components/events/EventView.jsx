@@ -103,7 +103,7 @@ function EventView () {
 
       {eventData ? (
         <div className={'form-border'}>
-          <div className={'py-4 border-bottom fs-5'}>
+          <div className={'py-4 border-bottom fs-5 fw-bold'}>
             {eventData.eventTitle || '제목 없음'}
           </div>
           <div className={'d-flex py-3 border-bottom justify-content-between'}>
@@ -120,7 +120,7 @@ function EventView () {
             <div className={'w-50'}>작성일 <span
               className={'ms-3 fw-bold'}>{formatDate(uploadDate).toLocaleString() || '미정'}</span></div>
             {/*<div className={'w-50'}>작성일 <span className={'ms-3 fw-bold'}>{eventData.uploadDate || ''}</span></div>*/}
-            <div className={'w-50'}>작성자 <span className={'ms-3 me-2'}> {uploader}</span></div>
+            <div className={'w-50'}>작성자 <span className={'ms-3 me-2 fw-bold'}> {uploader}</span></div>
           </div>
 
           <div className={'d-flex py-3 border-bottom justify-content-between'}>
