@@ -276,13 +276,19 @@ public class EventService {
 
             String eventApproverName = event.getApprover() != null ? event.getApprover().getName() : "미승인";
 
+            char isRegistrationOpen = 'Y';
+
+            if(event.getIsRegistrationOpen() == 'N' || eventRepository.listCheckMaxPeople(event.getEventId())) {
+                isRegistrationOpen = 'N';
+            }
+
             EventListDTO eventListDTO2 = EventListDTO.builder()
                     .eventPoster(event.getEventPoster())
                     .eventTitle(event.getEventTitle())
                     .uploadDate(LocalDate.from(event.getUploadDate()))
                     .maxPeople(event.getMaxPeople())
                     .eventAccept(event.getEventAccept())
-                    .isRegistrationOpen(event.getIsRegistrationOpen())
+                    .isRegistrationOpen(isRegistrationOpen)
                     .startDate(startDate)
                     .endDate(endDate)
                     .startTime(startTime)
@@ -294,7 +300,6 @@ public class EventService {
                     .invisibleDate(event.getInvisibleDate())
                     .eventApproverName(eventApproverName) // approver name 추가
                     .eventUploaderName(eventUploaderName) // uploader name 추가
-                    .isRegistrationOpen(event.getIsRegistrationOpen())
                     .build();
 
             eventListDTO.add(eventListDTO2);
