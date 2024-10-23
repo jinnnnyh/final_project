@@ -53,6 +53,20 @@ function EventList() {
           recruitmentStatus = '행사종료';
         }
       }
+      else if (item.eventAccept === 2 && item.isRegistrationOpen === 'N') {
+        if (today < new Date(item.visibleDate)) {
+          recruitmentStatus = '모집대기';
+        }
+        else if (today < new Date(item.startDate)) {
+          recruitmentStatus = '행사대기';
+        }
+        else if (today >= new Date(item.startDate) && today <= new Date(item.endDate)) {
+          recruitmentStatus = '행사중';
+        }
+        else {
+          recruitmentStatus = '행사종료';
+        }
+      }
 
       if (statusFilter !== '' && recruitmentStatus !== statusFilter) return false;
 
@@ -173,7 +187,7 @@ function EventList() {
           else if (item.eventAccept === 1) {
             recruitmentStatus = '모집대기';
           }
-          else if (item.eventAccept === 2) {
+          else if (item.eventAccept === 2 && item.isRegistrationOpen === 'Y') {
             if (today >= visibleDate && today <= invisibleDate) {
               recruitmentStatus = '모집중';
             }
@@ -181,6 +195,20 @@ function EventList() {
               recruitmentStatus = '모집대기';
             }
             else if (today > invisibleDate && today < startDate) {
+              recruitmentStatus = '행사대기';
+            }
+            else if (today >= startDate && today <= endDate) {
+              recruitmentStatus = '행사중';
+            }
+            else {
+              recruitmentStatus = '행사종료';
+            }
+          }
+          else if (item.eventAccept === 2 && item.isRegistrationOpen === 'N') {
+            if (today< visibleDate) {
+              recruitmentStatus = '모집대기';
+            }
+            else if (today < startDate) {
               recruitmentStatus = '행사대기';
             }
             else if (today >= startDate && today <= endDate) {
