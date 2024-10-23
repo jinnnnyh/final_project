@@ -77,8 +77,8 @@ function Login() {
   return (
     <section className={'container-fluid vh-100 pt-5 bg-login'}>
       <div className={'text-center mt-3'}>
-        <p className={'text-black-50'}>출첵관리시스템</p>
-        <h1 className={'text-point'}>Check Manager</h1>
+        <p className={'text-black-50'}>Check Manager</p>
+        <h1 className={'mt-4'}><img src="/logo.svg" alt="한국IT협회 로고"/></h1>
       </div>
       <div className={'row mt-5'}>
         <div className={'col-lg-4 p-5 col-md-8 col-xs-12 mx-auto shadow bg-white'}>
