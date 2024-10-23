@@ -23,6 +23,7 @@ class EventListAdapter(val eventList:MutableList<EventListData>, val userId:Long
     override fun onBindViewHolder(holder: Holder, position: Int) {
         var event = eventList.get(position)
 
+        // 최대 인원수 초과 시 서버에서 처리, N으로 넘겨줌
         // 모집중 Y, 마감 N
         if(event.isRegistrationOpen == 'Y'){
             holder.binding.state.text = "[모집중]"

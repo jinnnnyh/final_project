@@ -133,7 +133,7 @@ class AdminMainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK){
-            updateAdminUpcomingEvent()
+            updateUpcomingEvent()
         }
     } // onActivityResult
 
@@ -161,7 +161,7 @@ class AdminMainActivity : AppCompatActivity() {
                     }
                     binding.attendDate.isVisible = true
                     binding.txtAttend.text = data!!.eventTitle
-                    binding.attendDate.text = "행사일자 : ${data.eventDate} | ${data.startTime}"
+                    binding.attendDate.text = "행사일 : ${data.eventDate} | ${data.startTime}"
                 }
 
             }
