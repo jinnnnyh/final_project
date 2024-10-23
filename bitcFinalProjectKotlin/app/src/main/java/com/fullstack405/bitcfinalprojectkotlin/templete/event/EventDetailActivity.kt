@@ -71,8 +71,9 @@ class EventDetailActivity : AppCompatActivity() {
                 btnAddAppUser.isVisible = true
                 btnAddAppUser.setOnClickListener {
                     val dialogAdd = DialogAdduserBinding.inflate(LayoutInflater.from(this@EventDetailActivity))
-                    var userAccount = ""
+
                     AlertDialog.Builder(this@EventDetailActivity).run {
+                        var userAccount:String? = ""
                         setTitle("참석 인원 추가하기")
                         setView(dialogAdd.root)
                         dialogAdd.btnSearch.setOnClickListener {
@@ -82,6 +83,7 @@ class EventDetailActivity : AppCompatActivity() {
                                     if(response.body() == null){
                                         dialogAdd.txtName.text = "일치하는 회원이 없습니다."
                                         dialogAdd.txtPhone.text = ""
+                                        userAccount = null
                                     }
                                     else{
                                         val data = response.body() as CheckedIdData
@@ -100,10 +102,10 @@ class EventDetailActivity : AppCompatActivity() {
                         setPositiveButton("추가",object :DialogInterface.OnClickListener{
                             override fun onClick(p0: DialogInterface?, p1: Int) {
                                 if(userAccount != null){
-                                    Client.retrofit.adminAppDirect(eventId!!, userAccount).enqueue(object:retrofit2.Callback<Int>{
+                                    Client.retrofit.adminAppDirect(eventId!!, userAccount!!).enqueue(object:retrofit2.Callback<Int>{
                                         override fun onResponse(call: Call<Int>,response: Response<Int>) {
                                             if(response.body() == 2){
-                                                Toast.makeText(this@EventDetailActivity,"추가 신청이 완료되었습니다. QR을 확인해주세요.",Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(this@EventDetailActivity,"추가 신청이 완료되었습니다.\nQR을 확인해주세요.",Toast.LENGTH_SHORT).show()
                                             }
                                             else if(response.body() == 1){
                                                 Toast.makeText(this@EventDetailActivity,"이미 신청한 회원입니다. 다시 확인해주세요.",Toast.LENGTH_SHORT).show()
@@ -119,6 +121,8 @@ class EventDetailActivity : AppCompatActivity() {
                                         }
 
                                     })
+                                }else{
+                                    Toast.makeText(this@EventDetailActivity,"추가 실패",Toast.LENGTH_SHORT).show()
                                 }
 
                             }
