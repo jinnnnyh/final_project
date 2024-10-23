@@ -32,28 +32,32 @@ function AcceptEventButton() {
   const handleAcceptEvent = async() => {
     if(eventData.eventAccept  === 1 || eventData.eventAccept  === 3) {
       const confirmed = window.confirm('행사 승인하시겠습니까?');
-      window.location.href = `/event/${eventId}`
       if (confirmed) {
-        alert("승인되었습니다.");
         const userId = sessionStorage.getItem("userId");
         const response = await axios.put(`http://localhost:8080/event/acceptEvent/${eventId}`, { newValue: '승인완료' }, {
           params: { userId: userId }
         })
-        setEventData(eventData.filter(eventData => eventData.eventId !== eventId));
-        setEventAccept(response.data);
-
+          .then(() => {
+            alert("승인되었습니다.");
+            window.location.href = `/event/${eventId}`
+          })
+          setEventData(eventData.filter(eventData => eventData.eventId !== eventId));
+          setEventAccept(response.data);
       } else {
         // console.error("승인 중 오류 발생:", error);
       }
     } else if (eventData.eventAccept  === 2) {
       const confirmCancel = window.confirm('승인 취소하시겠습니까?');
-      window.location.href = `/event/${eventId}`
+
       if (confirmCancel) {
-        alert("승인취소되었습니다.");
         const userId = sessionStorage.getItem("userId");
         const response = await axios.put(`http://localhost:8080/event/acceptCancel/${eventId}`, { newValue: '승인대기' }, {
           params: { userId: userId }
         })
+          .then(() => {
+            alert("승인취소되었습니다.");
+            window.location.href = `/event/${eventId}`
+          })
         setEventData(eventData.filter(eventData => eventData.eventId !== eventId));
         setEventAccept(response.data);
       } else {
@@ -68,8 +72,8 @@ function AcceptEventButton() {
 
   return (
     <button type={'button'} style={{border:'none', background:'none'}}  onClick={() => handleAcceptEvent()}>
-      {eventData.eventAccept === 1 && <span className={'btn btn-outline-point'} >승인대기</span> ||
-        eventData.eventAccept === 2 && <span className={'btn btn-point'} >승인완료</span> ||
+      {eventData.eventAccept === 1 && <span className={'btn btn-outline-point'} >승인하기</span> ||
+        eventData.eventAccept === 2 && <span className={'btn btn-point'} >승인취소</span> ||
         eventData.eventAccept === 3 && <span className={'btn btn-outline-point'} >승인대기</span>
       }
     </button>
