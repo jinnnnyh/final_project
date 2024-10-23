@@ -225,7 +225,7 @@
 /* 썸네일 이미지 */
 .thumbnail {
   max-width: 350px;
-  max-height: 230px;
+  height: 230px;
   border:1px solid #ddd;
 }
 
