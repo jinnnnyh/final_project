@@ -1,3 +1,3 @@
 package com.fullstack405.bitcfinalprojectkotlin.data
 
-data class CheckedIdData(val userAccount:String, val name:String, val userPhone:String)
+data class CheckedIdData(val userAccount:String, val name:String, val userPhone:String, val role:String)
