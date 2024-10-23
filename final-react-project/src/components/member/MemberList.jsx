@@ -195,9 +195,9 @@ function MemberList () {
             </tbody>
           </table>
           <Pagination
-            activePage={currentPage}
-            itemsCountPerPage={itemsPerPage}
-            totalItemsCount={filteredData.length}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            itemsCount={filteredData.length}
             onPageChange={handlePageChange}
           />
 

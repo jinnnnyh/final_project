@@ -65,8 +65,11 @@ function EventList() {
       }
 
       if (statusFilter !== '' && recruitmentStatus !== statusFilter) return false;
+
       if (searchTerm && !item.eventTitle.includes(searchTerm)) return false;
+
       if (uploaderSearchTerm && !item.eventUploaderName.includes(uploaderSearchTerm)) return false;
+
       if (approverSearchTerm && item.eventApproverName && !item.eventApproverName.includes(approverSearchTerm)) return false;
 
       return true;
@@ -111,10 +114,10 @@ function EventList() {
       {
         sessionStorage.getItem('permission') === '총무' && (
           <div className={'d-flex justify-content-end'}>
-            <button type={'button'} className={'btn btn-danger'} onClick={moveToEventWrite}>행사 등록</button>
+            <button type={'button'} className={'btn-write'} onClick={moveToEventWrite}>행사 등록</button>
           </div>
         )}
-      <div className={'d-inline-flex justify-content-end mb-3'}>
+      <div className={'d-inline-flex justify-content-end mb-3 mt-2'}>
         <select
           className={'form-select me-2'}
           value={approvalFilter}
@@ -240,8 +243,8 @@ function EventList() {
                   />
                 </Link>
               </div>
-              <div className={'col-9 ps-5 d-flex align-items-center'}>
-                <div className={'col-10'}>
+              <div className={'col-9 ps-5 d-flex align-items-center justify-content-between'}>
+                <div className={'w-75'}>
                   <div className={'d-flex'}>
                     <div className={'markStyle'}>
                       {item.eventAccept === 1 && <p className={'redMark'}>승인대기</p> ||
@@ -264,10 +267,9 @@ function EventList() {
                       </div>
                     )}
                   </div>
-
-                  <Link to={`/event/${item.eventId}`}>
-                    <h4>{item.eventTitle}</h4>
-                  </Link>
+                  <h4>
+                    <Link to={`/event/${item.eventId}`}>{item.eventTitle}</Link>
+                  </h4>
                   <ul className={'ps-0 mt-3'}>
                     <li>행사기간 : <span>{item.startDate} ~ {item.endDate}</span></li>
                     <li className={'my-1'}>행사시간 : <span>{item.startTime} ~ {item.endTime}</span></li>
@@ -276,11 +278,10 @@ function EventList() {
                     <li>수료인원 / 참석인원 : <span>{item.completedPeople}명 / {item.totalAppliedPeople}명</span></li>
                   </ul>
                 </div>
-                <div className={'col-2'}>
-                  <NavLink to={`/event/attendList/${item.eventId}`} className={'btn btn-point px-3'}>
-                    참석자현황<br />자세히 보기 +
-                  </NavLink>
-                </div>
+                <NavLink to={`/event/attendList/${item.eventId}`} className={'btn-attendList'}>
+                  참석자현황 리스트 <br/>  <span className={'btn-more'}>자세히 보기</span>
+                </NavLink>
+
               </div>
             </div>
           );
