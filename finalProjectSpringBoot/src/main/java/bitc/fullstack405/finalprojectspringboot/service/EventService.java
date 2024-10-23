@@ -225,6 +225,12 @@ public class EventService {
             eventScheduleViewDTOList.add(eventScheduleViewDTO);
         }
 
+        char isRegistrationOpen = 'Y';
+
+        if(event.getIsRegistrationOpen() == 'N' || eventRepository.listCheckMaxPeople(event.getEventId())) {
+            isRegistrationOpen = 'N';
+        }
+
         EventViewDTO eventViewDTO = EventViewDTO.builder()
                 .eventId(event.getEventId())
                 .eventTitle(event.getEventTitle())
@@ -232,7 +238,7 @@ public class EventService {
                 .eventPoster(event.getEventPoster())
                 .eventAccept(event.getEventAccept())
                 .maxPeople(event.getMaxPeople())
-                .isRegistrationOpen(event.getIsRegistrationOpen())
+                .isRegistrationOpen(isRegistrationOpen)
                 .acceptedDate(event.getAcceptedDate())
                 .visibleDate(event.getVisibleDate())
                 .invisibleDate(event.getInvisibleDate())
