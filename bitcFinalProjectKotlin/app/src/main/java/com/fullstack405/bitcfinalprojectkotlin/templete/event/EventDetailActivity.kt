@@ -87,9 +87,21 @@ class EventDetailActivity : AppCompatActivity() {
                                     }
                                     else{
                                         val data = response.body() as CheckedIdData
-                                        dialogAdd.txtName.text = "이름 : ${data.name}"
-                                        dialogAdd.txtPhone.text = "핸드폰 번호 : ${data.userPhone}"
-                                        userAccount = data.userAccount
+
+                                        if(data.role == "ROLE_DELETE"){
+                                            dialogAdd.txtName.text = "탈퇴한 회원입니다."
+                                            dialogAdd.txtPhone.text = ""
+                                            userAccount = null
+                                        }else if(data.role == "ROLE_ASSOCIATE"){
+                                            dialogAdd.txtName.text = "준회원 입니다.\n회원 승인 후 다시 시도해주세요."
+                                            dialogAdd.txtPhone.text = ""
+                                            userAccount = null
+                                        }else{
+                                            dialogAdd.txtName.text = "이름 : ${data.name}"
+                                            dialogAdd.txtPhone.text = "핸드폰 번호 : ${data.userPhone}"
+                                            userAccount = data.userAccount
+                                        }
+
                                     }
                                 }
 
@@ -149,7 +161,7 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        val url = "http://110.100.105.168:8080/eventImg/"
+        val url = "http://10.100.105.205:8080/eventImg/"
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기

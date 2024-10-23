@@ -8,10 +8,12 @@ public class CheckedIdResponse {
   String userAccount;
   String name;
   String userPhone;
+  String role;
 
   public CheckedIdResponse(UserEntity user) {
     this.userAccount = user.getUserAccount();
     this.name = user.getName();
     this.userPhone = user.getUserPhone();
+    this.role = String.valueOf(user.getRole());
   }
 }
