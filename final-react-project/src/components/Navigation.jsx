@@ -4,28 +4,18 @@ import {Link, NavLink, useLocation} from "react-router-dom";
 import events from "../pages/Events.jsx";
 import member from "../pages/Member.jsx";
 
+const navItems = [
+  { path: '/', label: '행사관리', icon: '/src/assets/images/ico_event_w.svg' },
+  { path: '/member', label: '회원관리', icon: '/src/assets/images/ico_member_w.svg' },
+];
 
 function Navigation() {
-  const navItems = [
-    { path: '/', label: '행사관리', icon: '/src/assets/images/ico_event_w.svg' },
-    { path: '/member', label: '회원관리', icon: '/src/assets/images/ico_member_w.svg' },
-  ];
+  const [activeLink, setActiveLink] = useState(localStorage.getItem('activeLink') || '/');
 
-  const [activeLink, setActiveLink] = useState('/');
-
-  // 로컬 스토리지에서 선택된 메뉴 가져옴
   useEffect(() => {
-    const activeMenu = localStorage.getItem('setActiveLink');
-    if (activeMenu) {
-      setActiveLink(activeMenu);
-    }
-  }, []);
+    localStorage.setItem('activeLink', activeLink);
+  }, [activeLink]);
 
-  // 메뉴 선택 시 호출되는 함수
-  const handleMenuSelect = (path) => {
-    setActiveLink(path);
-    localStorage.setItem('activeLink', path);
-  };
 
   // 로고 클릭 시 호출되는 함수
   const handleLogoClick = () => {
@@ -47,7 +37,7 @@ function Navigation() {
             key={item.path}
             to={item.path}
             className={`nav-item ${activeLink === item.path ? 'active' : ''}`}
-            onClick={() => handleMenuSelect(item.path)}
+            onClick={() => setActiveLink(item.path)}
           >
             <img
               src={item.icon}

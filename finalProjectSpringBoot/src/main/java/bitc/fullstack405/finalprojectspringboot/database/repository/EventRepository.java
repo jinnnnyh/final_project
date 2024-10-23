@@ -33,6 +33,15 @@ public interface EventRepository  extends JpaRepository<EventEntity, Long> {
             "WHERE e.eventId = :eventId")
     boolean checkMaxPeople(@Param("eventId") Long eventId);
 
+    // 행사 참여 인원이 최대 인원과 같은지 확인
+    @Query("SELECT CASE " +
+            "WHEN e.maxPeople = 0 THEN false " +  // maxPeople 이 0일 때는 제한이 없으므로 false 반환
+            "WHEN COUNT(ea) = e.maxPeople THEN true " +
+            "ELSE false END " +
+            "FROM EventAppEntity ea " +
+            "JOIN ea.event e " +
+            "WHERE e.eventId = :eventId")
+    boolean listCheckMaxPeople(@Param("eventId") Long eventId);
 
     ///////////////////////////
     ////////// <WEB> //////////
