@@ -19,7 +19,7 @@ function EventList() {
   const [approverSearchTerm, setApproverSearchTerm] = useState('');
 
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  today.setHours(9, 0, 0, 0);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
