@@ -27,8 +27,8 @@ function Navigation() {
   return (
     <div className={'nav flex-column bg-point vh-100 nav-style'}>
       <p className={'text-center pt-4'}>
-        <Link to={'/'} className={'fw-bold text-white fs-4'} onClick={handleLogoClick} >
-          출첵관리시스템</Link>
+        <Link to={'/'} className={'fw-bold text-white fs-4'} onClick={handleLogoClick}>
+          <img src="/logo_w.svg" alt="한국IT협회 로고" style={{width:'60%'}}/></Link>
       </p>
 
       <nav>
