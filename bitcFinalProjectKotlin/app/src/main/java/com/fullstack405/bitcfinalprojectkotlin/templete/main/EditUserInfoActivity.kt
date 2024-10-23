@@ -1,5 +1,6 @@
 package com.fullstack405.bitcfinalprojectkotlin.templete.main
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
@@ -100,8 +101,7 @@ class EditUserInfoActivity : AppCompatActivity() {
                     override fun onClick(p0: DialogInterface?, p1: Int) {
                         Client.retrofit.deleteUser(userId).enqueue(object:retrofit2.Callback<Void>{
                             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                                val intent = Intent(this@EditUserInfoActivity, LoginActivity::class.java)
-                                startActivity(intent)
+                                logoutUser()
                             }
 
                             override fun onFailure(call: Call<Void>, t: Throwable) {
@@ -126,4 +126,17 @@ class EditUserInfoActivity : AppCompatActivity() {
 
 
     } // onCreate
+
+    private fun logoutUser(){
+        val sharedPreferences = getSharedPreferences("app_pref", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            remove("userId") // 사용자 ID 삭제
+            remove("userRole")
+            remove("userName")
+            apply()
+        }
+        val intent = Intent(this,LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 }
