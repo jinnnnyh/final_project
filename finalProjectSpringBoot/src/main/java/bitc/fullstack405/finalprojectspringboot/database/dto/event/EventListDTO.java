@@ -31,4 +31,5 @@ public class EventListDTO {
 
   private int totalAppliedPeople; // 신청 인원
   private int completedPeople; // 수료 인원
+  private int attendedPeople;
 }

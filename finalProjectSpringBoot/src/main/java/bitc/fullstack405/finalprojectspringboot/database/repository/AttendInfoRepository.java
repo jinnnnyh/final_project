@@ -53,4 +53,9 @@ public interface AttendInfoRepository extends JpaRepository<AttendInfoEntity, Lo
     List<AttendInfoEntity> findByUser_UserId(Long userId);
 
     List<AttendInfoEntity> findByEventSchedule(EventScheduleEntity eventSchedule);
+
+    @Query("SELECT a.user.userId FROM AttendInfoEntity a " +
+        "WHERE a.eventSchedule.event.eventId = :eventId " +
+        "AND a.attendDate IS NOT NULL")
+    List<Long> findAttendedUserIds(@Param("eventId") Long eventId);
 }

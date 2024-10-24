@@ -34,7 +34,7 @@ public class EventEntity {
     private String eventTitle;
 
     // 행사 상세 내용
-    @Column(name = "event_content", length = 500, nullable = false)
+    @Column(name = "event_content", length = 3000, nullable = false)
     private String eventContent;
 
     // 행사 승인 여부 (1: 대기, 2: 승인, 3: 거부)

@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -259,7 +260,6 @@ public class EventService {
         for (EventEntity event : events) {
             List<EventScheduleEntity> schedules = eventScheduleRepository.findByEvent(event);
 
-            // schedules가 비어 있는 경우
             if (schedules.isEmpty()) {
                 continue;
             }
@@ -269,38 +269,43 @@ public class EventService {
             LocalTime startTime = schedules.get(0).getStartTime();
             LocalTime endTime = schedules.get(0).getEndTime();
 
-            int appliedPeople = eventAppRepository.countByEventAndEventComp(event, 'N');
-            int completedPeople = eventAppRepository.countByEventAndEventComp(event, 'Y');
+            int appliedPeople = eventAppRepository.countByEventAndEventComp(event, 'N');  // 신청 인원
+            int completedPeople = eventAppRepository.countByEventAndEventComp(event, 'Y');  // 수료 인원
+
+            // 참석한 사용자 ID를 가져옴
+            List<Long> attendedUserIds = attendInfoRepository.findAttendedUserIds(event.getEventId());
+            // 고유 사용자만 남기기 위해 Set으로 변환 후 사이즈를 가져옴
+            int attendedPeople = new HashSet<>(attendedUserIds).size();  // 고유 출석 인원 계산
 
             String eventUploaderName = event.getPosterUser().getName();
-
             String eventApproverName = event.getApprover() != null ? event.getApprover().getName() : "미승인";
 
             char isRegistrationOpen = 'Y';
 
-            if(event.getIsRegistrationOpen() == 'N' || eventRepository.listCheckMaxPeople(event.getEventId())) {
+            if (event.getIsRegistrationOpen() == 'N' || eventRepository.listCheckMaxPeople(event.getEventId())) {
                 isRegistrationOpen = 'N';
             }
 
             EventListDTO eventListDTO2 = EventListDTO.builder()
-                    .eventPoster(event.getEventPoster())
-                    .eventTitle(event.getEventTitle())
-                    .uploadDate(LocalDate.from(event.getUploadDate()))
-                    .maxPeople(event.getMaxPeople())
-                    .eventAccept(event.getEventAccept())
-                    .isRegistrationOpen(isRegistrationOpen)
-                    .startDate(startDate)
-                    .endDate(endDate)
-                    .startTime(startTime)
-                    .endTime(endTime)
-                    .eventId(event.getEventId())
-                    .totalAppliedPeople(appliedPeople + completedPeople)
-                    .completedPeople(completedPeople)
-                    .visibleDate(event.getVisibleDate())
-                    .invisibleDate(event.getInvisibleDate())
-                    .eventApproverName(eventApproverName) // approver name 추가
-                    .eventUploaderName(eventUploaderName) // uploader name 추가
-                    .build();
+                .eventPoster(event.getEventPoster())
+                .eventTitle(event.getEventTitle())
+                .uploadDate(LocalDate.from(event.getUploadDate()))
+                .maxPeople(event.getMaxPeople())
+                .eventAccept(event.getEventAccept())
+                .isRegistrationOpen(isRegistrationOpen)
+                .startDate(startDate)
+                .endDate(endDate)
+                .startTime(startTime)
+                .endTime(endTime)
+                .eventId(event.getEventId())
+                .totalAppliedPeople(appliedPeople + completedPeople)
+                .completedPeople(completedPeople)
+                .attendedPeople(attendedPeople)  // 고유 출석 인원 추가
+                .visibleDate(event.getVisibleDate())
+                .invisibleDate(event.getInvisibleDate())
+                .eventApproverName(eventApproverName)
+                .eventUploaderName(eventUploaderName)
+                .build();
 
             eventListDTO.add(eventListDTO2);
         }
