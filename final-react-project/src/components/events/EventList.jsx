@@ -92,6 +92,7 @@ function EventList() {
                 if (res.data) {
                     setEventData(res.data);
                     setLoading(false);
+                    console.log(res.data)
                 } else {
                     alert("데이터를 찾을 수 없습니다.");
                     setLoading(false);
@@ -275,7 +276,7 @@ function EventList() {
                                         <li className={'my-1'}>행사시간 : <span className={'fw-bold'}>{item.startTime} ~ {item.endTime}</span></li>
                                         <li className={'my-1'}>모집시작일 : <span className={'fw-bold'}>{item.visibleDate}</span> | 모집마감일 : <span className={'fw-bold'}>{item.invisibleDate}</span></li>
                                         <li className={'my-1'}>신청인원 / 정원 : <span className={'fw-bold'}>{item.totalAppliedPeople}명 / {item.maxPeople === 0 && '제한없음' || item.maxPeople !== 0 && `${item.maxPeople}명`}</span></li>
-                                        <li>수료인원 / 참석인원 : <span className={'fw-bold'}>{item.completedPeople}명 / {item.totalAppliedPeople}명</span></li>
+                                        <li>수료인원 / 참석인원 : <span className={'fw-bold'}>{item.completedPeople}명 / {item.attendedPeople}명</span></li>
                                     </ul>
                                 </div>
                                 <NavLink to={`/event/attendList/${item.eventId}`} className={'btn-attendList'}>
