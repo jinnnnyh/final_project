@@ -26,7 +26,7 @@ public class NotificationScheduler {
 
   // 매일 오전 10시에 실행
   // 초, 분, 시, 일, 월, 요일
-  @Scheduled(cron ="0 0 10 * * ?")
+  @Scheduled(cron ="0 0 16 * * ?")
   public void sendNotification() {
     String topic = "notice";
 

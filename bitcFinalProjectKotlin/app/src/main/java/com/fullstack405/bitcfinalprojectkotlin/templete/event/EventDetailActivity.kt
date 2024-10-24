@@ -177,6 +177,7 @@ class EventDetailActivity : AppCompatActivity() {
                 // 이미지
                 Glide.with(this@EventDetailActivity)
                     .load(url+event.eventPoster)
+                    .override(1500, 1300)
                     .into(binding.dImage)
 
                 var endDate = event.schedules[event.schedules.size-1].get("eventDate").toString()

@@ -36,27 +36,27 @@ function EventList() {
             else if (item.eventAccept === 1) {
                 recruitmentStatus = '모집대기';
             }
-            else if (item.eventAccept === 2) {
+            else if (item.eventAccept === 2 && item.isRegistrationOpen === 'Y') {
                 if (today >= new Date(item.visibleDate) && today <= new Date(item.invisibleDate)) {
                     recruitmentStatus = '모집중';
-                } else if (today < new Date(item.visibleDate)) {
+                } else if (today < new Date(item.visibleDate).setHours(0,0,0,0)) {
                     recruitmentStatus = '모집대기';
-                } else if (today > new Date(item.invisibleDate) && today < new Date(item.startDate)) {
+                } else if (today > new Date(item.invisibleDate).setHours(0,0,0,0) && today < new Date(item.startDate).setHours(0,0,0,0)) {
                     recruitmentStatus = '행사대기';
-                } else if (today >= new Date(item.startDate) && today <= new Date(item.endDate)) {
+                } else if (today >= new Date(item.startDate).setHours(0,0,0,0) && today <= new Date(item.endDate).setHours(0,0,0,0)) {
                     recruitmentStatus = '행사중';
                 } else {
                     recruitmentStatus = '행사종료';
                 }
             }
             else if (item.eventAccept === 2 && item.isRegistrationOpen === 'N') {
-                if (today < new Date(item.visibleDate)) {
+                if (today < new Date(item.visibleDate).setHours(0,0,0,0)) {
                     recruitmentStatus = '모집대기';
                 }
-                else if (today < new Date(item.startDate)) {
+                else if (today < new Date(item.startDate).setHours(0,0,0,0)) {
                     recruitmentStatus = '행사대기';
                 }
-                else if (today >= new Date(item.startDate) && today <= new Date(item.endDate)) {
+                else if (today >= new Date(item.startDate).setHours(0,0,0,0) && today <= new Date(item.endDate).setHours(0,0,0,0)) {
                     recruitmentStatus = '행사중';
                 }
                 else {

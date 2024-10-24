@@ -120,6 +120,7 @@ class AttendDetailActivity : AppCompatActivity() {
 
                 Glide.with(this@AttendDetailActivity)
                     .load(url+event.eventPoster)
+                    .override(1500, 1300)
                     .into(binding.dImage)
 
 
