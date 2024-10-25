@@ -1,0 +1,270 @@
+/****************** CUSTOM CSS ******************/
+
+
+.text-point {
+  color: #283eae;
+}
+
+.bg-point {
+  background-color: #283eae;
+}
+
+.table-custom {
+  font-size: 0.85rem;
+}
+
+.table-custom th {
+  background-color: #eeeff7;
+  /*color: white;*/
+}
+
+.table-custom td {
+  font-size: 0.85rem;
+}
+
+.table-container {
+  max-height: 200px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.table-top-fix {
+  position: sticky;
+  top: 0;
+  background-color: #283eae;
+  z-index: 10;
+}
+
+
+/* 버튼 */
+.btn {
+  /*border: 1px solid #ccc;*/
+  margin-right: 5px;
+}
+
+.btn-active {
+  background-color: #283eae;
+  color: white;
+  border: 1px solid #283eae;
+}
+
+.btn-inactive {
+  background-color: white;
+  color: #283eae;
+}
+
+/* 글쓰기 버튼 */
+.btn-write:before {content: ""; display:block; clear:both; width:24px; height:24px; background:url("/src/assets/images/ico_write_w.svg") no-repeat; position: absolute; left:25px}
+.btn-write {width:150px; padding:12px 10px; background-color: #283eae; color:#fff; border:none; border-radius: 10px; position: relative; padding-left: 32px;}
+.btn-write:hover {box-shadow:#aaa 3px 3px 10px;}
+
+/* 참석자 현황 리스트 자세히 보기 버튼 */
+.btn-attendList {border:3px solid #ddd; padding:12px 20px; font-weight: bold; text-align:center; border-radius: 10px;}
+.btn-attendList:hover {background:#f5f5f5;}
+.btn-more {font-size: 0.85rem; color:#888; font-weight:lighter; position: relative; margin-left:-15px;}
+.btn-more:after {content: ""; display:block; clear:both; width:18px; height:18px; background:url("/src/assets/images/ico_open.svg") no-repeat; position: absolute; top:1px; right:-20px;}
+
+@media screen and (max-width:1500px) {
+  .btn-attendList {padding:12px}
+}
+
+
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #283eae;
+  margin-bottom: 20px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  color: #283eae;
+  transition: background-color 0.3s;
+}
+
+.tab.active {
+  background-color: #283eae;
+  color: white;
+  font-weight: bold;
+}
+
+.tab:hover {
+  background-color: rgba(40, 62, 174, 0.1);
+}
+
+.tab.active:hover {
+  background-color: #283eae;
+  color: white;
+}
+
+.searchIco:before {
+  content: '';
+  display: block;
+  clear: both;
+  background-image:url("./assets/images/ico_search.svg");
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+
+
+.form-border {
+  border-top: 2px solid #333;
+}
+
+/* table */
+.table-custom {text-align: center;}
+
+.table-custom thead th {
+  padding: 15px 0;
+  border-top:2px solid #555;
+  border-bottom:1px solid #555;
+}
+
+.table-custom tbody td {
+  padding: 13px 0;
+  vertical-align: middle;
+}
+
+/* login */
+.bg-login {
+  background: -webkit-linear-gradient(#f1f3ff, #cce7fa, #192978); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#f1f3ff, #cce7fa, #192978); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#f1f3ff, #cce7fa, #192978); /* For Firefox 3.6 to 15 */
+  background:  linear-gradient(#f1f3ff, #cce7fa, #192978) /* 기본 */
+}
+
+
+/* footer */
+.ft-txt {
+  font-size: 0.8rem;
+  color: #fff;
+  line-height: normal;
+  font-weight: normal;
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+}
+
+
+/* event */
+.boxLayout {margin-right:120px;}
+
+
+/* navigation */
+.nav-style {position:fixed; top:0; left:0; width:280px;}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 18px 18px 18px 25px;
+  color: #fff; /* 기본 글자색 */
+  transition: color 0.3s ease;
+  border-bottom: 1px solid #102279;
+}
+
+.nav-item img {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  transition: filter 0.3s ease;
+}
+
+.nav-item:hover,
+.nav-item:focus {
+  color: #333;
+  background:#fff;
+}
+
+.nav-item.active {
+  color: #333;
+  background:#fff;
+}
+
+.nav-item:hover img,
+.nav-item:focus img {
+  filter: brightness(0.2);
+}
+
+.nav-item.active img {
+  filter: brightness(0.2);
+}
+
+
+/* eventList mark style */
+.markStyle > p {
+  margin-bottom: 8px;
+  border-radius:50px;
+  padding: 4px 6px;
+  width:70px;
+  font-size:0.8rem;
+  text-align: center;
+}
+
+.redMark {
+  color: #dd0b0b;
+  border:1px solid #dd0b0b;
+}
+
+.blueMark {
+  color:#283eae;
+  border:1px solid #283eae;
+}
+
+.grayMark {
+  color: #666;
+  border:1px solid #888;
+
+}
+
+/* 썸네일 이미지 */
+.thumbnail {
+  max-width: 350px;
+  height: 230px;
+  border:1px solid #ddd;
+}
+
+.thumbnail img {
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+
+
+/* pagination */
+.pagination {
+  justify-content:center;
+  margin-top: 50px;
+}
+
+.page-item {
+  display: inline-block;
+  margin: 0 3px;
+}
+
+.page-link {
+  padding: 3px 8px;
+  border: 1px solid #ccc;
+  font-size: 0.8rem;
+  color: #888;
+  text-decoration: none;
+}
+
+.page-link:hover {
+  background: #283eae;
+  color: white;
+}
+
+.active>.page-link, .page-link.active {
+  background-color: #283eae;
+  border-color: #283eae;
+}
+
+

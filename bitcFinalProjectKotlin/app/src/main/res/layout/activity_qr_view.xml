@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".templete.attend.QrViewActivity"
+    android:background="#F5F5F5">
+
+    <TextView
+        android:id="@+id/cateTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/notosans_bold"
+        android:text="신청내역"
+        android:textColor="#343A40"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="58dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:background="#00000000"
+        android:src="@drawable/back30"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventDate">
+
+        <ImageView
+            android:id="@+id/img_qr"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_gravity="center"
+            android:background="#88DAFF" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/notosans_medium"
+        android:text="주의사항
+        \nQR 코드는 행사 1주일 전에 발급됩니다.
+        \n발급된 QR 코드는 행사 당일 담당자에게 보여주셔야 합니다.
+        \n입장 및 퇴장 시 반드시 QR 코드를 스캔해 주시기 바랍니다.
+        \nQR 코드 미스캔 혹은 1번만 스캔 시 미수료로 처리됩니다."
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/notosans_medium"
+        android:text="행사명 : "
+        android:textColor="#212529"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cateTitle" />
+
+    <TextView
+        android:id="@+id/eventName"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/notosans_medium"
+        android:text="data"
+        android:textColor="#212529"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/cateTitle" />
+
+    <TextView
+        android:id="@+id/eventDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/notosans_medium"
+        android:text="행사일"
+        android:textColor="#212529"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventName" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
