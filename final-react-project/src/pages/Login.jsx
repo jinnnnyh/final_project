@@ -29,7 +29,7 @@ function Login() {
 
 
       try {
-        const response = await axios.post('http://localhost:8080/user/login', {
+        const response = await axios.post('http://43.200.254.110:8080/user/login', {
           userAccount: userAccount,
           userPw: userPw,
         },{

@@ -33,7 +33,7 @@ const FileUpload = () => {
         formData.append('eventPoster', eventPoster);
 
         try {
-            const response = await axios.post('http://localhost:8080/events', formData, {
+            const response = await axios.post('http://43.200.254.110:8080/events', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -111,89 +111,3 @@ const FileUpload = () => {
 
 export default FileUpload;
 
-
-
-// import React, { useState } from 'react';
-// import axios from 'axios';
-//
-// const FileUpload = () => {
-//     const [eventTitle, setEventTitle] = useState('');
-//     const [eventContent, setEventContent] = useState('');
-//     const [eventDate, setEventDate] = useState('');
-//     const [eventPoster, setEventPoster] = useState(null);
-//
-//     const handleFileChange = (e) => {
-//         setEventPoster(e.target.files[0]);
-//     };
-//
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-//
-//         const formData = new FormData();
-//
-//         // UpdateEventRequest 객체 생성
-//         const updateEventRequest = {
-//             eventTitle,
-//             eventContent,
-//             eventDate,
-//             eventPoster: eventPoster ? eventPoster.name : null // 파일의 이름만 전송
-//         };
-//
-//         formData.append('request', new Blob([JSON.stringify(updateEventRequest)], { type: 'application/json' }));
-//
-//         // MultipartFile로 eventPoster 추가
-//         if (eventPoster) {
-//             formData.append('eventPoster', eventPoster);
-//         }
-//
-//         try {
-//             // PUT 요청으로 변경
-//             const response = await axios.put('http://localhost:8080/events/4', formData, {
-//                 headers: {
-//                     'Content-Type': 'multipart/form-data',
-//                 },
-//             });
-//             console.log('Response:', response.data);
-//         } catch (error) {
-//             console.error('Error updating event:', error);
-//         }
-//     };
-//
-//     return (
-//         <form onSubmit={handleSubmit}>
-//             <div>
-//                 <label>Event Title:</label>
-//                 <input
-//                     type="text"
-//                     value={eventTitle}
-//                     onChange={(e) => setEventTitle(e.target.value)}
-//                     required
-//                 />
-//             </div>
-//             <div>
-//                 <label>Event Content:</label>
-//                 <textarea
-//                     value={eventContent}
-//                     onChange={(e) => setEventContent(e.target.value)}
-//                     required
-//                 />
-//             </div>
-//             <div>
-//                 <label>Event Date:</label>
-//                 <input
-//                     type="date"
-//                     value={eventDate}
-//                     onChange={(e) => setEventDate(e.target.value)}
-//                     required
-//                 />
-//             </div>
-//             <div>
-//                 <label>Event Poster:</label>
-//                 <input type="file" onChange={handleFileChange} />
-//             </div>
-//             <button type="submit">Update Event</button>
-//         </form>
-//     );
-// };
-//
-// export default FileUpload;

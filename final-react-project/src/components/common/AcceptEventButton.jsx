@@ -12,7 +12,7 @@ function AcceptEventButton() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/event/${eventId}`)
+            .get(`http://43.200.254.110:8080/event/${eventId}`)
             .then((response) => {
                 if (response.data) {
                     setEventData(response.data);
@@ -34,7 +34,7 @@ function AcceptEventButton() {
             const confirmed = window.confirm('행사 승인하시겠습니까?');
             if (confirmed) {
                 const userId = sessionStorage.getItem("userId");
-                const response = await axios.put(`http://localhost:8080/event/acceptEvent/${eventId}`, { newValue: '승인완료' }, {
+                const response = await axios.put(`http://43.200.254.110:8080/event/acceptEvent/${eventId}`, { newValue: '승인완료' }, {
                     params: { userId: userId }
                 })
                     .then(() => {
@@ -51,7 +51,7 @@ function AcceptEventButton() {
 
             if (confirmCancel) {
                 const userId = sessionStorage.getItem("userId");
-                const response = await axios.put(`http://localhost:8080/event/acceptCancel/${eventId}`, { newValue: '승인대기' }, {
+                const response = await axios.put(`http://43.200.254.110:8080/event/acceptCancel/${eventId}`, { newValue: '승인대기' }, {
                     params: { userId: userId }
                 })
                     .then(() => {

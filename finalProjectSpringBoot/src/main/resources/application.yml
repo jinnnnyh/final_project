@@ -12,9 +12,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://58.239.58.243:3306/java405_team2_final?userSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: java405_team2_final
-    password: java405_team2_final_1234
+    url: jdbc:mysql://43.200.254.110:3306/check_manager?userSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: test1
+    password: Java405!@#$
 
   jpa:
     database:

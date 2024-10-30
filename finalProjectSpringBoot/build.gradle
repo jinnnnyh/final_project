@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'bitc.fullstack405'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.6'
 
 java {
     toolchain {
@@ -49,61 +49,3 @@ dependencies {
     // firebase 라이브러리
     implementation 'com.google.firebase:firebase-admin:8.1.0'
 }
-
-//tasks.named('test') {
-//    useJUnitPlatform()
-//}
-
-
-//def reactDir = "$projectDir/src/main/final-react-project"
-//
-//sourceSets {
-//    main {
-//        resources {
-//            srcDirs = ["$projectDir/src/main/resources"]
-//        }
-//    }
-//}
-//
-//processResources {
-//    dependsOn "copyReactBuildFiles"
-//}
-//
-//task installReact(type: Exec) {
-//    workingDir "$reactDir"
-//    inputs.dir "$reactDir"
-//    group = BasePlugin.BUILD_GROUP
-//
-//    if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("windows")) {
-//        commandLine "npm.cmd", "audit", "fix"
-//        commandLine "npm.cmd", "install"
-//    }
-//    else {
-//        commandLine "npm", "audit", "fix"
-//        commandLine "npm", "install"
-//    }
-//}
-//
-//task buildReact(type: Exec) {
-//    dependsOn "installReact"
-//    workingDir "$reactDir"
-//    inputs.dir "$reactDir"
-//    group = BasePlugin.BUILD_GROUP
-//
-//    if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("windows")) {
-//        commandLine "npm.cmd", "run-script", "build"
-//    }
-//    else {
-//        commandLine "npm", "run-script", "build"
-//    }
-//}
-//
-//task copyReactBuildFiles(type: Copy) {
-//    dependsOn "buildReact"
-//    from "$reactDir/dist"
-//    into "$projectDir/src/main/resources/static"
-//}
-//
-//tasks.bootJar {
-//    dependsOn "copyReactBuildFiles"
-//}

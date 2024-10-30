@@ -21,7 +21,7 @@ function EventWrite() {
 
   useEffect(() => {
     if (mode === 'update') {
-      axios.get(`http://localhost:8080/event/updateEvent/${eventId}`)
+      axios.get(`http://43.202.52.211:8080/event/updateEvent/${eventId}`)
         .then((res) => {
           const data = res.data;
           setEventTitle(data.eventTitle);
@@ -75,7 +75,7 @@ function EventWrite() {
       }
 
       if (mode === 'update') {
-        axios.put(`http://localhost:8080/event/updateEvent/${eventId}`, formData, {
+        axios.put(`http://43.200.254.110:8080/event/updateEvent/${eventId}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -89,7 +89,7 @@ function EventWrite() {
           });
       }
       else {
-        axios.post('http://localhost:8080/event/write', formData, {
+        axios.post('http://43.202.52.211:8080/event/write', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

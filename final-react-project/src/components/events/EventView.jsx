@@ -48,7 +48,7 @@ function EventView () {
     if (eventData && eventData.eventPoster) {
       return (
         <div>
-          <img src={`http://localhost:8080/eventImg/${eventData.eventPoster}`} alt="Poster" className={'mw-100'}/>
+          <img src={`http://43.200.254.110:8080/eventImg/${eventData.eventPoster}`} alt="Poster" className={'mw-100'}/>
         </div>
       );
     }
@@ -62,7 +62,7 @@ function EventView () {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/event/${eventId}`)
+      .get(`http://43.200.254.110:8080/event/${eventId}`)
       .then((response) => {
         if (response.data) {
           setEventData(response.data);

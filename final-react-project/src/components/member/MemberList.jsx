@@ -22,7 +22,7 @@ function MemberList () {
   // 데이터 가져오기
   useEffect(() => {
     const userListData = async () => {
-      const response = await axios.get('http://localhost:8080/user/userManage');
+      const response = await axios.get('http://43.200.254.110:8080/user/userManage');
       setMemberListData(response.data);
       setFilteredData(response.data);
     };
@@ -61,7 +61,7 @@ function MemberList () {
     const confirmed = window.confirm('회원을 탈퇴처리 하시겠습니까?');
 
     if (confirmed) {
-      await axios.delete(`http://localhost:8080/user/signOut/${userId}`);
+      await axios.delete(`http://43.200.254.110:8080/user/signOut/${userId}`);
       setMemberListData(memberListData.filter(item => item.userId !== userId));
       alert("회원이 삭제되었습니다.");
     } else {
@@ -78,7 +78,7 @@ function MemberList () {
     const confirmed = window.confirm("승인 하시겠습니까?");
 
     if (confirmed) {
-      await axios.put(`http://localhost:8080/user/signAccept/${userId}`);
+      await axios.put(`http://43.200.254.110:8080/user/signAccept/${userId}`);
       setMemberListData(memberListData.filter(item => item.userId !== userId));
       alert("승인되었습니다.");
     } else {

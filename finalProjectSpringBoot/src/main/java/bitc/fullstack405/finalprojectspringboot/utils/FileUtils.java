@@ -16,7 +16,7 @@ public class FileUtils {
             return null;
         }
 
-        String path = "../eventImg/";
+        String path = "/home/ec2-user/eventImg/";
 
         // File 클래스를 통해서 파일 객체 생성, 위에서 생성한 파일이 저장될 폴더를 가지고 File 클래스 객체 생성
         File file = new File(path);

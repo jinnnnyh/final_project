@@ -13,7 +13,7 @@ function EndEventButton() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/event/${eventId}`)
+      .get(`http://43.200.254.110:8080/event/${eventId}`)
       .then((response) => {
         if (response.data) {
           setEventData(response.data);
@@ -42,7 +42,7 @@ function EndEventButton() {
         if (confirmed) {
           alert("행사 모집종료되었습니다.");
           window.location.href = `/event/${eventId}`
-          const response = await axios.put(`http://localhost:8080/event/endEvent/${eventId}`)
+          const response = await axios.put(`http://43.200.254.110:8080/event/endEvent/${eventId}`)
           setEventData(eventData.filter(eventData => eventData.eventId !== eventId));
           setEventAccept(response.data);
           setIsRegistrationOpen(response.data);

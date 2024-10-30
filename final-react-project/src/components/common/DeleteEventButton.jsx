@@ -13,7 +13,7 @@ function DeleteEventButton() {
     const confirmed = window.confirm('게시물을 삭제하시겠습니까?');
 
     if (confirmed) {
-      await axios.delete(`http://localhost:8080/event/deleteEvent/${eventId}`);
+      await axios.delete(`http://43.200.254.110:8080/event/deleteEvent/${eventId}`);
       setEventData(eventData.filter(eventData => eventData.eventId !== eventId));
       alert("게시물이 삭제되었습니다.");
       window.location.href = "/"; // 게시물 삭제 후 목록으로 이동

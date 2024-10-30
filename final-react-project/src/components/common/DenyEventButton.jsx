@@ -11,7 +11,7 @@ function DenyEventButton() {
 
 useEffect(() => {
     axios
-      .get(`http://localhost:8080/event/${eventId}`)
+      .get(`http://43.200.254.110:8080/event/${eventId}`)
       .then((response) => {
         if (response.data) {
           setEventData(response.data);
@@ -32,7 +32,7 @@ useEffect(() => {
         if (confirmed) {
           alert("승인 거부되었습니다.");
           window.location.href = `/event/${eventId}`
-          const response = await axios.put(`http://localhost:8080/event/denyEvent/${eventId}`)
+          const response = await axios.put(`http://43.200.254.110:8080/event/denyEvent/${eventId}`)
           setEventData(eventData.filter(eventData => eventData.eventId !== eventId));
           setEventAccept(response.data);
         } else {
