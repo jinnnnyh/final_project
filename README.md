@@ -1,12 +1,9 @@
-# :snowman: 비트포비아 클론 코딩 프로젝트
->기존의 방 탈출 카페 예약 사이트인 비트포비아를 클론 코딩한 팀프로젝트입니다.<br>
-기존 웹사이트의 개선을 목적으로 아래와 같이 개발 방향을 정했습니다.
-* 회원제를 기반으로 한 예약 시스템 구축
-* 고객 참여를 유도하는 포인트 제도 도입
-* 예약 내역을 바탕으로 한 후기 게시판 개설
+# :snowman: Check Manager 프로젝트
+> 협회 회원 관리 및 행사 참석자 관리용 웹사이트 / 
+> 출석 QR, 참석증 발급 회원용 어플을 제작했습니다.
 
   
-## :snowman: [시연영상](https://youtu.be/jqKKebv90v0)
+## :snowman: [시연영상](https://youtu.be/lJK2MwSwdt0)
 
 
 ## :snowman: 활용 기술
@@ -17,30 +14,32 @@
 * Mybatis
 * Tomcat
 * Gradle
+* Firebase Cloud Messaging(알림)
 * AWS(배포)
 ### Front-end
-* HTML
-* Bootstrap
-* Thymeleaf
-* jQuery
-* Ajax
+* React
+* Kotlin
 ### 개발환경
 * InteliJ IDEA
+* Android Studio
 ### ETC
 * Git Hub
 * Source Tree
 
 ## :snowman: 사이트 이미지
-![깃허브용 이미지 캡쳐](https://github.com/user-attachments/assets/aea8d2b5-4c2c-451d-82b5-a57188979529)
+![웹 이미지 캡쳐](https://github.com/user-attachments/assets/dcec9bee-dee2-4c05-993a-9fd50d5cb10d)
+
+
+## :snowman: 어플 이미지
+![어플 뷰2](https://github.com/user-attachments/assets/6012482f-b78c-41e0-a7e9-bcdf4bbb469b)
+
 
 ## :snowman: ERD 설계
-![ERD](https://github.com/user-attachments/assets/6a7ffbc4-f84c-44ea-b127-cf44809312c1)
+![erd 최종](https://github.com/user-attachments/assets/4a32f4f1-af45-43b5-94ac-3bbfa426cba6)
+
 
 ## :snowman: Use Case
-![usecase](https://github.com/user-attachments/assets/5dc0de6a-221f-45a9-abbd-07b23dcd93af)
+![usecase](https://github.com/user-attachments/assets/aaed2287-cd2a-4561-88fe-a26c9c3b1a57)
+
 
 ## :snowman: 느낀점
-예기치 않게 팀원이 많이 줄어 마감의 어려움을 겪었지만, 그 덕분에 백엔드와 프론트엔드를 모두 개발해볼 수 있는 좋은 경험이 되었다.<br>
-프론트에서 반복되는 코드 부분을 함수로 정의해서 깔끔하게 정리하고 싶다.
-join 과 서브 쿼리에 대해 더 알아야할 필요가 있다.
-
