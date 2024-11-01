@@ -15,7 +15,6 @@
 * MySQL
 * Mybatis
 * Tomcat
-* Gradle
 * Firebase Cloud Messaging(알림)
 * AWS(배포)
 ### Front-end
