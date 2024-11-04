@@ -5,8 +5,8 @@ import events from "../pages/Events.jsx";
 import member from "../pages/Member.jsx";
 
 const navItems = [
-  { path: '/', label: '행사관리', icon: '/src/assets/images/ico_event_w.svg' },
-  { path: '/member', label: '회원관리', icon: '/src/assets/images/ico_member_w.svg' },
+  { path: '/', label: '행사관리', icon: '/images/ico_event_w.svg' },
+  { path: '/member', label: '회원관리', icon: '/images/ico_member_w.svg' },
 ];
 
 function Navigation() {
@@ -28,7 +28,7 @@ function Navigation() {
     <div className={'nav flex-column bg-point vh-100 nav-style'}>
       <p className={'text-center pt-4'}>
         <Link to={'/'} className={'fw-bold text-white fs-4'} onClick={handleLogoClick}>
-          <img src="/logo_w.svg" alt="한국IT협회 로고" style={{width:'60%'}}/></Link>
+          <img src="/images/logo_w.svg" alt="한국IT협회 로고" style={{width:'60%'}}/></Link>
       </p>
 
       <nav>

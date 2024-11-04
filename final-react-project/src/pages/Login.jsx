@@ -29,7 +29,7 @@ function Login() {
 
 
       try {
-        const response = await axios.post('http://43.200.254.110:8080/user/login', {
+        const response = await axios.post('http://13.209.112.29:8080/api/user/login', {
           userAccount: userAccount,
           userPw: userPw,
         },{
@@ -78,7 +78,7 @@ function Login() {
     <section className={'container-fluid vh-100 pt-5 bg-login'}>
       <div className={'text-center mt-3'}>
         <p className={'text-black-50'}>Check Manager</p>
-        <h1 className={'mt-4'}><img src="/logo.svg" alt="한국IT협회 로고"/></h1>
+        <h1 className={'mt-4'}><img src="/images/logo.svg" alt="한국IT협회 로고"/></h1>
       </div>
       <div className={'row mt-5'}>
         <div className={'col-lg-4 p-5 col-md-8 col-xs-12 mx-auto shadow bg-white'}>

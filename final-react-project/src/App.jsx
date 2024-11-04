@@ -20,8 +20,8 @@ function App() {
   return (
     <>
       <Routes >
-        <Route path="/login" element={<Login />}/>
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/signup" element={<Signup/>} />
       </Routes>
       <div className={'d-flex'}>
           {/* 왼쪽 네비게이션 */}
@@ -32,7 +32,7 @@ function App() {
             {/*<Header/>*/}
             <MainPages>
               <Routes>
-                <Route path="/" element={<EventList/>}/>
+                <Route path="/*" element={<EventList/>}/>
                 <Route path="/event/write" element={<EventWrite/>}/>
                 <Route path="/event/:eventId" element={<EventView/>}/>
                 <Route path="/event/attendList/:eventId" element={<EventAttendList/>}/>

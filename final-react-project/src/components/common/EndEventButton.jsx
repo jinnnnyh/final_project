@@ -1,7 +1,7 @@
 
 import axios from "axios";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 function EndEventButton() {
   const [eventData, setEventData] = useState([]);
@@ -9,11 +9,11 @@ function EndEventButton() {
   const [eventAccept, setEventAccept] = useState('');
   const [isRegistrationOpen, setIsRegistrationOpen] = useState();
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get(`http://43.200.254.110:8080/event/${eventId}`)
+      .get(`http://13.209.112.29:8080/api/event/${eventId}`)
       .then((response) => {
         if (response.data) {
           setEventData(response.data);
@@ -41,8 +41,11 @@ function EndEventButton() {
         const confirmed = window.confirm("행사 모집 종료하시겠습니까?");
         if (confirmed) {
           alert("행사 모집종료되었습니다.");
-          window.location.href = `/event/${eventId}`
-          const response = await axios.put(`http://43.200.254.110:8080/event/endEvent/${eventId}`)
+
+          navigate(`/event/${eventId}`);
+          window.location.reload()
+          // window.location.href = `/event/${eventId}`
+          const response = await axios.put(`http://13.209.112.29:8080/api/event/endEvent/${eventId}`)
           setEventData(eventData.filter(eventData => eventData.eventId !== eventId));
           setEventAccept(response.data);
           setIsRegistrationOpen(response.data);

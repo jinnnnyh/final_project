@@ -1,13 +1,13 @@
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 function Header () {
 
   const logoutHandler = () => {
     const confirmed = confirm("로그아웃 합니까?");
-
     if (confirmed === true) {
       sessionStorage.clear();
-      window.location.href = '/login'
+      window.location.href = '/'
     }
   }
 

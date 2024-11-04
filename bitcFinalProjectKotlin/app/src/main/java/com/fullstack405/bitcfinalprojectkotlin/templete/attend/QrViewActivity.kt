@@ -35,7 +35,7 @@ class QrViewActivity : AppCompatActivity() {
     val cal_sdate = Calendar.getInstance() // 시작일
     var td = "null"
 
-    var url="http://43.200.254.110:8080/qrImg/"
+    var url="http://13.209.112.29:8080/qrImg/"
 
     val dateFormat =SimpleDateFormat("yyyy-MM-dd") // 포맷설정
 

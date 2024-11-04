@@ -114,7 +114,7 @@ class EventDetailActivity : AppCompatActivity() {
                         setPositiveButton("추가",object :DialogInterface.OnClickListener{
                             override fun onClick(p0: DialogInterface?, p1: Int) {
                                 if(userAccount != null){
-                                    Client.retrofit.adminAppDirect(eventId!!, userAccount!!).enqueue(object:retrofit2.Callback<Int>{
+                                    Client.retrofit.adminAppDirect(eventId, userAccount!!).enqueue(object:retrofit2.Callback<Int>{
                                         override fun onResponse(call: Call<Int>,response: Response<Int>) {
                                             if(response.body() == 2){
                                                 Toast.makeText(this@EventDetailActivity,"추가 신청이 완료되었습니다.\nQR을 확인해주세요.",Toast.LENGTH_SHORT).show()
@@ -161,7 +161,7 @@ class EventDetailActivity : AppCompatActivity() {
         val today = dateFormat.format(cal.time)
 
         lateinit var event:EventDetailData
-        val url = "http://43.200.254.110:8080/eventImg/"
+        val url = "http://13.209.112.29:8080/eventImg/"
 //        var posterName = event.eventPoster
         
 //        이벤트id로 해당 이벤트 정보만 불러오기

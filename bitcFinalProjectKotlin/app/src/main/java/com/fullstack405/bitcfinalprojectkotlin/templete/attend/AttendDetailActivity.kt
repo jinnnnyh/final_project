@@ -32,7 +32,7 @@ class AttendDetailActivity : AppCompatActivity() {
     private var userName = "none"
     lateinit var intentComplete: Intent
 
-    val url = "http://43.200.254.110:8080/eventImg/"
+    val url = "http://13.209.112.29:8080/eventImg/"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
