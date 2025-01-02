@@ -45,7 +45,7 @@
 
 
 ## :snowman: [시연영상](https://youtu.be/lJK2MwSwdt0)
-## :snowman: [배포사이트](http://13.209.112.29:8080)
+
 ## :snowman: 사이트 이미지
 ![웹 이미지 캡쳐](https://github.com/user-attachments/assets/dcec9bee-dee2-4c05-993a-9fd50d5cb10d)
 
